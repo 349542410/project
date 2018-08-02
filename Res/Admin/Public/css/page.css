@@ -1,6 +1,0 @@
-#pages { padding:10px 0 10px;text-align:center;font:12px '宋体';}
-#pages a { display:inline-block; padding:0px 8px; height:22px;font-size:12px;line-height:22px; background:#fff; border:1px solid #ccc; text-align:center; color:#333}
-#pages a.a1 {padding:0px 12px; height:22px; line-height:22px;margin-top:0px;}
-#pages a:hover { background:#5a85b2; color:#fff; text-decoration:none; }
-#pages span { display:inline-block;  padding:0px 8px; height:22px; line-height:20px; background:#5a85b2; border:1px solid #5a85b2; color:#fff; text-align:center; }
-.page .noPage { display:inline-block;  padding:0px 12px; height:22px; line-height:22px;border:1px solid #e3e3e3; text-align:center; color:#a4a4a4; }

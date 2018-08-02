@@ -1,1 +1,0 @@
-ALTER TABLE  `mk_tran_list` ADD  `traceCode` VARCHAR( 20 ) NULL COMMENT  '三者运单号(保存物流对接的时候，产生的第三者运单号)' AFTER  `STNO`

@@ -1,4 +1,0 @@
-
-
-
-ALTER TABLE mk_user_info MODIFY COLUMN vat_number VARCHAR(20);

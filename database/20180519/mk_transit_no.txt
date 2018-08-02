@@ -1,1 +1,0 @@
-alter table mk_transit_no add pay_report int(1) default 0 comment '是否已经发送支付通知';

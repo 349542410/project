@@ -1,1 +1,0 @@
-ALTER TABLE `mk_transit_no` ADD `lading_id` INT( 11 ) NULL DEFAULT NULL COMMENT 'transit_lading表主键id'

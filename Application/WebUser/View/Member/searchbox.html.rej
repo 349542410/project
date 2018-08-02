@@ -1,9 +1,0 @@
-diff a/Application/WebUser/View/Member/searchbox.html b/Application/WebUser/View/Member/searchbox.html	(rejected hunks)
-@@ -34,7 +34,6 @@
- 
-   <label>
-     &nbsp;&nbsp;{:L('l_order_time')}：
--      Y-m-d H:i:s ',###}</eq>' style="width:166"> --
-     <input type="text" class="form-control one" data-field="datetime" size="25" id="createStarttime" style="width:166"> --
-     <input type="text" class="form-control two" data-field="datetime" size="25" id="createEndtime" style="width:166">
-   </label>

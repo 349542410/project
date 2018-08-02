@@ -1,1 +1,0 @@
-a:7:{s:9:"kaola_key";s:14:"32453454353434";s:12:"warehouse_id";s:2:"14";s:6:"status";i:1;s:7:"shop_id";i:18;s:10:"goods_name";s:12:"哈哈哈789";s:9:"className";s:37:"KaoLa\Controller\GoodsKaoLaController";s:10:"mothodName";s:8:"addstock";}
