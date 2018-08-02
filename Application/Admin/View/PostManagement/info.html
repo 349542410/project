@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <style type="text/css">
+      body {
+
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+
+      }
+      .container{margin:0 auto;}
+      .form-signin {
+
+        margin-top:60px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+.form-signin table td{height:47px;line-height:47px;}
+.form-signin table th{height:27px;padding-top:16px !important;}
+.left th{text-align:right !important;}
+.left th,.left td,.right th, .right td{border-bottom:1px solid #ccc;}
+.right td{padding-top:5px !important;padding-bottom:3px !important;}
+.container tr td{vertical-align: middle ;}
+
+
+/*  新加样式  */
+#right *{  white-space: normal;}
+#right .top1{ height: 35%; border-bottom: 1px solid #ddd;position: relative;margin-top: 42px;}
+#right .top1 .d1{height: 60px; overflow-y:auto; padding-top: 3px;}
+#right .top1 .d1 p{line-height: 24px; padding: 0 12px;}
+#right .top1 .d2{height: 100%; overflow:auto; }
+#right .top1 table,#right .top2 table{width: 100%;}
+#right .top1 table td,#right .top2 table td{ padding: 10px 5px; line-height: 24px; min-height: 47px; height: auto;}
+#right .top1 table th,#right .top2 table th{height: 40px; line-height: 40px; padding: 0!important;}
+#right .top2{ position: relative;height: 65%; }
+#right .top2 .d2{height: 80%; overflow:auto;margin-top: 42px;}
+#right .top2 .table1{ position: absolute; height: 9%; top: -42px; left: 0; background: #fff;}
+#right .top1 .table1{ position: absolute; height: 9%; top: -42px; left: 0; background: #fff;}
+#right .top1 .table2{height: 372px; display: block;}
+#right .top2 .table2{height: 80%; display: block;}
+#right table tbody{display: table; width: 100%;}
+    </style>
+    <link href="__PUBLIC__/css/one.css" rel="stylesheet">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+
+    <![endif]-->
+     </head>
+  <body>
+
+    <div class="container" >
+      <div class="form-signin" style="background:#F7F7F9 !important;width:818px;height:700px;">
+      <div class="left" style="width:300px;height:700px;float:left;white-space:nowrap;overflow:auto;border-right:3px solid #000">
+        <table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px;padding:0px;font-size:15 !important;">
+                <tr>
+                  <th>美快单号：</th>
+                  <td>{$info.MKNO}</td>
+                </tr>
+                <tr>
+                    <th>寄件人：</th>
+                    <td>{$info.sender}</td>
+                </tr>
+                <tr>
+                  <th>寄件人电话：</th>
+                  <td>{$info.sendTel}</td>
+                </tr>
+                <tr>
+                    <th>收件人：</th>
+                    <td>{$info.receiver}</td>
+                </tr>
+                <tr>
+                  <th>收件人电话：</th>
+                  <td>{$info.reTel}</td>
+                </tr>
+                <tr>
+                    <th>收件人地址：</th>
+                    <td>{$info.reAddr}</td>
+                </tr>
+                <tr>
+                    <th>收件人证件号：</th>
+                    <td>{:hidIdno($info['idno'])}</td>
+                </tr>
+                 <tr>
+                    <th width="45%">操作时间：</th>
+                    <td>{$info.optime}</td>
+                </tr>
+<!--                   <tr>
+                    <th>收货时间：</th>
+                    <td>
+                      <if condition="$info['printTime'] == null">
+
+                      <else />
+                        {$info.printTime}
+                      </if>
+                    </td>
+                </tr> -->
+                <tr>
+                    <th>重量：</th>
+                    <td>{$info.weight} {:C('SHOW_WEIGHT_UNIT')}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    <strong>物品内容：</strong><br>
+                      <volist name="pro_list" id="pro" empty="暂时没有数据">
+                      <ddt title="{$pro.detail}">{$pro.detail}</ddt>&nbsp;&nbsp;<if condition="count($pro_list) gt 1">x</if>&nbsp;&nbsp;{$pro.number}&nbsp;&nbsp;&nbsp;<if condition="count($pro_list) gt 1"></if>{$pro.price}<if condition="count($pro_list) gt 1">；</if><br>
+                      </volist>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    <strong>海关申报反馈：</strong><br>
+                      {$hg_info}
+                    </td>
+                </tr>
+        </table>
+      </div>
+
+      <div id="right" style="width:516px;float:left;height:700px;white-space:nowrap;">
+      <div class="top1">
+<!--           <div class="d1">
+              <strong style="font-size: 15px;">&nbsp;海关描述：</strong>
+               <p>{$hg_info}</p>
+          </div>
+ -->          <div class="d2">
+                 <table border="0" cellpadding="0" cellspacing="0" class="table table1" style="margin-bottom:0px;padding:0px;font-size:13px !important;">
+                <tr>
+                    <th width="40%">操作时间</th>
+                    <th width="60%">海关申报状态</th>
+                    <!-- <th width="20%">数据录入时间</th> -->
+                </tr>
+                </table>
+                <table border="0" cellpadding="0" cellspacing="0" class="table table2" style="margin-bottom:0px;padding:0px;font-size:14px !important;">
+                <volist name="hg_msg" id="vt" mod="2" empty="暂时没有数据">
+                <tr <eq name="mod" value="0"> style="background-color:#ddd;"</eq>>
+                    <td align="center" width="40%">{$vt.CreateTime}</td>
+                    <td align="center" width="60%">{$vt.content}</td>
+<!--                     <td align="center" width="20%">
+                      {$vt.sys_time}
+                    </td> -->
+                </tr>
+                </volist>
+            </table>
+
+          </div>
+      </div>
+      <div class="top2">
+          <div class="d2">
+             <table border="0" cellpadding="0" cellspacing="0" class="table table1" style="margin-bottom:0px;padding:0px;font-size:13px !important">
+                <tr>
+                    <th width="15%">时间</th>
+                    <th width="60%">物流信息</th>
+                    <th width="15%">状态</th>
+                    <th width="15%">操作</th>
+                </tr>
+              </table>
+              <table border="0" cellpadding="0" cellspacing="0" class="table table2" style="margin-bottom:0px;padding:0px;font-size:13px !important">
+
+                <volist name="list" id="vo" mod="2" empty="暂时没有数据">
+                <tr class="tr_{$vo['id']}" <eq name="mod" value="0"> style="background-color:#ddd;"</eq>>
+                    <td align="center" width="15%">{$vo.create_time}</td>
+                    <td align="center" width="60%">{$vo.content}</td>
+                    <td align="center" width="15%">
+                      {$vo.opt_tname}<br/>
+        <!--               <if condition="$vo.status eq '100'">
+                          <img src="__PUBLIC__/images/right.png" alt="" style="padding-top:10px;">
+                      <else /> -->
+                          <img src="__PUBLIC__/images/right.png" alt="" style="padding-top:5px;">
+                      <!-- </if> -->
+                    </td>
+                    <td align="center" width="15%">
+                      <!-- 只能删除 手动录入的物流信息，且只能是最新的那一条物流信息 -->
+                      <if condition="in_array($vo['status'], $key_list) && $key eq 0">
+                        <a style="display:inline-block;" href="javascript:;" onclick="del_it('{$vo['id']}');" id="del_it_{$vo['id']}">删除</a>
+                      </if>
+                    </td>
+                </tr>
+                </volist>
+            </table>
+          </div>
+
+      </div>
+
+
+      </div>
+      </div>
+      <div class="form-group" style="background:#F7F7F9 !important;">
+    <div class="col-sm-offset-2 col-sm-10 " style=" margin:0; width:100%; padding:20px 0;">
+
+      {/*$sim 用来区别只在批号对数的时候使用以下功能 20160315 Jie; 该单的操作时间距离当前时间已经大于12天才能进行操作*/}
+      <div class="left" style=" width:70%; display: inline-block; float:left;">
+        <button type="button" class="btn btn-default" onclick="shop_zu(this);">操作</button>
+        <div class="shop_zu" style="display:none">
+          <select class="btn btn-default" name="status_select" style="padding:0 ; margin-right:5px;" id="status_select" onchange="ccc(this)">
+            <option value="">---请选择---</option>
+
+            <volist name="sel_list" id="vo">
+              <option value="{$key}">{$vo}</option>
+            </volist>
+
+          </select>
+          <input class="btn btn-default" style="width:170px; height:26px; margin-right:5px; padding:0 3px; text-align: left;display:none;" type="text" name="status_custom" placeholder="自行填写原因">
+
+          <eq name="fivedays" value="on">
+            <span style="display: inline-block;padding:10px 2px;"><input type="checkbox" name="finishedIt" id="finished" ><label for="finished">&nbsp;完成此单 &nbsp;</label></span>
+          <else/>
+            <span style="display: inline-block;padding:10px 2px;"><input type="checkbox" name="" disabled><label for="">&nbsp;完成此单 &nbsp;</label></span>
+          </eq>
+
+          <button type="button" class="btn btn-default" id="opt" onclick="toPost('{$id}');" style="padding:2px 12px;">提交</button>
+          <div id="mess"></div>
+        </div>
+      </div>
+
+      <div class="right" style=" width:30%; display: inline-block; text-align: right;">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button>
+      </div>
+    </div>
+    </div>
+    </div>
+
+  </body>
+  {/*根据条件判断是否加载此外部js文件*/}
+      <include file="outside_js"/>
+</html>

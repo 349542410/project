@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>{:L('UpTitle')}</title>
+	<!-- 在线下单 第三步 打印随机码 -->
+	<link rel="stylesheet" type="text/css" href="__MEMBER__/css/all.css">
+    <link rel="stylesheet" href="__MEMBER__/css/print.css" media="print">
+</head>
+<body>
+	<div class="up_bg noprint">
+		<img src="__MEMBER__/image/step_threebg1.jpg">
+	</div>
+	<!-- 内容 -->
+<div class="form form_two ftstep_t" >
+    <nav class="navbar noprint" role="navigation">
+        <img src="__IMG__/{:L('lng')}/login.png" />
+    </nav>
+    <div class="opbg noprint"></div>
+    <div class="form-signin" id="tempForm">
+    	<ul class="fs_ul noprint">
+<!--     		<li class="printshow prin_h1"><h1>{:L('InternationalLogistics')}</h1></li> -->
+            <li><h1>{:L('PrintRandomCode')}</h1></li>
+    		<li class="martop">
+                <p>
+                    <span style="font-size: 20px;">{:L('Sender')}：</span>
+                    <span>{$res['sender']}</span>
+                </p>
+            </li>
+    		<li class="martop">
+                <p>
+                    <span style="font-size: 20px;">{:L('AddressRec')}：</span>
+                    <span>{$res['receiver']}</span>
+                </p>
+            </li>
+    		<li>
+                <p>
+                    <span style="font-size: 20px;">{:L('RandomCode')}：</span>
+                    <span>{$res['random_code']}</span>
+                </p>
+            </li>
+    		<li><img src="http://www.megaoshop.com/testcode/html/image.php?filetype=PNG&dpi=72&scale=3&rotation=0&font_family=0&font_size=8&text={$res['random_code']}&thickness=30&start=NULL&code=BCGcode128" height="80"></li>
+<!--             <li><img src="{:U('CreCode/barcode',array('text'=>$res['random_code']))}" width="300" height="80" style=""></li> -->
+    	</ul>
+<!-- 		<img src="{:U('CreCode/qrcode',array('url'=>$res['random_code']))}" class="ew-code"/> -->
+        <div class="backmember noprint">
+<!--             <input type=button name='button_export' title='打印' onclick=preview(1) value=打印> -->
+            <a href="javascript:(history.go(-1))">{:L('BackMember')}</a>
+        </div>      
+        <div class="goprint noprint">
+            <a href="javascript:print()">
+                <div class="gpdiv">
+                    <img src="__MEMBER__/images/goprint.png">
+                    <span>{:L('Print')}</span>
+                </div>
+            </a>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+    <!-- 打印模板 -->
+    <div class="printshow">
+        <ul>
+            <li>{:L('InternationalLogistics')}</li>
+            <li>{$res['sender']} => {$res['receiver']}</li>
+            <li><img src="http://www.megaoshop.com/testcode/html/image.php?filetype=PNG&dpi=72&scale=3&rotation=0&font_family=0&font_size=8&text={$res['random_code']}&thickness=30&start=NULL&code=BCGcode128" height="80"></li>
+            <li>{$res['random_code']}</li>
+            <volist name="res['pro_list']" id="vo">
+                <li>
+                {$key+1}货品声明：<if condition="!empty($vo['remark'])">{$vo['remark']}<else />{$vo['detail']}</if> * {$vo['number']}
+                </li>
+            </volist>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

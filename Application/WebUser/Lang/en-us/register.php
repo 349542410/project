@@ -1,0 +1,78 @@
+<?php
+return array(
+	'lng'		 => 'en-us',
+	/* Register 控制器*/
+	/* 注册提示 */
+	'Please_nickname_re'         => 'Please enter the username!',
+	'Nickname_le_re'             => 'The nickname must contain at least 6 characters not exceed 18 charactes!',
+	'Please_password_re'         => 'Please set a password!',
+	'Password_le_re'             => 'Password ranges from 6 to 16 bits',
+	'Please_en_re'               => 'Please enter the password again!',
+	'You_two_re'                 => 'The confirmed password is not consistent!',
+	'Please_e_re'                => 'Please enter the email address!',
+	'Email_ree_re'               => 'The format of the email address is not correct!',
+	'Pleas_nc_re'                => 'Please enter your family name!',
+	'Length_10_re'               => "The length can't exceed 10 characters!",
+	'Please_name_re'             => 'Please enter your given name!',
+	'User_exists_re'             => 'The username has already existed',
+	'This_email_re'              => 'The email address has been registered',
+	'Please_code_re'             => 'Please enter the verification code',
+	'V_code_error_re'            => 'Verification code error',
+	'Submit_err_re'              => 'Submit failure, please contact customer service!',
+	'Com_name_re'                => 'Company name',
+	'Please_company_re'          => 'Please enter the company name!',
+	
+	// RegisterController.class.php  控制器 语言
+	'Paved_rc'                   => 'This page is under maintenance...',
+	'Page_not_rc'                => "The page doesn't exist",
+	'ill_operation_rc'           => 'Illegal operation',
+	'personage_rc'               => 'Personal',
+	'enterprise_rc'              => 'Company',
+	'Verification_c_h_rc'        => 'The verification code is expired, please obtain again',
+	'Validation_is_su_rc'        => 'Verify success, is jumping to...',
+	'Submit_su_rc'               => 'Submit success, is jumping to…',
+	'Please_upload_rc'           => 'Please upload ID card/driving license/passport',
+	'Please_upload_2_rc'         => 'Please upload credit card or bank statement',
+	'The_s_4_rc'                 => 'Maximum size of one single file is 4M',
+	'Documents_m_rc'             => 'The file must be picture!',
+	'Upload_file_rc'             => 'Upload failure, please try again',
+	'Submit_su_1_rc'             => 'Submit success',
+	'Submit_er_2_rc'             => 'Submit failure',
+	'Please_upload_bu_rc'        => 'Please upload the business license',
+	'Registered_successfully_rc' => 'Authorize success',
+	'Registration_failed_rc'     => 'Authorize failure, please contact customer service ',
+	'Tuser_name_m_rc'            => 'The username is required!',
+	'Please_fill2_rc'            => 'Please enter the combination of letter or number, the length is 6-16 characters',
+	'have_access_to_rc'          => 'Available',
+	
+	'LAY_MesPar'                 => 'Parameter error',
+	're_Meikuai'                 => 'Meiquick International Logistics',
+	're_Email_v'                 => 'Mailbox verification',
+	'phone_is_required'          => 'Must fill in either mobile or phone number',
+
+	'user_not_exist' => "The account information doesn't exist!",
+	'auth_failed'    => 'Authentication error! Please retry or contact customer service',
+	'auth_success'   => 'Authentication success!',
+
+	//个人资料完善  2017-08-01
+	'provinceMsg'         => 'Please select Province',
+	'cityMsg'             => 'Please select City',
+	'IdTypeMsg'           => 'Please select ID type',
+	'IdNumberMsg'         => 'Please fill in the identification number',
+	'addressMsg'          => 'Please fill out the country return address of the sender',
+	'postCodeMsg'         => 'Please fill out the back piece postcode',
+	'ResidentContryMsg'   => 'Please select your country',
+	'ContactsUserNameMsg' => 'Please fill in your name',
+	'ContactsAddressMsg'  => 'Please fill in the detailed address',
+	'ContactsPostCodeMsg' => 'Please fill in the postcode',
+
+	//企业资料完善
+	'CompanyAddressMsg'        => 'Please fill in the company registration address',
+	'CompanyRepresentativeMsg' => 'Please fill in the company representative',
+	'BusinessLicenseMsg'       => 'Please fill in the business license number',
+	'VATNumberMsg'             => 'Please fill in the tax code',
+	'AddressMsg'               => 'Please fill in the return address',
+	'PostCodeMsg'              => 'Please fill out the back piece postcode',
+	'CompanyContactMsg'        => 'Please fill in the contact person',
+	
+);

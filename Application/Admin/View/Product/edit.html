@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <style type="text/css">
+      body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+
+      }
+
+      .container{margin:0 auto;}
+      .form-signin {
+        max-width: 900px;
+        margin-top:60px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+    .form-signin table th{height:36px;font-size:16px;line-height:36px;background:#F7F7F9;}
+    .form-signin table td{height:36px;line-height:36px;font-size:14px;text-indent:2em;background:#F7F7F9;}
+    .form-signin table td a{text-decoration:none;color:#000;}
+    .form-signin table td a:hover{color:blue;}
+    .form-signin .form-control{width:400px !important;}
+    </style>
+    <link href="__PUBLIC__/css/one.css" rel="stylesheet">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+    <![endif]-->
+    </head>
+    <script type="text/javascript">
+      $(function(){
+          $('#tempForm').validationEngine('attach', {
+            promptPosition: 'topRight',
+            scroll: false,
+            addPromptClass:'formError-white',
+            autoPositionUpdate:true
+          });
+        });
+    </script>
+  <body>
+    <div class="container" >
+      <div class="form-signin" style="padding:40px 0 40px 40px;background:#F7F7F9 !important;margin-bottom:40px;">
+        <form class="form-horizontal" id="tempForm" name="myform" role="form" action="{:U('Product/edit_method')}" method="post" class="form-inline">
+          <tr>
+              <td style="text-align:right" width="240"><h3><label>&nbsp;&nbsp;&nbsp;&nbsp;编辑货品</label></h3></td>
+              <td width="700"></td>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">所属类别：</label>
+              <div class="formright" style="margin-top:5px">
+                <select name="cat_id" id="level">
+                  <option value="0">---请选择---</option>
+                  <volist name="select_list" id="vt">
+                    <option value="{$vt['id']}" fid="{$vt['fid']}" <if condition="$info['cat_id'] eq $vt['id']">selected</if>>
+                    {:str_repeat('&nbsp;',($vt['level']+1)*4)}<neq name="vt['fid']" value="0">├</neq>{:str_repeat('─',($vt['level']))} {$vt['cat_name']}
+                    </option>
+                  </volist>
+                </select>
+              </div>
+              <span id="errormsg"></span>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">报关名称：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="name" value="{$info['name']}" id="" class="form-control" data-validation-engine="validate[required]" >
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">名称：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="show_name" value="{$info['show_name']}" id="" class="form-control" data-validation-engine="validate[required]" >
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">品牌：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="brand" value="{$info['brand']}" id="" class="form-control" data-validation-engine="validate[required]" >
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">HS编码：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="hs_code" value="{$info['hs_code']}" id="" placeholder="" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">行邮税号：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="tariff_no" value="{$info['tariff_no']}" id="" placeholder="" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">跨境ID：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="hgid" value="{$info['hgid']}" id="" placeholder="" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">BarCode：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="barcode" value="{$info['barcode']}" id="" placeholder="" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">申报金额(￥)：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="price" value="{$info['price']}" id="" placeholder="" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">计量单位：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="unit" value="{$info['unit']}" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">原产地国别：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="source_area" value="{$info['source_area']}" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">规格型号：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="specifications" value="{$info['specifications']}" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">净重：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="net_weight" value="{$info['net_weight']}" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">毛重：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="rough_weight" value="{$info['rough_weight']}" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">参数一：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="parameter_one" value="{$info['parameter_one']}" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">参数二：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="parameter_two" value="{$info['parameter_two']}" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">参数三：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="parameter_three" value="{$info['parameter_three']}" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">参数四：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="parameter_four" value="{$info['parameter_four']}" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">参数五：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="parameter_five" value="{$info['parameter_five']}" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label" style="margin-top:60px">货品详细描述:</label>
+              <div class="formright">
+                <textarea name="detail" class="form-control" rows="3" style="width:450;height:150;resize:none;">{$info['detail']}</textarea>
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <div class="col-sm-offset-1 col-sm-11">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="submit" class="btn btn-primary" id="BtnSave">提交</button>
+                <input type="hidden" name="id" value="{$id}">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button>
+              </div>
+              <div id="messagebox" class="msgbox"></div>
+            </div>
+          </tr>
+          </form>
+          </div>
+        </div>
+<script type="text/javascript">
+
+$(document).ready(function(){
+    $("#level").change(function(){
+      var p = $(this).children('option:selected').val();//这就是selected的值
+      var fid = $(this).children('option:selected').attr('fid');//这就是fid的值
+            if(p != 0){
+              if(fid == 0){
+                layer.tips('顶级类别是不允许建立货品关系', '#errormsg');
+              }
+            }
+    });
+});
+</script>
+<script src="__PUBLIC__/js/my.js"></script>
+
+</html>

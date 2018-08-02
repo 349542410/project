@@ -1,0 +1,169 @@
+<form action="">
+{/* 注释：
+				疑难件删除
+1、IL_state 少于 200 的时候，直接执行确认删除 (IL_state 少于 20 的时候，不会被列入 对数 范畴);mk_stnolist中与申通号有关的资料需要清空;mk_il_log 插入新数据 -> "该面单已被删除";
+2、IL_state 大于等于 200 的时候，需要填写资料确认后才能 作废; mk_tran_list.IL_state 变更为1003; mk_stnolist 中的相关的申通号资料不需要清空;
+3、疑难件时不需要判断 mk_tran_list.candel 字段的值
+
+*/}
+	<div class="container" style="margin-bottom:0;margin-top:0;">
+				<table width="100%" border="0" cellpadding="10" cellspacing="10"  class="table table-hover" style="margin-bottom:0px">
+					<thead>
+						<tr style="height:47px;line-height:47px;border-bottom:0.3em solid #ccc">
+							<th>序号</th>
+							<th>自定义号段</th>
+							<th>面单号</th>
+							<th>寄件人</th>
+							<th>收件人</th>
+							<th>重量/价值</th>
+							<th>物流信息</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody style="font-size:14px">
+						<volist name="list" id="vo" mod="2">
+							<tr id="tr_{$vo.id}" <eq name="mod" value="1"> style="background-color:#ddd;"</eq> >
+								<td align="center" style="line-height:180%">
+										<if condition="$vo['pause_status'] == '20'">
+											<font color="red">{$key+1}<br/>停运</font>
+										<else/>
+											<font color="green">{$key+1}<br/>正常</font>
+										</if>
+								</td>						
+								<td align="center" style="line-height:180%;padding-left:3px">
+									{$vo.auto_Indent1|default="&nbsp;"}<br/>
+									{$vo.auto_Indent2|default="&nbsp;"}
+								</td>
+								<td align="center" style="line-height:180%;padding-left:3px">
+									
+									{$vo.MKNO|default="&nbsp;"}<br/>{$vo.STNO|default="&nbsp;"}
+									<if condition="$vo['forward_kd'] neq ''">
+										<br/>{$vo.forward_kd|default="&nbsp;"}
+									</if>
+								</td>
+								<td align="center" style="line-height:180%;padding-left:3px">
+									{$vo.sender}<br/>
+									{$vo.mStr1|default="&nbsp;"}
+								</td>
+								<td align="center" style="line-height:180%;padding-left:3px">
+									{$vo.receiver}<br/>『{$vo.province}』
+								</td>
+								<td align="center" style="line-height:180%;padding-left:3px">
+										{$vo.weight}{:C('SHOW_WEIGHT_UNIT')}<br/>{$vo.price}
+								</td>
+								<td style="line-height:180%;padding-left:3px">
+									
+									<neq name="vo['optime']" value="">{$vo.optime}：</neq>
+									<neq name="vo['IL_state']" value="">{$ilstarr[$ilstarri[$vo['IL_state']]][1]|default='状况不明'}</neq>
+									<neq name="vo['mode']" value="">【{$vo.mode}】</neq><br/>
+									<neq name="vo['ex_time']" value="">{$vo.ex_time}：</neq>
+									<neq name="vo['ex_context']" value="">{$vo.ex_context}</neq>
+								</td>
+<!-- 								<td class="td1" align="center" >
+									<a href="<if condition="$power['read_goods'] neq 'on'">javascript:;<else />{:U('info',array('id'=>$vo['id']))}</if>" <if condition="$power['read_goods'] neq 'on'"><else />data-toggle="modal" data-target="#myModal"</if>>
+										{$vo.IL_state}
+									</a>
+								</td>
+								<td class="td1" align="center" >
+									<a href="<if condition="$power['read_goods'] neq 'on'">javascript:;<else />{:U('info',array('id'=>$vo['id']))}</if>" <if condition="$power['read_goods'] neq 'on'"><else />data-toggle="modal" data-target="#myModal"</if>>
+										{$vo.mode}
+									</a>
+								</td> -->
+								
+								<td align="right">
+
+									<a href="{:U('PostManagement/info',array('id'=>$vo['id']))}" data-toggle="modal" data-target="#myModal">查看</a>
+
+									<!-- 少于200可修改 -->
+									<if condition="$vo['IL_state'] lt 200">
+									 <span style="vertical-align:text-middle;">|</span> 
+										<a href="{:U('PostManagement/edit',array('id'=>$vo['id']))}" data-toggle="modal" data-target="#myModal">修改</a>
+									 <span style="vertical-align:text-middle;">|</span> 
+										<a href="{:U('EditIdno/editIdno',array('id'=>$vo['id']))}" data-toggle="modal" data-target="#myModal">修改证件号</a>
+										
+									<else />
+										<!-- <font color="#ccc">修改</font> -->
+									</if>
+
+									 <span style="vertical-align:text-middle;">|</span> 
+									<a href="javascript:void(0)" onclick="sendMsg('{$vo.id}','{$vo.STNO}','{$vo.TranKd}')" class="logis{$vo['id']}" data-target="#myModal">获取物流信息</a>
+
+									<!-- 只有美快优选CC可以执行上传证件照 -->
+									<if condition="$vo['TranKd'] eq C('Transit_Type.MKBcCC_Transit')">
+										 <span style="vertical-align:text-middle;">|</span> 
+										<a href="javascript:void(0)" onclick="uploadIdImg('{:U('MKBcCC/upLoadView',array('id'=>$vo['id']))}')">上传证件照</a>
+									</if>
+
+									<if condition="$vo['pause_status'] eq 0">
+										<if condition="$vo['IL_state'] lt 200 && I('get.type') neq 'stop'">
+											 <span style="vertical-align:text-middle;">|</span> 
+											<a href="{:U('PostManagement/toPause',array('id'=>$vo['id']))}" data-toggle="modal" data-target="#myModal">暂停</a>
+										</if>
+									
+									<elseif condition="$vo['pause_status'] eq 20"/>
+										<if condition="$vo['IL_state'] lt 200 && I('get.type') eq 'stop'">
+											<if condition="$vo['candel'] eq 0">
+											
+											 <span style="vertical-align:text-middle;">|</span> 
+											<a href="{:U('PostManagement/toRecover',array('id'=>$vo['id']))}" data-toggle="modal" data-target="#myModal">恢复</a>
+
+											<else />
+											</if>
+
+										</if>
+									</if>
+
+									<!-- 暂停件 删除 -->
+									<if condition="I('get.type') eq 'stop'">
+										<!-- 少于12且candel=1可删除 -->
+										<if condition="($vo['IL_state'] lt 12) && ($vo['candel'] eq 1)">
+											 <span style="vertical-align:text-middle;">|</span> 
+											<a href="{:U('PostManagement/toDel',array('id'=>$vo['id']))}" data-toggle="modal" data-target="#myModal">删除</a>
+										</if>
+
+									<!-- 疑难件 删除-->
+									<elseif condition="I('get.type') eq 'nine'" />
+										<!-- 少于200可直接删除 -->
+										<if condition="$vo['IL_state'] lt 200">
+											 <span style="vertical-align:text-middle;">|</span> 
+											<a href="javascript:void(0);" onclick="toDel('{$vo.id}','{:U(CONTROLLER_NAME.'/delete_nine')}')">删除</a>
+
+										<!-- 大于等于200 填写资料确认后再删除 -->
+										<elseif condition="$vo['IL_state'] egt 200" />
+											 <span style="vertical-align:text-middle;">|</span> 
+											<a href="{:U('PostManagement/toVoid',array('id'=>$vo['id']))}" data-toggle="modal" data-target="#myModal">作废</a>
+										</if>
+
+									</if>
+
+<!-- 									<if condition="I('get.type') eq 'nine'">
+										 <span style="vertical-align:text-middle;">|</span> 
+										<a href="{:U('PostManagement/toVoid',array('id'=>$vo['id']))}" data-toggle="modal" data-target="#myModal">作废</a>
+									</if> -->
+
+									<!-- End -->
+								</td>
+							</tr>
+						</volist>
+					</tbody>						
+				</table>
+	</div>
+</form>
+<include file="Logarithm/outside_file"/>
+
+<script type="text/javascript">
+function uploadIdImg(url){
+	//iframe层-父子操作
+	layer.open({
+	  type: 2,
+	  title: '上传证件照',
+	  area: ['900px', '650px'],
+	  fixed: true, //不固定
+	  // maxmin: true,
+	  shade: [0.3],
+	  content: [url, 'no'],
+	  btn: ['关闭'],
+	  offset: '100px',
+	});
+}
+</script>

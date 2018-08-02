@@ -1,0 +1,46 @@
+<?php
+/*	$GoodsName = '靴 "DESERT BOOT 261 06562';
+	$GoodsName = addslashes($GoodsName);
+	$sql = "UPDATE MIS_Goods_Record SET GoodsName='$GoodsName', GoodsEnName='261 06562', TariffNo='', HsCode='6403511990', Property='鞋底材料:橡胶;鞋面材料:皮革;款式:靴;', Brand='CLARKS', OriginPlace='越南', Unit='件', Tax='0', Status='2', GjStatus='0', GjLockFlag='0', Guse='', Gcomposition='', Gfunction='', Detail='', DsSkuCode='', Comments='', WarehouseName='宁波顺丰速运有限公司', BizType='0', Tariff='0', AddedValueTax='0.17', ConsumptionDuty='0' WHERE ProductId = '310916629630000001'";
+	// echo $sql;*/
+
+
+	$data = array(
+	'ProductId' => '310916629630000842',
+	'GoodsName' => '靴 DESERT BOOT 261 06562',
+	'GoodsEnName' => '261 06562',
+	'TariffNo' => array(),
+	'HsCode' => '6403511990',
+	'Tax'=>array(),
+	'Tariff'=>'0.32',
+	);
+
+	$ProductId = $data['ProductId'];
+
+	// 用于更新数据表的时候需要的字段(无值的时候是需要默认为空)
+	$pr_arr = array('GoodsName','GoodsEnName','TariffNo','HsCode','Property','Brand','OriginPlace','Unit','Guse','Gcomposition','Gfunction','Detail','DsSkuCode','Comments','WarehouseName','Tax','Status','GjStatus','GjLockFlag','BizType','Tariff','AddedValueTax','ConsumptionDuty');
+	// 用于更新数据表的时候需要的字段(无值的时候是需要默认为0)
+	$nu_arr = array('Tax','Status','GjStatus','GjLockFlag','BizType','Tariff','AddedValueTax','ConsumptionDuty');
+
+	$set = '';
+					foreach($data as $pey=>$it){
+						if(in_array($pey,$pr_arr) || in_array($pey,$nu_arr)){
+							if(in_array($pey,$nu_arr)){
+							// 存在但统计为0 则默认为 0
+							$$pey = ((isset($it) ? count($it) : 0) == 0) ? '0' : htmlspecialchars($it);
+							$set .= $pey."='".$$pey."',";
+						}else{
+							// 存在但统计为0 则默认为 空
+							$$pey = ((isset($it) ? count($it) : 0) == 0) ? '' : htmlspecialchars($it);
+							// echo 'ddd   ';
+							$set .= $pey."='".$$pey."',";
+						}
+
+						}
+					}
+	echo '<br>';
+	$set = rtrim($set, ',');
+	echo $set;
+	$save_sql = "UPDATE MIS_Goods_Record SET ".$set." WHERE ProductId = '$ProductId'";
+	echo '<br>';
+	echo $save_sql;

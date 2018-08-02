@@ -1,0 +1,215 @@
+<!-- 在线下单 第二步 -->
+<extend name="Member/base" />
+
+
+<block name="main">
+
+<!-- <script type="text/javascript">
+	var id = "{$info['id']}";
+    var pieurl =  "{:U('Piecemeal/get_shopping_receipt')}";
+    $(function(){
+    	show_receipt('#receptimg');
+    });
+</script>
+<script type="text/javascript" src="__MEMBER__/js/receipt.js"></script> -->
+<!-- 内容 -->
+	<div class="form form_index" >
+    <div class="form-signin" style="width:100%;min-height:500px;margin:0 auto;padding:0;">
+	    <form class="form-inline" id="tempForm">
+	    	<div class="ordtop" style="padding-bottom: 410px;">
+		    	<!-- **************************************************** -->
+	    		<!-- 寄件人信息 -->
+		    	<div class="ordsender" style="height: 410px;">
+		    		<h4>{:L('SenderInfo')}</h4>
+		    		<ul>
+		    			<li><label>{:L('FullName')}：</label><label style="width: 300px;text-align: left;margin-left: 60px;">{$info['sender']}</label></li>
+		    			<!-- <li><label style="word-wrap:break-word; word-break:break-all;">{:L('Address')}：{$info['sendAddr']}</label></li> -->
+		    			<li><label>{:L('Phone')}：</label><label style="width: 300px;text-align: left;margin-left: 60px;">{$info['sendTel']}</label></li>
+		    			<li><label>{:L('ZipCode')}：</label><label style="width: 300px;text-align: left;margin-left: 60px;">{$info['sendcode']}</label></li>
+		    			<li><label>{:L('Address')}：</label><label style="width: 300px;text-align: left;margin-left: 60px;">{$info['sendAddr']}</label></li>
+		    		</ul>
+		    	</div>
+		    	<!-- **************************************************** -->
+	    		<!-- 收件人信息 -->
+		    	<div class="ordrec" style="height: 410px;">
+		    		<h4>{:L('RecInfo')}</h4>
+		    		<ul>
+		    			<li><label>{:L('FullName')}：</label><label style="width: 300px;text-align: left;margin-left: 60px;">{$info['receiver']}</label></li>
+		    			<li><label>{:L('Phone')}：</label><label style="width: 300px;text-align: left;margin-left: 60px;">{$info['reTel']}</label></li>
+                        <if condition="$tranline[$TranKd]['input_idno'] eq '1'"><li><label>{:L($ID_TYPE[$info['idkind']])}：</label><label style="width: 300px;text-align: left;margin-left: 60px;">{$info['idno']}</label></li></if>
+		    			<!-- <li><label style="word-wrap:break-word; word-break:break-all;">{:L('Address')}：{$info['reAddr']}</label></li> -->
+		    			<li><label>{:L('ZipCode')}：</label><label style="width: 300px;text-align: left;margin-left: 60px;">{$info['postcode']}</label></li>
+		    			<li><label>{:L('Address')}：</label><label style="width: 300px;text-align: left;margin-left: 60px;">{$info['reAddr']}</label></li>
+		    		</ul>
+		    	</div>
+		    	<div class="clear"></div>
+		    </div>
+<!-- **************************************************** -->
+	    	<!-- 中转线路 -->
+	    	<div class="tsline">
+	    		<span>{:L('TranLine')}：<php>$l = L('MKLINES');echo $l[$alist[$info['TranKd']]];</php></span>
+	    		<span>{:L('RandomCode')}：{:base64_decode(urldecode($uucode))}</span>
+	    		<div class="clear"></div>
+	    	</div>
+	    	<if condition="($member_sfpic_state eq 1)">
+<!-- **************************************************** -->
+	    	<!-- 证件照 -->	  
+	    	<div class="ordhead"><h3>{:L('Cer_Upload')}</h3></div>
+	    	<div class="ordbody" style="height: 200px;">
+			<div class="obcont">
+		        <p>{:L('Cer_Pho_Front')}</p>
+		        <img src="{$front_id_img}" style="width: 230px;height: 120px;margin-left: 85px;border-radius: 5px;">
+		    </div>
+		    <div class="obcont">
+		        <p>{:L('Cer_Pho_Back')}</p>
+		        <img src="{$back_id_img}" style="width: 230px;height: 120px;margin-left: 85px;border-radius: 5px;">
+		    </div>
+	    	</div> 
+	    	<div class="clear"></div> 
+	    	</if>	
+	    	<if condition="$info.shop_state eq 1">
+	    	<!-- **************************************************** -->
+	    	<!-- 购物小票上传 -->	  
+	    	<div class="ordhead"><h3>{:L('l_sr_upload')}</h3></div>
+	    	<div class="ordbody" style="height: 200px;">
+			<div class="obcont">
+		        <p>{:L('l_sr')}</p>
+		        <if condition="$info['receipt_img'] neq 'none'">
+		        <img src="{$Think.const.WU_FILE}{$info['receipt_img']}" id="receptimg" style="width: 230px;height: 120px;margin-left: 85px;border-radius: 5px;">
+		        <else />
+		        <img src="__MEMBER__/images/tip.png" id="receptimg" style="width: 230px;height: 120px;margin-left: 85px;border-radius: 5px;">
+		        </if>
+		    </div>
+	    	</div> 
+	    	<div class="clear"></div> 
+	    	</if>
+<!-- **************************************************** -->
+			<!-- 货品声明 -->
+			<div class="ordhead"><h3>{:L('GoodsList')}</h3></div>
+	    	<div class="ordbody oblast">
+					<table class="table_now" style="margin:10px auto; width:1270px; height:110px;table-layout: fixed;">
+						<tr>
+							<!-- 货品列表 -->
+							<td width="20%" style="font-weight: bold;">{:L('l_Item_List')}</td>
+                            <!-- 货品名称（中文） -->
+                            <td width="10%;" style="font-weight: bold;">{:L('l_Product_Name')}</td>
+                            <!-- 英文品牌 -->
+                            <td width="10%;" style="font-weight: bold;">{:L('BrandName')}</td>
+                            <!-- 单价 -->
+                            <td width="5%" style="font-weight: bold;white-space: inherit;">{:L('l_Unit_Price')}</td>
+							<if condition="($tranline[$TranKd]['bc_state'] eq 0)">
+							<!-- 规格/容量 -->
+							<td width="10%;" style="font-weight: bold;white-space: inherit;">{:L('l_speci')}</td>
+							<else />
+							<!-- 货品类别 -->
+							<td width="10%;" style="font-weight: bold;white-space: inherit;">{:L('ProCate')}</td>
+							</if>
+							<!-- 数量 -->
+							<td width="5%" style="font-weight: bold;">{:L('Amount')}</td>
+                            <!--是否套装-->
+                            <td width="5%" style="font-weight: bold;">{:L('l_is_allunit')}</td>
+							<if condition="($tranline[$TranKd]['bc_state'] eq 0)">
+								<!-- 单位 -->
+								<!-- <td width="5%" style="font-weight: bold;">{:L('Unit')}</td> -->
+								<!-- 产地 -->
+								<!-- <td width="10%" style="font-weight: bold;">{:L('CountryOfOrigin')}</td> -->
+							</if>
+                            <!-- 税金 -->
+                            <td width="7%" style="font-weight: bold;white-space: inherit;">{:L('l_Duty_Fee')}</td>
+							<!-- 备注 -->
+							<td width="20%" style="font-weight: bold;">{:L('Remarks')}</td>
+						</tr>
+						<for start="0" end="$count">
+						<tr>
+							<if condition="($tranline[$TranKd]['bc_state'] eq 1) || ($tranline[$TranKd]['cc_state'] eq 1)">
+								<!-- 货品列表 -->
+								<td width="20%">{$cat_list[$pro_list[$i]['category_one']]['cat_name']}&nbsp;--&nbsp;{$cat_list[$pro_list[$i]['category_two']]['cat_name']}</td>
+							<else />
+								<!-- 货品列表 -->
+								<td width="20%;">---</td>
+							</if>
+                            <!-- 货品名称（中文） -->
+                            <td width="10%;">{$pro_list[$i]['detail']}</td>
+                            <!-- 英文品牌 -->
+                            <td width="10%;">{$pro_list[$i]['brand']}</td>
+                            <!-- 单价 -->
+                            <td width="5%;">{$pro_list[$i]['price']}</td>
+							<!-- 规格/容量 -->
+							<if condition="($pro_list[$i]['spec_unit'] eq '')">
+								<td width="10%;">{$pro_list[$i]['catname']}</td>
+							<else/>	
+								<td width="10%;">{$pro_list[$i]['catname']}/{$pro_list[$i]['spec_unit']}</td>	
+							</if>
+							<!-- 数量 -->
+							<if condition="($pro_list[$i]['num_unit'] eq '')">
+								<td width="10%;">{$pro_list[$i]['number']}</td>
+							<else/>	
+								<!--<td width="10%;">{$pro_list[$i]['number']}/{$pro_list[$i]['num_unit']}</td>	-->
+                                <td width="10%;">{$pro_list[$i]['number']}</td>
+							</if>
+                            <!--是否套装-->
+                            <if condition="($pro_list[$i]['is_suit']) eq 0">
+                                <td width="10%;">{:L('l_no')}</td>
+                            <else/>
+                                <td width="10%;">{:L('l_yes')}</td>
+                            </if>
+							<if condition="($tranline[$TranKd]['bc_state'] eq 0)">
+								<!-- 单位 -->
+								<!-- <td width="5%;">{$pro_list[$i]['unit']}</td> -->
+								<!-- 产地 -->
+								<!-- <td width="10%;">{$pro_list[$i]['source_area']}</td> -->
+							</if>
+                            <if condition="($tranline[$TranKd]['bc_state'] eq 1) || ($tranline[$TranKd]['cc_state'] eq 1)">
+                                <!-- 税金 -->
+                                <td width="7%;">{$pro_list[$i]['tax_price']}</td>
+                                <else />
+                                <!-- 税金 -->
+                                <td width="7%;">--</td>
+                            </if>
+							<!-- 备注 -->
+							<td width="20%;">{$pro_list[$i]['remark']}</td>
+						</tr>
+						</for>
+					</table>
+					<span class="forspan">{:L('Notice')}</span>
+            </tr>
+
+<!-- **************************************************** -->
+			<hr />
+			<div style="float:right;margin-top:15px;">
+				<!-- <span><font color="red">{$goodsNum}</font>&nbsp;件商品，总商品金额：￥{$goodsPrice|default='0'}</span><br> -->
+				<span><p style="float: left;width: 90px;margin: 0;">{:L('Total_Tax')}：</p><p style="color:red;float: left;margin: 0;">{:($info['tax'] > $free_duty) ? '$'.$info['tax'] : L('Duty_Free')}</p></span><br>
+				<span><p style="float: left;width: 90px;margin: 0;">{:L('Discount')}：</p><p style="float: left;margin: 0;">${$discount}</p></span><br>
+				<span><p style="float: left;width: 90px;margin: 0;">{:L('Freight')}：</p><p style="color:#FF6600;float: left;margin: 0;">{:L('Weighing')}</p></span><br>
+				<span><p style="float: left;width: 90px;margin: 0;">{:L('ServiceCharge')}：</p><p style="float: left;margin: 0;">${$charge}</p></span><br>
+				<!-- 隐藏应付金额<span><p style="float: left;width: 90px;margin: 0;">{:L('TotalPayable')}：</p><p style="color:red;float: left;margin: 0;">${:sprintf('%.2f',$charge+$freight-$discount)}</p></span><br>-->
+			</div>
+			<!-- 按钮部分 -->
+			<tr>
+				<table style="width: 1270px;float: right;margin: 0 auto;margin-bottom: 20px;">
+					<tr>
+						<td style="text-align: right;">
+							<button type="button" class="btn_st btn" onclick="javascript:window.location.href='{:U('Order/edit',array('id'=>$cid,'step'=>ACTION_NAME))}';" style="padding:0 10px margin-right:30px;">{:L('ChangeBack')}</button>
+							<!-- <button type="button" class="btn_st btn" id="step_BtnSave" target="_blank">{:L('PrintRandomCode')}</button> -->
+							<a href="javascript:void;" onclick="javascript:window.location.href='{:U('Order/step_three',array('cid'=>$cid,'cname'=>CONTROLLER_NAME))}';">
+								<button type="button" class="btn_st btn" id="step_BtnSave">{:L('PrintRandomCode')}</button>
+							</a>
+							
+							<span id="loading" style="bottom:180px;left:650px !important;"></span>
+							<span id="messagebox" class="msgbox" style="right:350px !important;"></span>
+						</td>
+					</tr>
+				</table>
+			</tr>
+	    	</table>
+	    	</div>
+<!-- END -->
+	    	<div style="clear:both;"></div>
+		</form>
+    </div>
+   	</div>
+
+</block>
+
+</body>
+</html>

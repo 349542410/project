@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <style type="text/css">
+      body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+
+      }
+
+      .container{margin:0 auto;}
+      .form-signin {
+        max-width: 900px;
+        margin-top:60px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+    .form-signin table th{height:36px;font-size:16px;line-height:36px;background:#F7F7F9;}
+    .form-signin table td{height:36px;line-height:36px;font-size:14px;text-indent:2em;background:#F7F7F9;}
+    .form-signin table td a{text-decoration:none;color:#000;}
+    .form-signin table td a:hover{color:blue;}
+    .form-signin .form-control{width:400px !important;}
+    </style>
+    <link href="__PUBLIC__/css/one.css" rel="stylesheet">  
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+    <![endif]-->
+     </head>
+  <body>
+
+    <div class="container" >
+      <div class="form-signin" style="padding-top:40px;background:#F7F7F9 !important;margin-bottom:40px">
+
+      <form action="{:U('Transit/edit_line_price')}" method="post" class="form-inline" id="tempForm">
+          <table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px;padding:0px">
+           <tr>
+                <td style="text-align:right" width="240"><h3>定义线路价格</h3></td>
+                <td width="700"></td>
+          </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>服务费：</label></th>
+            <td><input type="text" name="fee_service" value="{$info['fee_service']}" class="form-control"/></td>
+        </tr>
+        <tr>
+          <th width="" style="padding-left:12px"><label>首重重量：</label></th>
+            <td><input type="text" name="weight_first" value="{$info['weight_first']}" class="form-control"/></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>续重重量：</label></th>
+            <td ><input type="text" name="weight_next" value="{$info.weight_next}" required="required" class="form-control"/></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>首重价格：</label></th>
+            <td ><input type="text" name="fee_first" value="{$info.fee_first}" required="required" class="form-control"/></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>续重单价：</label></th>
+            <td ><input type="text" name="fee_next" value="{$info.fee_next}" required="required" class="form-control"/></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>重量单位：</label></th>
+            <td ><input type="text" name="unit_weight" value="{$info.unit_weight}" required="required" class="form-control"/></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>货币单位：</label></th>
+            <td ><input type="text" name="unit_currency" value="{$info.unit_currency}" required="required" class="form-control"/></td>
+        </tr>
+        <tr>
+          <th width="" style="padding-left:12px"><label>备注：</label></th>
+          <td>
+            <textarea name="remark" class="form-control" id="" cols="20" rows="10" style="resize:none;">{$info.remark}</textarea>
+          </td>
+        </tr>
+        <tr>
+          <th  colspan="3" style="text-align:left !important;padding-left:180px">
+            <input type="hidden" name="id" value="{$info['id']}">
+            <input type="hidden" name="line_id" value="{$line_id}">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="submit" class="btn btn-primary" id="BtnSave">提交</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button>
+            <span id="messagebox" class="msgbox" style="right:350px;!important"></span>
+          </th>
+        </tr>
+          
+          </table>
+      </form>
+      </div>
+    </div> 
+ 
+  </body>
+<script src="__PUBLIC__/js/my.js"></script>
+</html>

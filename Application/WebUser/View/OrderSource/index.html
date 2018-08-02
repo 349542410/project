@@ -1,0 +1,244 @@
+<!-- 寄件人信息管理 -->
+<extend name="Member/base" />
+<block name="main">
+<link href="__MEMBER__/bootstrap-3.3.6/css/bootstrap.css" rel="stylesheet">
+<if condition="(L('lng') eq 'zh-cn')">
+<link rel="stylesheet" type="text/css" href="__MEMBER__/css/ordersource.css">
+<else/>
+<link rel="stylesheet" type="text/css" href="__MEMBER__/css/ordersource_us.css">
+</if>
+<link href="__MEMBER__/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
+<script src="__MEMBER__/js/fileinput.js" type="text/javascript"></script>
+<script src="__MEMBER__/js/locales/{:L('lng')}.js" type="text/javascript"></script>
+<script type="text/javascript" src="__MEMBER__/js/datetime/DateTimePicker.js"></script>
+<link href="__MEMBER__/js/datetime/DateTimePicker.css" rel="stylesheet">
+<script type="text/javascript">
+    $(document).ready(function()
+            {
+                $("#dtBox").DateTimePicker({
+
+                    minuteInterval: 5
+
+                });
+            });
+</script>
+<div id="dtBox"></div>
+<div class="ordheads"><h3>{:L('l_imp_order')}</h3></div>
+<div class="mt">
+    <div class="search" style="margin-bottom: 20px;">
+        <form class="form-inline">
+        <div class="searchbox" style="width: 100%;height: 50px;padding-left: 20px;">
+<!--         <label>
+            {:L('l_router_2')}：
+            <input type="text" id="linename" name="" class="form-control sbox_input">
+        </label> -->
+        <label>
+            {:L('l_pece')}：
+            <input type="text" id="addrname" class="form-control sbox_input" style="height: 34px;">
+        </label>
+        <label>
+            &nbsp;{:L('l_pece_tel')}：
+            <input type="search" id="addrtel" class="form-control sbox_input" style="width:160px;height: 34px;" />
+        </label>
+        <label>
+        &nbsp;&nbsp;{:L('l_imp_time')}：
+        <input type="text" class="form-control one" style="width: 200px;" data-field="datetime" size="25" id="createStarttime" value="<eq name="starttime" value=""><else />{$starttime|date='Y-m-d H:i:s',###}</eq>" style="width:166"> -- <input type="text" class="form-control two" style="width: 200px;" data-field="datetime" size="25" id="createEndtime" value="<eq name="endtime" value=""><else />{$endtime|date='Y-m-d H:i:s',###}</eq>" style="width:166">
+        </label>
+        <input type="hidden" id="starttime" value="">
+        <input type="hidden" id="endtime"  value="">
+        <label>
+            &nbsp;&nbsp;{:L('l_router_2')}：
+            <select id="line_name" class="form-control" onchange="ccc(this)" style="padding:6px 5px !important;width: 150px;">
+                <option value="">{:L('Cr_Select')}</option>
+                <volist name="tranline" id="vl">
+                    <option value="{$vl['id']}"><php>$l = L('MKLINES');echo $l[$vl['lngname']];</php></option>
+                </volist>
+            </select>
+        </label>
+            <button type="button"  style="margin-left: 10px;" class="sbox_sub" onclick="ccc(this)">{:L('Query')}</button>
+        </div>
+        </form>
+    </div>
+    <div class="mt_btns">
+        <ul class="mt_btn_ul">
+            <li>
+                <button id="antbtn" class="btnstyle">{:L('l_Batch_Upload')}</button>
+            </li>
+            <li>
+                <button id="del_all_id" class="btnstyle_un option_status">{:L('l_Batch_Delete')}</button>
+                <!-- onclick="del_all('{:U('OrderSource/delete_all')}')" -->
+            </li>
+            <li>
+                <button id="btns_export" class="btnstyle_un option_status" onclick="bing_dl()">{:L('l_Batch_export')}</button>
+            </li>
+            <div style="clear:both;"></div>
+            <span class="btn_ex">{:L('l_generated_order_directly')}</span>
+        </ul>
+    </div>
+<!-- 	<button class="antbtn" id="antbtn">
+		<i></i>
+		<span>{:L('l_file_upload')}</span>
+	</button> -->
+
+    <div style="clear: both;"></div>
+    <div class="trview" id="formdis" style="display: none;background: #f4f4f4;padding: 30px;border-radius: 5px;">
+    <div id="lineform">
+        <ul class="lineul" id="ul_line">
+            <volist name="tranline" id="vl">
+                <li><input type="radio" name="TransferLine" id="{$vl['id']}" value="{$vl['id']}" class="radio" onclick="showfileup(this)"><label class="radio" for="{$vl['id']}"><php>$l = L('MKLINES');echo $l[$vl['lngname']];</php></label></li>
+            </volist>
+<!--             <button id="ajaxbtn" class="antbtn" style="float: right;margin-top: 6px;height: 33px;">确认导入</button> -->
+        </ul> 
+    </div>
+    <div style="clear:both;"></div>
+        <div id="view_stat">
+            <p style="color:#f00;"></p>
+        </div>
+        <div style="width: 800px;float: left;">
+            <div class="btn btn-file btn_white" style="float: left;margin-right: 20px;display: none;" id="download_btn">
+                <i class="glyphicon glyphicon-save"></i>&nbsp;<font style="font-size: 16px;">{:L('l_tmp_download')}</font>
+            </div>
+            <form id="fileform" action="" method="post" enctype="multipart/form-data"></form>
+            <button id="ajaxbtn" class="antbtn" style="float: right;margin-top: 6px;height: 33px;display: none;color:#fff!important;">{:L('l_imp_con')}</button>
+            <button id="closebtn" class="antbtn" style="float: right;margin-top: 6px;height: 33px;display: none;color:#fff!important;margin-right: 10px;">{:L('l_close_imprt')}</button>
+        </div>
+        <div style="width: 750px;float: right;margin-right: 40px;margin-top: -50px;font-size: 16px;font-weight: bold;">
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+    <div style="clear:both;"></div>
+    <div class="cont_title">
+        <h3>{:L('l_import_cont_tit')}</h3>
+    </div>
+    <div class="content">
+        <table width="100%" border="0" cellpadding="10" cellspacing="10"  class="table table-hover">
+            <thead>
+                <tr class="hiddenf">
+                    <!-- 多选 -->
+                    <th <if condition="(L('lng') eq 'zh-cn')"> style="width: 90px;"<else/> style="width: 125px;"</if>><input type="checkbox" id="check_all" style="margin-right: 5px;"><label style="margin-bottom: 0px;" for="check_all">{:L('l_Select_All')}</label></th>
+                    <!-- 序号 -->
+                    <th class="width90">{:L('OrderNum')}</th>
+                    <!-- 状态 -->
+                    <th>{:L('l_Status')}</th>
+                    <!-- 寄件人 -->
+                    <th>{:L('l_shipper')}<br>{:L('l_shipper_tel')}</th>
+                    <!-- 寄件人电话号码 -->
+<!--                     <th>{:L('l_shipper_tel')}</th> -->
+                    <!-- 收件人姓名 -->
+                    <th>{:L('l_pece')}<br>{:L('l_pece_tel')}</th>
+                    <!-- 收件人电话号码 -->
+                    <!-- <th>{:L('l_pece_tel')}</th> -->
+                    <!-- 线路名称 -->
+                    <th>{:L('l_router_2')}</th>
+                    <!-- 导入时间 -->
+                    <th>{:L('l_imp_time')}</th>
+                    <!-- 操作 -->
+                    <th>{:L('Operation')}</th>
+                </tr>
+            </thead>
+            <tbody id="joinres">
+                <volist name="data.list.order_data" id="vo" empty="$empty">
+                <tr>
+                    <td class="clicktr" onclick="clicktd(this)">
+                        <input type="checkbox" name="checkbox_print" value="{$vo.id}" onclick="update_optional_status()">
+                    </td>
+                    <td class="clicktr" onclick="clicktd(this)">
+                        {$key+1}
+                    </td>
+                    <if condition="$vo.export_count eq 0">
+                        <td style="color:red" class="clicktr" id="export_count" coid="{$vo['export_count']}" onclick="clicktd(this)">
+                            {:L('l_Not_exported')}
+                        </td>
+                    <else/>
+                        <td style="color:#000" class="clicktr" id="export_count" coid="{$vo['export_count']}" onclick="clicktd(this)">
+                            {:str_replace('***',$vo['export_count'],L('l_Exported_for'))}
+                        </td>
+                    </if>
+                    <td class="clicktr" onclick="clicktd(this)">
+                        {$vo['sender']}<br>{$vo['sendTel']}
+                    </td>
+<!--                     <td>
+                        {$vo['sendTel']}
+                    </td> -->
+                    <td class="clicktr" onclick="clicktd(this)">
+                        {$vo['receiver']}<br>{$vo['reTel']}
+                    </td>
+<!--                     <td>
+                        {$vo['reTel']}
+                    </td> -->
+                    <td class="clicktr" onclick="clicktd(this)">
+                        {:L('MKLINES')[$vo['lngname']]}
+                    </td>
+                    <td class="clicktr" onclick="clicktd(this)">
+                        {$vo['create_time']}
+                    </td>
+                    <td style='text-align:left; position: relative;'>
+                        <!-- <a href="{:U('OrderSource/importorder',array('id'=>$vo['id']))}">{:L('l_gen_ord')}</a> -->
+                        <a href="{:U('OrderSource/importorder',array('id'=>$vo['id']))}">{:L('l_View')}</a>
+                        <span style='vertical-align:text-middle;'>|</span>
+                        <a href='javascript:void(0);' onclick="del('{$vo.id}','{:U('OrderSource/delete')}')">{:L('Delete')}</a>
+                    </td>
+                </tr>
+                </volist>
+            </tbody>
+            <script type="text/javascript">
+                // $.ajax({
+                //     url : "{:U('OrderSource/get_order_excel_data')}",
+                //     type: "POST",
+                //     dataType: "json",
+                //     success: function(data){
+                //         // console.log(data.list.order_data);
+                //         $('#pages').append(data.show);
+                //         var res=get_tabel(data.list.order_data);
+                //         $('#joinres').append(res);
+                //     }
+                // });
+            </script>
+        </table>
+    </div>
+</div>
+<div id="pages" class="page" style="margin-bottom: 100px;">{$data.show}</div>
+<div class="foot"></div>
+<script type="text/javascript">
+    window.where = {};
+    var importurl = "{:U('OrderSource/import')}";
+    var laylang_md = "{:L('LAY_MesDel')}";
+    var laylang_if = "{:L('LAY_Information')}";
+    var laylang_btnok = "{:L('LAY_BtnOK')}";
+    var laylang_btncan = "{:L('LAY_BtnCancel')}";
+    var order_excel_ajax ="{:U('OrderSource/order_excel_ajax')}";
+    var orderimportorder = "{:U('OrderSource/importorder')}";
+    var ords_del = "{:U('OrderSource/delete')}";
+    var del_msg = "{:L('Delete')}";
+    var orders_import_t = "{:U('OrderSource/import_t')}";
+    var no_import_url = "{:U('OrderSource/no_import')}";
+    var addsuc_lng = "{:L('l_suc_add')}";
+    var verfa_lng = "{:L('l_ver_fai')}";
+    var versuc_lng = "{:L('l_ver_suc')}";
+    var ordnum_lng = "{:L('l_ord_num')}";
+    var unsft_lng = "{:L('l_uns_ft')}";
+    var impcon_lng = "{:L('l_gen_ord')}";
+    var uploadexcel_url = "{:U('OrderSource/download_tmp')}";
+    var file_upload_btn = "{:L('l_file_upload_q')}";
+    var l_d_ver_suc = "{:L('l_d_ver_suc')}";
+    var l_jjc_err = "{:L('l_jjc_err')}";
+
+    var delete_all_url = "{:U('OrderSource/delete_all')}";
+    var download_all_url = "{:U('orderSource/bulk_export')}";
+    var member_url = "__MEMBER__";
+    var l_Imput_total = "{:L('l_Imput_total')}";
+    var l_Order_Number = "{:L('l_Order_Number')}";
+    var l_Duty_Fee_kk = "{:L('l_Duty_Fee_kk')}";
+    var l_Incorrect_Order_Number = "{:L('l_Incorrect_Order_Number')}";
+    var l_View = "{:L('l_View')}";
+    var l_Exported_for = "{:L('l_Exported_for')}";
+    var l_Not_exported = "{:L('l_Not_exported')}";
+    var l_package = "{:L('l_package')}";
+    var l_time_start_eq_end = "{:L('l_time_start_eq_end')}";
+    var view_stat_url = "{:U('Piecemeal/get_view_status')}";
+    var view_stat_tips = "{:L('l_view_stat_tips')}";
+</script>
+<script type="text/javascript" src="__MEMBER__/js/ordersource.js?t=20180614"></script>
+</block>
+</body>
+</html>

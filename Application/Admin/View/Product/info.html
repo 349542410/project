@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <style type="text/css">
+      body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+
+      }
+      .container{margin:0 auto;}
+      .form-signin {
+        max-width: 800px;
+        margin-top:60px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+    .form-signin table th{text-align:center;height:47px;font-size:16px;line-height:47px !important;background:#F7F7F9; padding-top:0px !important;padding-bottom:0px !important;width: 200px;}
+		.form-signin table td{height:47px !important;line-height:47px !important;font-size:14px;text-indent:2em;background:#F7F7F9;padding-top:0px !important;padding-bottom:0px !important;}
+		.form-signin table td a{text-decoration:none;color:#000;}
+		.form-signin table td a:hover{color:blue;}
+    </style>
+   
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+    <![endif]-->
+     </head>
+  <body>
+
+    <div class="container" >
+      <div class="form-signin" style="padding-top:40px;background:#F7F7F9 !important;margin-bottom:40px">
+      		<table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px;padding:0px">
+          
+              <tr>
+                  <th width="" style="padding-left:12px">所属类别：</th>
+                  <td width="" style="padding-left:12px">
+                    {$info.cat_name}
+                  </td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">报关名称：</th>
+                  <td width="" style="padding-left:12px">{$info.name}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">名称：</th>
+                  <td width="" style="padding-left:12px">{$info.show_name}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">品牌：</th>
+                  <td width="" style="padding-left:12px">{$info.brand}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">HS编码：</th>
+                  <td width="" style="padding-left:12px">{$info.hs_code}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">行邮税号：</th>
+                  <td width="" style="padding-left:12px">{$info.tariff_no}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">跨境ID：</th>
+                  <td width="" style="padding-left:12px">{$info.hgid}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">BarCode：</th>
+                  <td width="" style="padding-left:12px">{$info.barcode}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">申报金额(￥)：</th>
+                  <td width="" style="padding-left:12px">{$info.price}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">计量单位：</th>
+                  <td width="" style="padding-left:12px">{$info.unit}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">原产地国别：</th>
+                  <td width="" style="padding-left:12px">{$info.source_area}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">规格型号：</th>
+                  <td width="" style="padding-left:12px">{$info.specifications}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">净重：</th>
+                  <td width="" style="padding-left:12px">{$info.net_weight}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">毛重：</th>
+                  <td width="" style="padding-left:12px">{$info.rough_weight}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">参数一：</th>
+                  <td width="" style="padding-left:12px">{$info.parameter_one}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">参数二：</th>
+                  <td width="" style="padding-left:12px">{$info.parameter_two}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">参数三：</th>
+                  <td width="" style="padding-left:12px">{$info.parameter_three}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">参数四：</th>
+                  <td width="" style="padding-left:12px">{$info.parameter_four}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">参数五：</th>
+                  <td width="" style="padding-left:12px">{$info.parameter_five}</td>
+              </tr>
+              <tr>
+                  <th width="" style="padding-left:12px">货品详细描述：</th>
+                  <td width="" style="padding-left:12px">{$info.detail}</td>
+              </tr>
+              <tr>
+                  <th colspan="3" style="padding-left:660px">
+                  <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-top:10px;">关闭</button>
+                  </th>
+              </tr>
+          </table>
+          
+      </div>
+    </div> 
+ 
+  </body>
+    
+</html>

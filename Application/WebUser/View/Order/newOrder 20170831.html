@@ -1,0 +1,356 @@
+<!-- 再次下单 -->
+<extend name="Member/base" />
+
+
+<block name="main">
+<script type="text/javascript" src="__MEMBER__/js/city/jquery.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/{:L('lng')}/area.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/{:L('lng')}/location.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/select2.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/{:L('lng')}/select2_locale_zh-CN.js"></script>
+<script src="__MEMBER__/js/{:L('lng')}/cityselected.js"></script>
+<link rel="stylesheet" type="text/css" href="__MEMBER__/css/validationEngine.jquery.css">
+<script src="__MEMBER__/js/jquery.validationEngine.js" type='text/javascript'></script>
+<script src="__MEMBER__/js/jquery.validationEngine-{:L('lng')}.js" type='text/javascript'></script>
+<link href="__MEMBER__/css/select2.css" rel="stylesheet"/>
+<script type="text/javascript">
+	    $(function(){
+          $('#tempForm').validationEngine('attach', {
+            promptPosition: 'topRight',
+            scroll: false,
+            addPromptClass:'formError-white',
+            autoPositionUpdate:true,
+            'custom_error_messages':{
+            	'#TransferLine':{
+            		'required': {
+          				'message': "{:L('valEng_Msg_fre')}",
+          			}
+            	},
+            	'#loc_province':{
+            		'required':{
+            			'message': "{:L('valEng_Msg_fre')}",
+            		}
+            	},
+            	'#loc_city':{
+            		'required':{
+            			'message': "{:L('valEng_Msg_fre')}",
+            		}
+            	},
+            	'#loc_town':{
+            		'required':{
+            			'message': "{:L('valEng_Msg_fre')}",
+            		}
+            	},
+            }
+          });
+        });
+</script>
+	<div class="form form_index" >
+    <div class="form-signin" style="width:100%;min-height:500px;margin:0 auto;padding:0;">
+	    <form action="{:U('Order/step_two')}" method="post" class="form-inline" id="tempForm" name="add">
+	    	<div class="ordtop">
+		    	<!-- **************************************************** -->
+	    		<!-- 寄件人信息 -->
+		    	<div class="ordsender">
+		    		<h4>{:L('SenderInfo')}</h4>
+		    		<ul>
+		    			<li><label>{:L('FullName')}：</label><input type="text" data-validation-engine="validate[required,custom[chinalett]]" value="{$info['sender']}" name="PostName" placeholder="{:L('Placeholder_PostName')}" maxlength="40"></li>
+
+		    			<li><label>{:L('DetaileAddress')}：</label><input type="text" value="{$info['sendAddr']}" name="PostAddress" placeholder="{:L('Placeholder_PostAddress')}" data-validation-engine="validate[required,custom[repadd]]" maxlength="80"></li>
+		    			<li><label>{:L('Phone')}：</label><input type="phone" value="{$info['sendTel']}" name="PostPhone" placeholder="{:L('Placeholder_PostPhone')}" data-validation-engine="validate[required,custom[phone]]" maxlength="14"></li>
+		    			<li><label>{:L('ZipCode')}：</label><input type="text" value="{$info['sendcode']}" name="PostCode" placeholder="{:L('Placeholder_PostCode')}" data-validation-engine="validate[required,custom[chinaZip]]" maxlength="10"></li>
+		    		</ul>
+		    		<button type="button" class="clearSender" onclick="javascript:$('.ordsender input').val('');">{:L('EmptyInfo')}</button>
+		    	</div>
+		    	<!-- **************************************************** -->
+	    		<!-- 收件人信息 -->
+		    	<div class="ordrec">
+		    		<h4>{:L('RecInfo')}</h4>
+		    		<ul>
+		    			<li><label>{:L('FullName')}：</label><input type="text" value="{$info['receiver']}" name="RecName" placeholder="{:L('Placeholder_RecName')}" data-validation-engine="validate[required,custom[chinalett]]" maxlength="40">
+		    			</li>
+		    			<li>
+		    				<label>{:L('DocumentsType')}：</label>
+		    				<select name="Id_tpye" id="Id_tpye">
+		    					<volist name="ID_TYPE" id="ty">
+		    						<option value="{$key}" <if condition="($info['idkind'] eq $key)">selected</if>>{:L($ty)}</option>
+		    					</volist>
+		    				</select>
+		    				<input type="text" name="IdNo" placeholder="{:L('Placeholder_IdNo')}" value="{$info['idno']}" style="width:185px !important;" id="idno" data-validation-engine="validate[required,custom[chinaId]]" maxlength="18">
+		    			</li>
+		    			<li style="position: relative;">
+		    				<label>{:L('Address')}：</label>
+		    				<select id="loc_province" style="width:100px;" >
+						    </select>
+						    <select id="loc_city" style="width:115px;margin-left: 5px" >
+						    </select>
+						    <select id="loc_town" style="width:115px;margin-left: 5px" >
+						    </select>
+						    <input <if condition="(L('lng') eq 'zh-cn')"> id="province"</if><if condition="(L('lng') eq 'en-us')"> id="provinces"</if> name="Province" value="{$info['province']}" data-validation-engin="validate[required]" />
+						    <input <if condition="(L('lng') eq 'zh-cn')"> id="city"</if><if condition="(L('lng') eq 'en-us')"> id="citys"</if> name="City" value="{$info['city']}" data-validation-engin="validate[required]" />
+						    <input <if condition="(L('lng') eq 'zh-cn')"> id="town"</if><if condition="(L('lng') eq 'en-us')"> id="towns"</if> name="Town" value="{$info['town']}" data-validation-engin="validate[required]" />
+						    <input type="hidden" name="token" value="{:session('token')}">
+		    			</li>
+		    			<li><label>{:L('DetaileAddress')}：</label><input type="text" value="{$info['reAddr']}" name="RecAddress" placeholder="{:L('Placeholder_RecAddress')}" data-validation-engine="validate[required,custom[repadd]]" maxlength="80"></li>
+		    			<li><label>{:L('Phone')}：</label><input type="text" value="{$info['reTel']}" name="RecPhone" placeholder="{:L('Placeholder_RecPhone')}" data-validation-engine="validate[required,custom[phone]]" maxlength="14"></li>
+		    			<li><label>{:L('ZipCode')}：</label><input type="text" value="{$info['postcode']}" name="RecCode" placeholder="{:L('Placeholder_RecCode')}" data-validation-engine="validate[required,custom[chinaZip]]" maxlength="10"></li>
+		    		</ul>
+		    	</div>
+		    	<div class="clear"></div>
+		    </div>
+<!-- **************************************************** -->
+	    	<!-- 选择线路 -->
+	    	<div class="ordhead"><h3>{:L('SelectLine')}</h3></div>
+	    	<div class="ordbody">
+		    	<table class="tab1" border="0" cellpadding="0" cellspacing="0">
+				    <tr>
+						<td class="tdleft"><label>{:L('TranLine')}：</label></td>
+						<td style="width: 90px;">
+						<label>
+		                <select name="TransferLine" id="TransferLine" class="form-control" type="text" data-validation-engine="validate[required]">
+							<option value="">{:L('PleaseSelectLine')}</option>
+							<volist name="tranline" id="vo">
+								<option value="{$vo['id']}" <if condition="($info['TranKd']) eq $vo['id']">selected</if>><php>$l = L('MKLINES');echo $l[$vo['lngname']];</php></option>
+							</volist>
+		<!-- 					<option value="1" <if condition="($info['TranKd']) eq '1'">selected</if>><php>$l = L('MKLINES');echo $l[1];</php></option>
+							<option value="2" <if condition="($info['TranKd']) eq '2'">selected</if>><php>$l = L('MKLINES');echo $l[2];</php></option> -->
+		                </select>
+						</label>
+						</td>
+						<ul style="display:none;">
+							<volist name="tranline" id="vo">
+								<li class="m{$vo['id']}"><php>$l = L('MKRemarks');echo $l[$vo['lngremark']];</php></li>
+							</volist>
+						</ul>
+		            </tr>
+				</table>
+				<p id="mimenu"></p>
+	    	</div>
+<!-- **************************************************** -->
+			<!-- 货品声明 -->
+			<div class="ordhead"><h3>{:L('GoodsList')}</h3></div>
+	    	<div class="ordbody oblast" style="width: 1135px;">
+					<table class="table_now" style="margin:10px auto;height:110px;margin-left: -54px;" id="table">
+					<input type="hidden" id="num" value="{$numc}" autocomplete="off">
+						<tr>
+							<td width="10%" style="font-weight: bold;" class="copy_r"></td>
+							<td width="10%" style="font-weight: bold;">{:L('BrandName')}</td>
+							<td width="10%" style="font-weight: bold;">{:L('ProductName')}</td>
+							<td width="10%" style="font-weight: bold;">{:L('ProCate')}</td>
+							<td width="28%" style="font-weight: bold;">{:L('Customs')}</td>
+							<td width="10%" style="font-weight: bold;">{:L('Amount')}</td>
+							<td width="10%" style="font-weight: bold;">{:L('UnitPrice')}</td>
+							<td width="10%" style="font-weight: bold;">{:L('Currency')}</td>
+							<td width="10%" style="font-weight: bold;">{:L('Remarks')}</td>
+							<td style="border:none"><img src="__MEMBER__/images/null.png"  /></td>		
+						</tr>
+						<for start="0" end="$count">
+						<tr class="stta" cid="{$i}">
+							<td class="copy_r"><if condition="$i eq 0"><a onclick="copy_row(this)" href="javascript:void(0)">[+]</a></if></td>
+							<td width="10%;"><input type="text" name="brand_{$i}" value="{$pro_list[$i]['brand']}" class="clchang" maxlength="50"></td>
+
+							<td width="10%;"><input type="text" name="product_{$i}" value="{$pro_list[$i]['detail']}" class="clchang" maxlength="50"></td>
+							
+							<td width="10%;"><input type="text" name="catname_{$i}" value="{$pro_list[$i]['catname']}" class="clchang" maxlength="10"></td>
+
+							<td width="28%;">---</td>
+							<td width="10%;"><input type="text" name="amount_{$i}" value="{$pro_list[$i]['number']}" class="clzhong" maxlength="9"></td>
+
+							<td width="10%;"><input type="text" name="price_{$i}" value="{$pro_list[$i]['price']}" class="clzhong" maxlength="9"></td>
+
+							<!-- 币种 -->
+							<td width="10%;" class="clzhong">
+								<select name="coin_{$i}" id="" class="clduan">
+									<!-- <option value=""></option> -->
+									<option value="CNY"  selected="selected">￥</option>
+									<!-- <option value="USD">$</option> -->
+								</select>
+							</td>
+							<td width="10%;" ><input type="text" name="remark_{$i}" class="clchang" dd="{:L('Remarks')}"></td>
+							<td style="border:none; " class="nows nows{$i}"><a href="javascript:;" title="{:L('Delete')}"><img width="22" height="22" src="__MEMBER__/images/clean.png" /></a></td>
+						</tr>
+						</for>
+					</table>
+					<span class="forspan">{:L('Notice')}</span>
+            </tr>
+<!-- **************************************************** -->
+			<!-- 按钮部分 -->
+			<tr>
+				<table style="width: 1000px;float: right;margin: 0 auto;">
+					<tr>
+				<td id="hide_boxs">
+					<input type="hidden" value="{$user_id}" name="uid">
+				</td>
+				<td style="text-align: right;">
+					<span id="loading" style="bottom:180px;left:650px !important"></span>
+					<button type="submit" class="btn" id="BtnSave" onclick="submitform(this)">{:L('BtnSave')}</button>
+					<!-- <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button> -->
+					<span id="messagebox" class="msgbox" style="bottom:180px;left:650px !important"></span>					
+				</td>
+					</tr>
+				</table>
+			</tr>
+	    	</table>
+	    	</div>
+<!-- END -->
+	    	<div style="clear:both;"></div>
+		</form>
+    </div>
+   	</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(window).bind('beforeunload',function(){
+		return '您输入的内容尚未保存，确定离开此页面吗？';
+	});
+});
+</script>
+<script type="text/javascript">
+	// 选择线路特效
+	$(document).ready(function(){
+		var p2 = $('#TransferLine').children('option:selected').val();//这就是selected的值
+		if(p2 != ''){
+			$("#mimenu").html("{:L('ShowSelect')}："+$(".m"+p2).html());
+		}
+		
+		$('#TransferLine').change(function(){
+			var p = $(this).children('option:selected').val();//这就是selected的值
+
+			if(p != ''){
+				var h = $(".m"+p).html();
+				$("#mimenu").html("{:L('ShowSelect')}："+h);
+			}else{
+				$("#mimenu").html('');
+			}
+		});
+		var chid= $('#Id_tpye').val();
+		if(chid == 'PASPORT'){
+			$('#idno').attr("placeholder","{:L('Placeholder_IdPT')}");
+			$('#idno').attr("maxlength","10");
+			$('#idno').attr("data-validation-engine","validate[required]");
+		}else if(chid == 'ID'){
+			$('#idno').attr("placeholder","{:L('Placeholder_IdNo')}");
+			$('#idno').attr("maxlength","18");
+			$('#idno').attr("data-validation-engine","validate[required,custom[chinaId]]");
+		}		
+		// 证件类型
+		$("#Id_tpye").change(function(){
+			var chid= $('#Id_tpye').val();
+			if(chid == 'PASPORT'){
+				$('#idno').attr("placeholder","{:L('Placeholder_IdPT')}");
+				$('#idno').attr("maxlength","10");
+				$('#idno').attr("data-validation-engine","validate[required]");
+			}else if(chid == 'ID'){
+				$('#idno').attr("placeholder","{:L('Placeholder_IdNo')}");
+				$('#idno').attr("maxlength","18");
+				$('#idno').attr("data-validation-engine","validate[required,custom[chinaId]]");
+			}
+		});
+	});
+
+	// 这是后台返回的省市区，把它们都分别赋值到那三个select上面显示
+	$(function(){	
+		var p = "{$info['province']}";
+		var c = "{$info['city']}";
+		var t = "{$info['town']}";
+		$("#select2-chosen-1").html(p);
+		$("#select2-chosen-2").html(c);
+		$("#select2-chosen-3").html(t);
+	});
+	function submitform(obj){
+		$(window).unbind('beforeunload');
+		if(!$("#tempForm").validationEngine("validate")) return ; 
+	    $.ajax({
+	        cache: false,
+	        type: "post",
+	        url:"{:U('Order/checkForm')}",
+	        data:$('#tempForm').serialize(),// formid
+	        async: false,
+	        beforeSend:function(){
+	            $("#loading").html('<img style="width:28px;height:28px;" src="__MEMBER__/images/msg_loading_d.gif"/>');
+	        },
+	        error: function(request) {
+	            layer.alert("{:L('LAY_ErrorForm')}");
+	        },
+	        success: function(data) {
+	            if(data.state == 'no'){
+					layer.open({
+						type: 0,
+						offset: '300px',
+						shadeClose: true,
+						title : "{:L('LAY_SystemMessage')}",
+						content : data.msg,
+						area : ['150px' , '150px'],
+						icon : {icon:5},
+						btn: ["{:L('LAY_BtnOK')}"],
+					});
+	                $("#loading").html('');
+	                $("#BtnSave").attr("type","button");  
+	            }else{
+	                var box_part='<input type="hidden" value="'+data.uucode+'" name="uucode"><input type="hidden" value="'+data.sn+'" name="sn"><input type="hidden" value="'+data.lid+'" name="lid">';
+	                $("#hide_boxs").append(box_part);
+	                $("#BtnSave").attr("disabled","true"); //设置变灰按钮  
+	                $('#tempForm').submit();
+	                setTimeout("$('#BtnSave').removeAttr('disabled');",3000); //设置三秒后提交按钮 显示 
+	            }
+	        }
+	    });		
+	}
+
+	// 货品声明 删除行效果 
+	$(function(){
+		$("td.nows a").css('display','none');
+		$(".stta").hover(function(){
+			var ttc= $(this).find('.ttc').attr('value');
+			var src= $(this).find('img');
+			if(ttc!=''){
+				var d=$(this);
+				$(this).find('.nows').find('a').css('display','inline');
+				$(this).find('.nows').find('a').click(function(){
+					layer.open({
+						type: 0,
+						title : "{:L('LAY_SystemMessage')}",
+						content : "{:L('LAY_Empty')}",
+						btn: ["{:L('LAY_BtnOK')}","{:L('LAY_BtnCancel')}"],
+						yes:function(){
+							layer.msg("{:L('LAY_EmptyOK')}",{icon: 6,offset: '350px'});
+							d.find('input').attr('value','');
+							d.find('select').val('1');
+							src.remove();
+						},
+						icon : {icon:5},
+						offset: '300px',
+					});
+					
+				})
+			}		 
+		},function(){
+			$(this).find('.nows').find('a').css('display','none');	
+			$(this).find('.nows').find('a').unbind();
+		})
+	});
+
+	// 添加删除行 20170316 gan
+	function copy_row(obj)
+	{
+		var num=$("#num").val();
+		num++;
+		if(num>=9){
+			layer.open({
+				title:"{:L('LAY_SystemMessage')}",
+				offset: '300px',
+				icon : 0,
+				content: "{:L('LAY_AddRow')}",
+			});
+			$('.copy_r').find('a').remove();
+		}
+		var str='<tr><td class="copy_r"><if condition="$i eq 5"><a onclick="copy_row(this)" href="javascript:void(0)">[+]</a></if></td><td width="10%;"><input type="text" class="clchang" name="brand_'+num+'"></td><td width="10%;"><input type="text" class="clchang" name="product_'+num+'"></td><td width="10%;"><input type="text" class="clchang" name="catname_'+num+'"></td><td width="20%;">---</td><td width="10%;"><input type="text" class="clzhong" name="amount_'+num+'"></td><td width="10%;"><input type="text" class="clzhong" name="price_'+num+'"></td><td width="10%;"><select class="clduan" name="coin_'+num+'" id=""><option value="CNY" selected="selected">￥</option></select></td><td width="10%;" ><input type="text" class="clchang" name="remark_'+num+'"></td></tr>';
+		$("#table").append(str);
+		$("#num").val(num);
+	}
+</script>
+	<div class="foot"></div>
+
+</block>
+
+</body>
+</html>

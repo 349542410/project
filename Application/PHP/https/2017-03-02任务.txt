@@ -1,0 +1,1 @@
+使用key文件，做一个index.php 功能 是可以 使用 curl和key证书 post 一个网址，并且显示返回结果

@@ -1,0 +1,42 @@
+<extend name="./base" />
+
+
+<block name="main">
+<style>
+	.container .active a{color:black;}
+	.container .active{background-color: #cccddd !important;}
+	.container table a{}
+</style>
+<div class="container" >
+			<table border="0" cellpadding="0" cellspacing="0" class="table"  class="table table-bordered" style="margin:0px;padding:0px">
+				
+				<include file="litBanner" />
+
+				<tr>
+					<td colspan="10">
+				<form action="{:U('PostManagement/index')}" method="get" class="form-inline">
+						<!-- 中文搜索时必须的 -->
+						<input type="hidden" name="m" value="{$Think.MODULE_NAME}" />
+						<input type="hidden" name="c" value="{$Think.CONTROLLER_NAME}" />
+						<input type="hidden" name="a" value="{$Think.ACTION_NAME}" />
+						<!-- End -->
+						<input type="hidden" name="type" value="stop">
+					
+					<include file="searchbox" />
+					
+				</form>
+					</td>
+				</tr>
+			</table>
+</div>
+
+<include file="miniBase" />
+
+<div id="pages" class="page">{$page}</div>
+
+			<div class="foot"></div>
+
+</block>
+
+</body>
+</html>

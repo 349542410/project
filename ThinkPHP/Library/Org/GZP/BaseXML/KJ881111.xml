@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GzeportTransfer xmlns:n1="http://www.altova.com/samplexml/other-namespace" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Head>
+		<MessageID>{%MessageID%}</MessageID>
+		<MessageType>KJ881111</MessageType>
+		<Sender>TEST17</Sender>
+		<Receivers>
+			<Receiver>KJGGPT</Receiver>
+			<Receiver>KJGGPT</Receiver>
+		</Receivers>
+		<SendTime>{%SendTime%}</SendTime>
+		<Version>1.0</Version>
+		<FileName>{%MessageID%}</FileName>
+	</Head>
+	<Data>{%DATA%}</Data>
+</GzeportTransfer>

@@ -1,0 +1,184 @@
+<extend name="Public:base_register" />
+<!-- 邮箱认证html -->
+<html>
+<!-- head -->
+<block name="css">
+  <!-- 表单验证提示样式css -->
+  <link rel="stylesheet" href="__CSS__/style.css" type="text/css" media="all" />
+</block>
+<!-- head end -->
+
+<body>
+<block name="banner">
+    <div class="banners row">
+            <div class="left col-xs-4">
+                <div class="ads">
+                    <p class="now"><if condition="session('reg_info.type') eq 'company'">{:L('Company_Register_en')}<else/>{:L('Per_r_re')}</if></p>
+                    <p class="navleft"><if condition="session('reg_info.type') eq 'company'">{:L('Welcome_to_en')}<else/>{:L('Welcome_re')}</if></p>
+                </div>
+            </div>
+            <div class="right col-xs-8">
+                <img src="__IMG__/brief_01.jpg" width="100%" height="155">
+            </div>
+    </div>
+</block>
+<block name="content">
+
+<div class="empty-container">
+
+    <!-- 顶部菜单 -->
+
+    <div class="empty-content">
+        <div class="empty-area">
+            
+    <div class="reg-container">
+      
+  <ul class="c-loginprocess">
+    <li id="MainContent_RegisterProcess1_step1" class="passed">
+        <p class="p1">1</p>
+        <span>{:L('Completed_re')}</span>
+    </li>
+    <li id="MainContent_RegisterProcess1_step2" class="passed">
+        <p class="p1">2</p>
+        <span>{:L('Email_re')}</span>
+    </li>
+    <li id="MainContent_RegisterProcess1_step3">
+        <p class="p1">3</p>
+        <span id="MainContent_RegisterProcess1_cType">
+          <if condition="session('reg_info.type') eq 'company'">
+            {:L('Complete_re_c')}
+            <else />
+            {:L('Complete_re_p')}
+          </if>
+        </span>
+    </li>
+    <li id="MainContent_RegisterProcess1_step4">
+         <p class="p1">4</p>
+        <span>{:L('Upload_re')}</span>
+    </li>
+    <li id="MainContent_RegisterProcess1_step5">
+        <p class="p1">5</p>
+        <span>{:L('Sign_re')}</span>
+    </li>
+    <li class="last">
+         <p class="p1">6</p>
+        <span>{:L('Wait_f_re')}</span>
+    </li>
+    <div style="clear: both;"></div>
+  </ul>
+<form method="post" action="{:U('authEmail')}" id="form1">
+        <div class="bg-white ly-pd-30 registermain">
+          <ul class="c-forms">
+          <br>
+          <br>
+<div id="sendmailok"  style="padding: 0 5%; line-height:40px; font-size:1.5rem; color:#545454;">
+    {:L('Dear_Meikuai_en')} 
+    <span id="send_username"></span>
+    {:L('member_en')}
+    <span id="send_email"></span>
+    {:L('please_fill_in_en')}
+    <span class="msgs">{:L('Send_again_en')}</span><span id="loading"></span>
+</div>
+              <li class="ly-mg-tb-15" style="padding-left: 5%;">
+                  <div class="c-forms-label" style="width: auto; color:#595959">{:L('Email_v_code_en')}<span class="fc-red">*</span></div>
+                  <input type="text" name="uucode" id="code" class="c-input-text required" />
+              </li>
+              <li class="ly-mg-tb-15" style="text-align: center;">
+                  <input type="hidden" name="ajax" value="0">
+                  <input type="hidden" name="countryId" value="{$countryId}" id="countryId"> 
+                  <input type="hidden" name="type" value="{$type}" id="type">
+                  <input value="{:L('Submit_en')}" class="c-btn-lg-next" type="submit" >&nbsp;<span id="msgbox"></span>
+              </li>
+          </ul>
+        </div>
+        <br><br><br>
+</form>
+    </div>
+
+        </div>
+    </div>
+<script type="text/javascript">
+$(function  () {
+  //获取短信验证码
+  $(".msgs").click (function() {
+    var time = 30;
+    var code = $(this);
+    $.ajax({
+      type:'post',
+      url:"{:U('Register/sendEmail')}",
+      data:{
+        'pid':"{:session('reg_info.id')}",
+      },
+      dataType:'json',
+      beforeSend:function(){
+        $("#loading").html('&nbsp;<img style="width:20px;height:20px;" src="__PUBLIC__/images/msg_loading_d.gif"/>{:L("Send_in_3_en")}');
+      },
+      success:function(result){
+          $("#loading").html('&nbsp;<img style="width:20px;height:20px;" src="__PUBLIC__/images/success.png"/>{:L("Sent_Items_en")}');
+          var validCode = result.status; //ajax返回的值
+          if (validCode) {
+            code.addClass("msgs1");
+            validCode = false;
+            var t = setInterval(function() {
+              time--;
+              code.html(time+"s");
+              if (time == 0) {
+              $("#loading").html('');
+                clearInterval(t);
+              code.html("{:L('Send_again_en')}");
+                validCode = true;
+              code.removeClass("msgs1");
+              }
+            },1000)
+          }
+
+      }
+
+    })
+  })
+})
+</script>
+    <!-- footer -->
+
+</div>
+<!-- 必须 -->
+
+<style type="text/css">
+.msgs{display:inline-block;width:104px;color:#fff;font-size:12px;border:1px solid #0697DA;text-align:center;height:30px;line-height:30px;background:#0697DA;cursor:pointer; vertical-align: 4px;}
+.msgs1{background:#E6E6E6;color:#818080;border:1px solid #CCCCCC;}
+</style>
+<script src="__JS__/jquery.form.js"></script>
+
+<script language="JavaScript">
+// 发送邮件成功后的页面跳转动画
+jQuery(document).ready(function($){
+    $('#form1').ajaxForm({
+        beforeSend:function(){
+          $("#msgbox").html('&nbsp;<img style="width:20px;height:20px;" src="__PUBLIC__/images/msg_loading_d.gif"/>');
+          var code = $('#code').val();
+          if(code == ''){
+            $('#msgbox').html('<span style="font-size:15px;padding-left:10px;color:red;">请输入验证码</span>').fadeIn(300).delay(1000).fadeOut(300,function(){
+            });
+          }
+        },
+        success: complete,  //成功则执行complete函数
+        dataType: 'json',
+    });
+});
+function complete(data){
+    if (data.status==1){
+        $('#msgbox').html('<span style="font-size:15px;padding-left:10px;color:green;">'+data.info+'</span>').fadeIn(300).delay(1000).fadeOut(300,function(){
+            window.location.href=data.url;
+        });
+      
+    }else{
+        $('#msgbox').html('<span style="font-size:15px;padding-left:10px;color:red;">'+data.info+'</span>').fadeIn(300).delay(1000).fadeOut(300,function(){
+            // $('#myverify').click();                //模拟用户点击刷新验证码
+        });
+    }
+}
+</script>   
+
+</block>
+</body>
+</html>

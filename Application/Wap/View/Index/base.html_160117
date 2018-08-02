@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh">
+<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+		<meta name="keywords"  content="美快营销平台、郑州美快服务平台、美快科技、美快代运营、美快美快定制开发、美快托管、美快微网站、微商城、微营销、美快会员卡、美快订餐、美快公众平台、美快会员管理、美快会员营销" />
+  		<meta name="description"  content="美快，最懂您的美快营销平台，专注餐饮和娱乐行业的会员营销和管理" />
+		<title>美快物流</title>
+		
+		<load href="__PUBLIC__/css/comm.css" />
+</head>
+<body>
+<block name="header">
+<div class="header">
+<img src="__PUBLIC__/images/mk_logo_a.png" />
+<nav>
+	<ul>
+		<li><a href="{:U('index')}">主页</a></li>
+		<li><a href="{:U('search')}">单号查询</a></li>
+	</ul>
+</nav>
+</div>
+
+
+<!-- <div class="title">
+	<img src="__PUBLIC__/images/1.jpg" />
+</div> -->
+
+<div class="search" >
+	<div class="searchcontent">
+	<form action="{:U('Index/search')}" method="get" onsubmit="return checkform(this.form)">
+	<input type="search" class="text" placeholder="请输入美快单号"  name="MKNO" value="{$MKNO}" id="text"/><input type="submit" value="查询" class="submit" id="submit"/>
+	</form>
+		<p>更多详细信息请使用电脑访问</p><p><a href="http://www.meiquick.com" target="_blank">http://www.meiquick.com</a></p>
+	</div>
+</div>
+</block>
+<block name="content"></block>
+<block name="foot">
+	<div class="foot">
+	<h4>美快国际物流</h4>
+	<p>美快，想您所想，为您所做！做最优秀的美快会员营销平台</p>
+	<p>Copyright © 2010 - <?=date('Y')?> 美快科技</p>
+</div>
+<script type="text/javascript">
+	document.getElementById('submit').onclick=function(){
+		var text=document.getElementById("text").value;
+		var reg=/^MK[a-zA-Z0-9]{10,12}$/;
+		if(reg.test(text)==false){
+			alert("请输入正确美快单号，例如：MK881000987US");
+			return false;
+		}
+		}
+</script>
+</block>
+</body>
+</html>

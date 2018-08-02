@@ -1,0 +1,155 @@
+/*公共*/
+*{margin:0;padding:0}
+img{border:0}
+html{color:#333}
+body{font-size:12px/1.5 Arial,Helvetica,sans-serif,"微软雅黑";color: #000000;}
+table{font-size:12px;color:#333;border-collapse:collapse}
+.fo-fa{font-family:Tahoma,\5FAE\8F6F\96C5\9ED1}
+ol,ul{list-style:none}
+div{font-size:12px}
+a{text-decoration:none;color:#333}
+.cu-po{cursor:pointer}
+em,i{font-style:normal}
+.clear{clear: both;}
+.flol{float: left;}
+.flor{float: right;}
+.fontwei{font-weight: bold!important;}
+/*分页*/
+#pages { padding:10px 0 10px;text-align:center;font:12px '宋体';}
+#pages a { display:inline-block; padding:0px 8px; height:30px;font-size:18px;line-height:30px; background:#fff; border:1px solid #ccc; text-align:center; color:#333;border-radius: 15px;font-size: 16px;}
+#pages a.a1 {padding:0px 12px; height:22px; line-height:22px;margin-top:0px;font-size: 18px;}
+#pages a:hover { background:#232323; color:#ffde00; text-decoration:none;font-size: 16px; }
+#pages span { display:inline-block;  padding:0px 8px; height:30px; line-height:30px; background:#232323; border:1px solid #232323; color:#fff; text-align:center;border-radius:15px;font-size: 16px;}
+.page .noPage { display:inline-block;  padding:0px 12px; height:22px; line-height:22px;border:1px solid #e3e3e3; text-align:center; color:#a4a4a4; font-size: 18px;}
+
+/*标题*/
+.pr_c1 {
+    width: 100%;
+    min-width: 1004px;
+    height: 700px;
+    background: url(../img/mkbanner.jpg);
+    background-position: center;
+    margin-top: 0px;
+}
+.pr_c1 p {
+    color: #fff;
+    font-size: 60px;
+    text-align: center;
+    font-weight: bold;
+}
+/*内容开始 index ====stat*/
+.ordheads {
+    margin: 0 auto;
+    max-width: 1710px;
+    height: 50px;
+    background: #232323;
+    color: #fff;
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+.ordheads h3{
+    line-height: 50px;
+    font-size: 24px!important;
+}
+.warp{
+	margin: 0 auto;
+    max-width: 1710px;
+	min-height: 610px;
+}
+.warp .cont_list{
+	width: 100%;
+	font-size: 15px;
+    color: #000000;
+}
+.warp .cont_list .title_cont{
+    padding: 20px 40px;
+    border:1px solid #dbdada;
+    font-family: '宋体';
+}
+.warp .cont_list li{
+    margin-bottom: 40px; 
+}
+.warp .cont_list li:first-child{
+    margin-top: 40px;
+}
+.warp .cont_list .title_cont .title_cont_mid{
+    width: 100%;
+    display: inline-block;
+}
+.warp .cont_list .title_cont .title_cont_mid .new_font{
+    color:red;
+    font-family: '微软雅黑'
+}
+.warp .cont_list .title_cont .timecol{
+    color: #787878;
+}
+.warp .cont_list .title_cont .mid_conp{
+    font-size: 16px;
+}
+.warp .cont_list .title_cont .mid_conp .specifont{
+    margin-right: 10px;
+    max-width: 800px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.warp .cont_list .title_cont .mid_conp a{
+    font-size: 16px;
+    color: #0988d9;
+    cursor: pointer;
+}
+/*.warp .cont_list li{
+	padding: 0 20px;
+	height: 35px;
+	line-height: 35px;
+	border-top: 1px solid #edeeef; 
+    position: relative;
+}
+.warp .cont_list .title a{
+	color: #09f;
+}
+.warp .cont_list .time{
+	float: right;
+}*/
+/*.warp .cont_list .disc{
+	display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #232323;
+    margin: 16px 8px 0 0px;
+}*/
+/*index ====end*/
+/*内容开始 get_content ====stat*/
+.get_con_warp{
+	padding: 16px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+.get_con_warp .get_con_title{
+	font-size: 20px;
+    color: #292929;
+    text-align: center;
+    height: 19px;
+    line-height: 19px;
+    margin: 5px 20px 10px;
+}
+.get_con_warp .get_con_time{
+	text-align: center;
+    border-bottom: 1px solid #d4d4d4;
+    padding: 2px 10px 10px;
+}
+.get_con_warp .get_con_time span{
+	line-height: 16px;
+    height: 16px;
+    color: #999;
+    font-size: 15px;
+}
+.get_con_warp .get_con_content{
+	margin: 20px 20px 10px;
+    color: #292929;
+    font-size: 16px;
+    min-height: 220px;
+    line-height: 18px;
+}

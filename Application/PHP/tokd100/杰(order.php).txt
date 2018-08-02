@@ -1,0 +1,59 @@
+接收订阅
+
+config.php
+$mgcom = 'MKIL';
+$key = 'dQRCFqtxzpxqbICY';
+$customer = "kuaidi100";
+
+order.php
+将收到 post的 param，sign，customer
+
+其中，param参数为json格式，
+{
+	"company":"xxxx",	// 说明：需与我们的$mgcom相同
+	"code":"12345678", 	// 这个是tran_list.MKNO，
+	"operator":"order",	// 操作:order表示订阅，repush表示请求快递公司发起一次全量重推
+	"callback":"http://www.com.com/xxx"
+}
+
+//////////////////
+验证：
+sign == md5(param+$key)
+customer ==$customer
+company = $mgcom
+code 是否存在(通过tran_list.MKNO)
+param里的四行均需填写 否则返回400
+
+/////////////////
+数据操作：
+新的数据库 mk_tran_share
+字段：
+id,MKNO(var16),company,customer,callback(var100),status(int3),cretime(int:unix_timestamp),lastime(int)
+
+///
+处理：
+mk_tran_share.status:
+新增时默认0，或operator='repush'时为0
+
+
+
+///
+返回JSON:
+{
+	"result":"true",
+	//推送的结果状态
+	"returnCode":"200",
+	//对应状态的文本描述
+	"message":"成功"
+}
+说明
+returnCode message
+200 	成功	
+400	数据不完整	补充数据，重新订阅
+500	请求格式错误	程序有问题，需要调整
+501	服务器错误	30分钟后尝试
+502	重复订阅	理解为订阅成功
+503	验证签名失败	使用正确的KEY
+504	单号错误	更正单号
+507	查询异常	
+

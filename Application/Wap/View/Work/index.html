@@ -1,0 +1,26 @@
+<extend name="base" />
+
+<html>
+<block name="content">
+<load href="__PUBLIC__/css/index.css" />
+<div class="content">
+	<h3>物流确认收货&nbsp;(暂未使用)</h3>
+	<div style="width:100%;text-align:center">
+	<table style="width:100%;">
+	<tr><td colspan="2"><br/>您扫描的是</td></tr>
+	<tr><td colspan="2"><h4>{$code1}-{$code2}</h4></td></tr>
+	<tr><td colspan="2"><br/>请您填写<br/>到达确认码<br/>Arrival confirmation code</td></tr>
+	<tr><td colspan="2">
+		<input type="number" class="text" style="border:1px solid #ccc" placeholder="到达确认码"  name="MKNO" value="{$MKNO}" id="text"/>
+	</td></tr>
+	<tr><td colspan="2"><br/>请您填写<br/>授权码</td></tr>
+	<tr><td colspan="2">
+		<input type="password" class="text" style="border:1px solid #ccc" placeholder="授权码"  name="MKNO" value="{$MKNO}" id="text"/>
+	</td></tr>	
+	<tr><td colspan="2"><br/><input type="submit" value="确认" class="submit" id="submit0"/></td></tr>
+	<tr><td colspan="2"><br/>信息校验成功后，<br/>此板资料将自动发送到已登记的邮箱中</td></tr>
+	</table>
+	</div>
+</div>
+</block>
+</html>

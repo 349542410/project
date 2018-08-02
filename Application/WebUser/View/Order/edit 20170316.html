@@ -1,0 +1,314 @@
+<!-- 在线下单 -->
+<extend name="Member/base" />
+
+
+<block name="main">
+<script type="text/javascript" src="__MEMBER__/js/city/jquery.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/area.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/location.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/select2.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/select2_locale_zh-CN.js"></script>
+<script src="__MEMBER__/js/cityselected.js"></script>
+<link href="__MEMBER__/css/select2.css" rel="stylesheet"/>
+<!-- <link href="__MEMBER__/css/one.css" rel="stylesheet">
+<script src="__MEMBER__/js/add.js"></script> -->
+<!-- <script type="text/javascript" src="__MEMBER__/js/city/city.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/edit.js"></script>-->
+<style>
+	h3{margin:0;padding:0;}
+	.container .active a{color:#fff;}
+	.container .active{background-color: #f3b742 !important;color:#fff;}
+	.container table a{}
+	#content{padding-bottom: 20px !important;}
+	.ordhead{border-bottom: 3px solid #dedede;width: 100%;height: 50px;text-align: center;color: #000;background: #fff;}
+	.ordhead h3{line-height: 50px;}
+	.ordbody{background: #f6f6f6;padding:20px 0;}
+	.form-signin table{margin:0 25%;width: 740px;}
+	.form-signin .tdleft{text-align: right;}
+	.oblast{padding-bottom: 0;}
+</style>
+	<div class="form form_index" >
+     <div class="form-signin" style="width:100%;min-height:500px;margin:0 auto;padding:0;">
+	    <form action="{:U('Order/step_two')}" method="post" class="form-inline" id="tempForm">
+	    	<!-- 寄件人信息 -->
+	    	<div class="ordhead"><h3>{:L('SenderInfo')}</h3></div>
+	    	<div class="ordbody">
+		    	<table class="tab1" border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td class="tdleft"><label>{:L('FullName')}：</label></td>
+						<td><label><input type="text" value="{$info['sender']}" name="PostName"  class="form-control" required oninvalid="setCustomValidity('请输入寄件人！');" oninput="setCustomValidity('');" ></label></td>
+					</tr>
+					<tr>
+						<td class="tdleft"><label>{:L('Address')}：</label></td>
+						<td><label><input type="text" value="{$info['sendAddr']}" name="PostAddress"  class="form-control" required oninvalid="setCustomValidity('请输入寄件人地址！');" oninput="setCustomValidity('');"></label></td>
+					</tr>
+		            <tr>
+		              	<td class="tdleft"><label>{:L('Phone')}：</label></td>
+		              	<td><label><input type="phone" value="{$info['sendTel']}" name="PostPhone"  class="form-control" required oninvalid="setCustomValidity('请输入寄件人电话！');" oninput="setCustomValidity('');"></label></td>
+		            </tr>
+		            <tr>
+		              	<td class="tdleft"><label>{:L('ZipCode')}：</label></td>
+		              	<td><label><input type="text" value="{$info['postcode']}" name="PostCode"  class="form-control" required oninvalid="setCustomValidity('请输入寄件人邮编！');" oninput="setCustomValidity('');"></label></td>
+		            </tr>
+				</table>
+	    	</div>
+<!-- **************************************************** -->
+	    	<!-- 收件人信息 -->
+	    	<div class="ordhead"><h3>{:L('RecInfo')}</h3></div>
+	    	<div class="ordbody">
+		    	<table class="tab1" border="0" cellpadding="0" cellspacing="0">
+				    <tr>
+		              	<td class="tdleft"><label>{:L('FullName')}：</label></td>
+		              	<td><label><input type="text" value="{$info['receiver']}" name="RecName"  class="form-control" required oninvalid="setCustomValidity('请输入收件人！');" oninput="setCustomValidity('');"></label></td>
+		            </tr>
+		            <tr>
+            	<td class="tdleft"><label>{:L('ProvinceCity')}：</label></td>
+				<td style="position: relative; ">
+
+				    <select id="loc_province" style="width:120px;">
+				    </select>
+				    <select id="loc_city" style="width:120px; margin-left: 10px">
+				    </select>
+				    <select id="loc_town" style="width:120px;margin-left: 10px">
+				    </select>
+				    <input id="province" name="Province" value="{$info['province']}" style="display:none" />
+				    <input id="city" name="City" value="{$info['city']}" style="display:none" />
+				    <input id="town" name="Town" value="{$info['town']}" style="display:none" />
+				</td>
+            </tr>
+<script>
+	$(function(){	
+		//这是后台返回的省市区，把它们都分别赋值到那三个select上面显示
+		var p = "{$info['province']}";
+		var c = "{$info['city']}";
+		var t = "{$info['town']}";
+		$("#select2-chosen-1").html(p);
+		$("#select2-chosen-2").html(c);
+		$("#select2-chosen-3").html(t);
+})
+</script>
+		            <tr>
+		              	<td class="tdleft"><label>{:L('DetaileAddress')}：</label></td>
+		              	<td class="xixidizhi"><span id="cpp_s" class="nows"></span><label><input id="RecAddress" type="text" value="{$info['reAddr']}" name="RecAddress" required class="form-control" oninvalid="setCustomValidity('请输入详细地址！');" oninput="setCustomValidity('');"></label>
+		              	</td>
+		            </tr>
+		            <tr>
+		              	<td class="tdleft"><label>{:L('Phone')}：</label></td>
+		              	<td><label><input type="text" value="{$info['reTel']}" name="RecPhone"  class="form-control" required oninvalid="setCustomValidity('请输入收件人电话！');" oninput="setCustomValidity('');"></label></td>
+		            </tr>
+		            <tr>
+		              	<td class="tdleft"><label>{:L('ZipCode')}：</label></td>
+		              	<td><label><input type="text" value="{$info['postcode']}" name="RecCode"  class="form-control" required oninvalid="setCustomValidity('请输入收件人邮编！');" oninput="setCustomValidity('');"></label></td>
+		            </tr>
+				</table>
+	    	</div>
+<!-- **************************************************** -->
+	    	<!-- 选择线路 -->
+	    	<div class="ordhead"><h3>{:L('SelectLine')}</h3></div>
+	    	<div class="ordbody">
+		    	<table class="tab1" border="0" cellpadding="0" cellspacing="0">
+				    <tr>
+						<td class="tdleft"><label>{:L('TranLine')}：</label></td>
+						<td>
+						<label>
+		                <select name="TransferLine" id="TransferLine" class="form-control" required>
+							<option value="{$vo['id']}">{:L('PleaseSelectLine')}</option>
+							<volist name="tranline" id="vo">
+								<option value="{$vo['id']}" <if condition="($info['TranKd']) eq $vo['id']">selected</if>><php>$l = L('MKLINES');echo $l[$vo['lngname']];</php></option>
+							</volist>
+		<!-- 					<option value="1" <if condition="($info['TranKd']) eq '1'">selected</if>><php>$l = L('MKLINES');echo $l[1];</php></option>
+							<option value="2" <if condition="($info['TranKd']) eq '2'">selected</if>><php>$l = L('MKLINES');echo $l[2];</php></option> -->
+		                </select>
+						</label>
+						<font color="grey" id="mimenu"></font>
+						</td>
+						<ul style="display:none;">
+							<volist name="tranline" id="vo">
+								<li class="m{$vo['id']}"><php>$l = L('MKRemarks');echo $l[$vo['lngremark']];</php></li>
+							</volist>
+						</ul>
+		            </tr>
+<script>
+	$(document).ready(function(){
+		var p2 = $('#TransferLine').children('option:selected').val();//这就是selected的值
+		if(p2 != ''){
+			$("#mimenu").html('说明：'+$(".m"+p2).html());
+		}
+		
+		$('#TransferLine').change(function(){
+			// alert($(this).children('option:selected').val());
+			var p = $(this).children('option:selected').val();//这就是selected的值
+
+			if(p != ''){
+				// alert(p);
+				var h = $(".m"+p).html();
+				$("#mimenu").html('说明：'+h);
+			}else{
+				$("#mimenu").html('');
+			}
+		})
+	})
+</script>
+				</table>
+	    	</div>
+<!-- **************************************************** -->
+			<!-- 货品声明 -->
+			<div class="ordhead"><h3>{:L('GoodsList')}</h3></div>
+	    	<div class="ordbody oblast">
+					<table class="table_now" style="margin:10px auto; width:905px; height:110px;">
+						<tr>
+							<td width="10%;" style="font-weight: bold;">{:L('BrandName')}</td>
+							<td width="10%;" style="font-weight: bold;">{:L('ProductName')}</td>
+							<td width="10%;" style="font-weight: bold;">{:L('ProCate')}</td>
+							<td width="20%" style="font-weight: bold;">{:L('Customs')}</td>
+							<td width="10%" style="font-weight: bold;">{:L('UnitPrice')}</td>
+							<td width="10%" style="font-weight: bold;">{:L('Amount')}</td>
+							<td width="10%" style="font-weight: bold;">{:L('Currency')}</td>
+							<td width="10%" style="font-weight: bold;">{:L('Remarks')}</td>	
+							<td style="border:none"><img src="__MEMBER__/images/null.png"  /></td>						
+						</tr>
+						<for start="0" end="5">
+						<tr class="stta" cid="{$i}">
+							<input class="ttc" type="hidden" name="oid_{$i}" value="{$pro_list[$i]['oid']}">
+							<td width="10%;"><input type="text" name="brand_{$i}" value="{$pro_list[$i]['brand']}" style="width:113px;margin:2px; height:30px;padding:2px;"></td>
+
+							<td width="10%;"><input type="text" name="product_{$i}" value="{$pro_list[$i]['detail']}" style="width:113px;margin:2px; height:30px;padding:2px;"></td>
+							
+							<td width="10%;"><input type="text" name="catname_{$i}" value="{$pro_list[$i]['catname']}" style="width:113px;margin:2px; height:30px;padding:2px;"></td>
+
+							<td width="20%;">---</td>
+
+							<td width="10%;"><input type="text" name="price_{$i}" value="{$pro_list[$i]['price']}" style="width:83px;margin:2px; height:30px;padding:2px;"></td>
+
+							<td width="10%;"><input type="text" name="amount_{$i}" value="{$pro_list[$i]['number']}" style="width:83px;margin:2px; height:30px;padding:2px;"></td>
+
+							<!-- 币种 -->
+							<td width="10%;" style="width:83px;margin:2px; height:50px;padding:2px;">
+								<select name="coin_{$i}" id="" style="height:30px;padding:2px;">
+									<option  value="0" <if condition="($pro_list[$i]['coin']) eq '0'">selected</if>></option>
+									<option class="dds" value="1" <if condition="($pro_list[$i]['coin']) eq '1'">selected<else />selected</if>>￥</option>
+									<option value="2" <if condition="($pro_list[$i]['coin']) eq '2'">selected</if>>$</option>
+								</select>
+							</td>
+							<td width="10%;" ><input type="text" name="remark_{$i}" value="{$pro_list[$i]['remark']}" style="width:113px;margin:2px; height:30px;padding:2px;" dd="{:L('Remarks')}"></td>
+							<td style="border:none; " class="nows nows{$i}"><a href="javascript:;" title="{:L('Delete')}"><img width="22" height="22" src="__MEMBER__/images/clean.png" /></a></td>
+						</tr>
+						</for>
+					</table>
+					<span style="color:red;font-size:14px;padding-left:495px;">{:L('Notice')}</span>
+            </tr>
+
+<!-- **************************************************** -->
+			<!-- 按钮部分 -->
+			<tr>
+				<table style="float:right; margin:10px 20px 0 0">
+					<tr>
+				<td>
+					<input type="hidden" value="{$user_id}" name="uid">
+				</td>
+				<td>
+					<span id="loading" style="bottom:180px;left:650px;!important"></span>
+					<button type="button" class="btn btn-primary" id="BtnSave">{:L('BtnSave')}</button>
+					<!-- <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button> -->
+					<span id="messagebox" class="msgbox" style="bottom:180px;left:650px;!important"></span>
+				</td>
+					</tr>
+				</table>
+			</tr>
+	    	</table>
+	    	</div>
+<!-- END -->
+	    	<div style="clear:both;"></div>
+		</form>
+    </div>
+   	</div>
+<!-- 20170315 修改弹出框，使用layer 甘-->
+<script>
+    $('#BtnSave').click(function(){
+    $.ajax({
+        cache: false,
+        type: "post",
+        url:"{:U('Order/checkForm')}",
+        data:$('#tempForm').serialize(),// 你的formid
+        async: false,
+        beforeSend:function(){
+            $("#loading").html('<img style="width:28px;height:28px;" src="__MEMBER__/images/msg_loading_d.gif"/>');
+        },
+        error: function(request) {
+            layer.alert("Connection error");
+        },
+        success: function(data) {
+            if(data.state == 'no'){
+				layer.open({
+					type: 0,
+					offset: '300px',
+					shadeClose: true,
+					skin: 'demo-class',//自定义样式demo-class
+					title : '消息提示',
+					content : data.msg,
+					area : ['150px' , '150px'],
+					icon : {icon:5},
+				});
+                $("#loading").html('');
+
+            }else{
+                $('#BtnSave').attr('type','submit');
+            }
+        }
+    });
+    });
+    
+	$(function(){
+		$("td.nows a").css('display','none');
+		$(".stta").hover(function(){
+			var ttc= $(this).find('.ttc').attr('value');
+			var src= $(this).find('img');
+			if(ttc!=''){
+				var d=$(this);
+				$(this).find('.nows').find('a').css('display','inline');
+				$(this).find('.nows').find('a').click(function(){
+					layer.confirm('您确定要删除吗？', {icon:3,offset: '300px'}, function(){
+						$.ajax({
+							url: "{:U('Order/del')}",
+							type: "POST",
+							data:{'ttc':ttc,},
+							dataType: "json",
+							success:function(result){
+								console.log(result);
+				   				if(result.state == '1'){
+				   					layer.msg(result.msg, {icon: 6,offset: '350px'});
+				   					d.find('input').attr('value','');
+									d.find('select').val('1');
+									src.remove();
+				   				}else{	
+									layer.open({
+										type: 0,
+										title : '消息提示',
+										content : '参数错误',
+										skin: 'demo-class',//自定义样式demo-class
+										icon : {icon:5},
+										offset: '300px',
+									});
+									src.attr('src',"__MEMBER__/images/clean.png");
+				   				}
+				   				d.find('.nows').find('a').css('display','none');
+				   			}
+						});
+					});
+					
+				})
+			}		 
+		},function(){
+			$(this).find('.nows').find('a').css('display','none');	
+			$(this).find('.nows').find('a').unbind();
+		})
+
+	})
+</script>
+<!-- END -->
+	<div class="foot"></div>
+
+</block>
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+
+
+
+ALTER TABLE mk_zcode_line MODIFY COLUMN zipcode VARCHAR(6);

@@ -1,0 +1,385 @@
+<!-- 基础模板 -->
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="pragram" content="no-cache"> 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<block name="title">
+<title>{:L('UpTitle')}</title>
+<scirpt src="https://cdn.polyfill.io/v2/polyfill.js"></scirpt>
+<script src="__MEMBER__/js/jquery-1.9.1.min.js"></script>
+<!-- <script src="__MEMBER__/js/messagebox.js"></script>-->
+<script type="text/javascript" src="__MEMBER__/js/dsdialog.js"></script>
+<link rel="stylesheet" type="text/css" href="__MEMBER__/css/style.css?t=20180621"/>
+<link rel="stylesheet" type="text/css" href="__MEMBER__/css/csshake-rotate.min.css"/>
+<link type="text/css" rel="stylesheet" href="__MEMBER__/css/PrintArea.css" /> 
+<!-- <link rel="shortcut icon" href="__MEMBER__/image/logo.ico" /> -->
+<!-- <link href="__MEMBER__/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
+<!-- <link href="__MEMBER__/bootstrap/css/docs.min.css" rel="stylesheet"> -->
+<if condition="(L('lng') eq 'zh-cn')">
+<link href="__MEMBER__/css/all.css?t=20180621" rel="stylesheet">
+<else/>
+<link href="__MEMBER__/css/all_us.css?t=20180621" rel="stylesheet">
+</if>
+<link href="__MEMBER__/css/page.css" rel="stylesheet">
+<script type="text/javascript" src="__MEMBER__/layer/layer.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/commen.js"></script>
+<script>
+    // 清除登录seesion
+    var em_session = "{:U('Download/check_session')}";
+    empty_session(em_session);
+</script>
+<script type="text/javascript" src="__MEMBER__/js/jquery.PrintArea.js"></script>
+<!--[if lt IE 9]>
+<script src="../assets/js/ie8-responsive-file-warning.js"></script>
+<![endif]-->
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+<script type="text/javascript" src="__MEMBER__/js/Vue/Vue.js"></script>
+<!-- 引入样式 -->
+<!-- <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"> -->
+<link rel="stylesheet" href="__MEMBER__/js/Vue/Element/index.css">
+<!-- 引入组件库 -->
+<!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+<script src="__MEMBER__/js/Vue/Element/index.js"></script>
+<script src="__MEMBER__/bootstrap/js/bootstrap.min.js"></script>
+<link href="__MEMBER__/bootstrap-3.3.6/css/bootstrap.css" rel="stylesheet">
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script type="text/javascript">
+  var _hmt = _hmt || [];
+</script>
+</block>
+</head>
+<body>
+<block name="header">
+<script type="text/javascript">
+// 包裹页导航，搜索特效JS gan
+$(function(){
+  setInterval(function(){
+  var height=$(document).scrollTop();
+  if(height>=130){
+    $('header').css('box-shadow','10px 10px 5px #888888');
+  }else{
+    $('header').css('box-shadow','none');
+  }
+  if(height>=138){
+    $('.confiexd').css({"position":"fixed","top":"185px","left":"5.7%","z-index":"100","width":"88.5%","min-width":"500px"});
+    $('.confiexd th').css('width','450px');
+    $('.confapp').css({"height":"62px"});
+  }else{
+    $('.confiexd').css('position','');
+    $('.confiexd th').css('width','450px');
+    $('.confapp').css({"height":""});
+  }
+  },1);
+});
+</script>
+<!-- Docs master nav header>height:85px -->
+<header class="navbar navbar-static-top bs-docs-nav navbar-fixed-top" style="opacity: 1;background: none;width: 100%;min-width: 1366px; /*min-width: 1574px;*/ background: #232323; height: 175px; position: fixed; left: 0; top: 0; z-index: 999999; opacity: 0.95;" id="top" role="banner">
+<div class="head_warp">
+  <div class="logo_vz">
+    <a href="{:U('Member/index')}">
+    <img src="__MEMBER__/image/{:L('lng')}/login.png">
+    </a>
+  </div>
+  <if condition="(CONTROLLER_NAME eq 'Member')">
+  <div id="messagebox" class="msgbox">
+  </div>
+  </if>
+    <div class="login_vz">
+        <a href="__ACTION__?l=zh-cn" <if condition="(L('lng') eq 'zh-cn')">style=" color:#ffde00;"</if>>中文</a>/<a href="__ACTION__?l=en-us" <if condition="(L('lng') eq 'en-us')">style=" color:#ffde00;"</if>>English</a>
+    </div>
+    <ul class="userlogin">
+        <li class="login_user cat_1">{$mkuser}<span></span>
+            <!-- 二级菜单-->
+            <div class="cat_2">
+                <p>
+                    <a href="{:C('WebUrl')}" target="_blank">{:L('Home')}</a>
+                </p>
+                <p>
+                    <a href="javascript:;" onclick="showrepwd()">{:L('l_pwd_res')}</a>
+                </p>
+                <p>
+                    <a href="{:U('Login/Login_out')}">{:L('LoginOut')}</a>
+                </p>
+            </div>
+        </li>
+    </ul>
+    <!-- 审核模块 -->
+    <if condition="($user_status eq 0) && ($user_step eq 5)">
+        <span class="headermsgs" id="bell"><img src="__MEMBER__/images/btnicon0_03.png">{:L('InAudit')}</span>
+        <elseif condition="($user_status eq 1) && ($user_step eq 5)"/>
+        <span class="headermsgs" id="bell">{:L('Authenticated')}</span>
+        <else/>
+        <span class="headermsg" id="bell"><img src="__MEMBER__/images/btnicon0_02.png">{:L('NotSubmitted')}</span>
+    </if>
+    <!-- 审核模块 end -->
+    <!-- 通告模块 stat-->
+  <span class="header_ann">
+  <a onclick="show_announcement()" <if condition="(L('lng') eq 'zh-cn')"> style="color:#fff;cursor: pointer;"<else/> style="color:#fff;cursor: pointer;"</if>>
+  <img src="__MEMBER__/image/laba.gif" class="an_ment_i">{:L('l_notice')}
+  <span class="an_show_i" id="an_show_i"></span>
+      </a>
+  </span>
+    <!-- 通告模块 end-->
+
+
+  <div <if condition="(L('lng') eq 'zh-cn')">
+     class="nav"</if><if condition="(L('lng') eq 'en-us')">class="navs"</if>>
+    <a href="{:U('Member/index')}">{:L('PackageList')}<if condition="(CONTROLLER_NAME eq 'Member')">
+    <p>
+    </p>
+    </if></a><span></span>
+    <a href="{:U('OrderSource/index')}">{:L('l_imp_order')}<if condition="(CONTROLLER_NAME eq 'OrderSource')">
+    <p>
+    </p>
+    </if></a><span></span>
+    <a href="{:U('Order/index')}">{:L('OnlineOrder')}<if condition="(CONTROLLER_NAME eq 'Order')">
+    <p>
+    </p>
+    </if></a><span></span>
+    <a href="{:U('WebRecharge/index')}">{:L('PersonalCenter')}<if condition="(CONTROLLER_NAME eq 'WebRecharge') || (CONTROLLER_NAME eq 'Topup')">
+    <p>
+    </p>
+    </if></a><span></span>
+    <a href="{:U('Addressee/index')}">{:L('l_recipient')}<if condition="(CONTROLLER_NAME eq 'Addressee')">
+    <p>
+    </p>
+    </if></a><span></span>
+    <a href="{:U('Sender/index')}">{:L('l_sender_management')}<if condition="(CONTROLLER_NAME eq 'Sender')">
+    <p>
+    </p>
+    </if></a><span></span>
+    <!-- 搁置头部导航效果 20140414 -->
+    <!--       <a href="{:U('Member/index')}" <if condition="(CONTROLLER_NAME eq 'Member')">style='color:#c4ac09'</if>>{:L('PackageList')}</a><span></span>
+    <a href="{:U('Order/index')}"<if condition="(CONTROLLER_NAME eq 'Order')">style='color:#c4ac09'</if>>{:L('OnlineOrder')}</a><span></span> -->
+  </div>
+
+  <!-- 搁置头部导航效果 20140414 -->
+  <!-- <script type="text/javascript">
+  $('.nav a').hover(function(){
+    $(this).append('
+  <p>
+  </p>
+');
+  },function(){
+    $(this).find('p').remove();
+  });
+  </script>
+ -->
+  <!-- 税金计算器 -->
+  <!-- <div class="taxcal" style="position: absolute;top: 25px;right: 26%;">
+  <a href="javascript:;" style="color: #fff;font-size: 15px;display: inline-block;padding:3px 8px 3px 8px;border:1px solid #fff;border-radius: 5px;"><img src="__MEMBER__/images/taxcal.png" style="margin-right: 5px;">税金计算器</a>
+</div>
+ -->
+<!-- 税金计算器 end -->
+</div>
+</header>
+</block>
+<!--文字说明-->
+<div class="bs-docs-header <if condition='(CONTROLLER_NAME eq "WebRecharge") || (CONTROLLER_NAME eq "Topup") || (CONTROLLER_NAME eq "AmountOpt")'>
+  bgimgs<else />bgimg</if>" id="content">
+  <if condition="(CONTROLLER_NAME eq 'Member') || (CONTROLLER_NAME eq 'Order') || (CONTROLLER_NAME eq 'Addressee') || (CONTROLLER_NAME eq 'Sender') || (CONTROLLER_NAME eq 'OrderSource') || (CONTROLLER_NAME eq 'Announcement')">
+  <div class="h_container">
+    <h3 style="margin: 0;padding: 0;">{:L('MemberTitle')}</h3>
+      <ul class="formright">
+          <li><p>47913 Warm Spring Blvd, Fremont, CA 94539, USA</p></li>
+          <li><p>1306 John Reed Ct, City Of Industry, CA 91745, USA</p></li>
+      </ul>
+      <ul class="formright h_con_ml50">
+          <li><p>3874 Schiff Dr. Las Vegas NV 89103  USA</p></li>
+          <li><p>5136 W Colonial Dr Orlando FL 32808  USA</p></li>
+      </ul>
+      <div style="clear: both"></div>
+  </div>
+  </if>
+  <if condition="(CONTROLLER_NAME eq 'WebRecharge') || (CONTROLLER_NAME eq 'AmountOpt')">
+  <div class="usercontent">
+    <ul class="account-balance">
+      <li>
+      <div class="balance">
+        <p>
+          {:L('AccountBalance')}
+        </p>
+      </div>
+      <div class="account">
+        <p class='accph3' id="amount">
+          ${:number_format($amount,2)}
+        </p>
+      </div>
+      <div class="topup">
+        <span class="{:L('toptuc')}"><a onclick="mywalletstopup()" class="empty_hien">{:L('Recharge')}</a></span>
+        <!-- 增加提现记录时需要以下 -->
+        <!--<span class="tuchong"><a onclick="mywalltosh()">{:L('l_ba_wi')}</a></span>-->
+      </div>
+      </li>
+    </ul>
+  </div>
+  </if>
+  <if condition="(CONTROLLER_NAME eq 'Topup')">
+  <div class="usercontent">
+    <ul class="account-balance">
+      <li>
+      <div class="balance">
+        <p>
+          {:L('AccountBalance')}
+        </p>
+      </div>
+      <div class="account">
+        <p class='accph3'>
+          ${:number_format($amount,2)}
+        </p>
+      </div>
+      </li>
+    </ul>
+  </div>
+  </if>
+</div>
+<!-- Docs page layout -->
+<block name="main"></block>
+<block name="footer">
+<!-- min-width:1574px; -->
+<div style="text-align: center;background-color:#e2e9ea;font-size: 13px;height:30px;width:100%;margin:0;padding:6px 0;min-width: 1225px;">
+    Copyright © 2010 - {:date('Y')}  All Rights Reserved.{:L('MegaoLogistics')}
+</div>
+</block>
+<script type="text/javascript">
+
+var check_new_ann_url = "{:U('Announcement/check_new_ann')}";
+var bas_type = "__MEMBER__";
+
+load_success(check_new_ann_url,bas_type);
+
+ $('.table-hover tbody tr').mouseover(function(){
+  $(this).addClass('select');
+ });
+ $('.table-hover tbody tr').mouseout(function(){
+  $(this).removeClass('select');
+ });
+$(function(){
+  $('#myModal').on('hidden.bs.modal', function() {
+    $(this).removeData("bs.modal");
+    });
+});
+//20170314 使用layer弹出框 甘
+function OpenGoWin(){
+      layer.open({
+        type: 0,
+        closeBtn:0,
+        shadeClose: true,
+        offset: '400px',
+        title: ["{:L('LAY_ZLMsg')}",'color:#ffde00;background:#000;text-align:center;border-bottom: 3px solid #ffde00;font-size:15px;margin:0;padding:0;font-family:SimHei;'],
+        area : ['500px' , '220px'],
+        content: "<img {:L('LAY_ImgClass')} src='__MEMBER__/images/btnicon7.png'>{:L('LAY_ZLCont')}",
+        btnAlign: 'c',
+        skin: 'demo-class1',
+        btn:["{:L('LAY_ZLBtn')}"],
+          yes: function(){
+            window.location.href="{$surl}";
+            $.post("{$chaos}",{id:"{:md5(base64_encode(time().rand(10000,99999)))}"});
+          }
+        });
+}
+//20170314 使用layer弹出框 甘
+$(function(){
+  var surl = '{$surl}';
+  var sta = "{:session('duns')}";
+  $("#bell").click(function(){
+    if(surl.length > 0){
+      OpenGoWin();
+    }else{
+      if(sta == 'not_examine'){
+        tip_to_one();
+      }else{
+        layer.open({
+        type: 0,
+        closeBtn:0,
+        shadeClose: true,
+        offset: '400px',
+        title: ["{:L('LAY_SystemMessage')}",'color:#ffde00;background:#000;text-align:center;border-bottom: 3px solid #ffde00;font-size:15px;margin:0;padding:0;letter-spacing: 3px;'],
+        content: "<p style='text-align:center;'>{:L('LAY_Nonew')}</p>",
+        skin: 'demo-class1',
+        btnAlign: 'c',
+        btn:["{:L('LAY_BtnOK')}"],
+        });
+      }
+    }
+  });
+
+  //预加载提示
+  if(surl.length > 0){
+    OpenGoWin();
+  }else{
+    if(sta == 'not_examine'){
+      tip_to_one();
+    }
+  }
+
+  $(".cat_1").hover(function(){
+    $(".cat_2").stop().animate({height:'120px'});
+    $(".cat_1 span").css('background',"url('__MEMBER__/images/select2.png') -17px -2px");
+  },function(){    
+     $(".cat_2").stop().animate({height:'0px'});
+     $(".cat_1 span").css('background',"url('__MEMBER__/images/select2.png') 1px -2px");
+  })
+})
+
+//20170314 使用layer弹出框 甘
+function tip_to_one(){
+    layer.open({
+    type: 0,
+    closeBtn:0,
+    shadeClose: true,
+    offset: '400px',
+    title: ["{:L('LAY_SystemMessage')}",'color:#ffde00;background:#000;text-align:center;border-bottom: 3px solid #ffde00;font-size:15px;margin:0;padding:0;letter-spacing: 3px;'],
+    content: "<p style='text-align:center;'>{:L('LAY_not_examine')}</p>",
+    skin: 'demo-class1',
+    btnAlign: 'c',
+    btn:["{:L('LAY_BtnOK')}"],
+      yes: function(){
+        $.post("{:U('Base/setNull')}",{mod:"{:md5(base64_encode(time().rand(10000,99999)))}"});
+        layer.closeAll('dialog');
+      }
+    });
+
+}
+// 修改密码
+function showrepwd(){
+    layer.open({
+          type: 2,
+          shadeClose: false,
+          title: "{:L('Rd_Reset_title')}",
+          area : ['500px' , '350px'],
+          scrollbar: false,
+          resize: false,
+          offset: '25%',
+          content: "{:U( 'Piecemeal/modify_password')}",
+            success: function(layero, index){
+                this.enterEsc = function(event){
+                    if(event.keyCode === 13){
+                        layer.closeAll();
+                        return false; //阻止系统默认回车事件
+                    }
+                };
+                $(document).on('keydown', this.enterEsc);
+                //监听键盘事件，关闭层
+            }
+    });
+}
+// 公告
+function show_announcement(){
+  window.location.href = "{:U('Announcement/index')}";
+}
+</script>
+<div id="print123">
+</div>
+</body>
+</html>

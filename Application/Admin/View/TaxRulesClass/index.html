@@ -1,0 +1,162 @@
+<extend name="./base" />
+
+<block name="main">
+
+<div class="container" >
+    <div class="col-md-2">
+        <include file="Public:tax_rule_class_nav" />
+    </div>
+    <div class="col-md-10">
+        <div class="rtop">
+	        <table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px">
+		        <tr>
+			        <td style="border-top:none">
+                        <span style="text-align:left;float:left;margin-top:12px;">
+                            
+                            <button type="button" class="btn btn-primary" onclick="cc_import();">导入</button>
+                            
+                            &nbsp;&nbsp;
+                            <a href="{:U('TaxRulesClass/add')}" data-toggle="modal" data-target="#myModal">
+                            <button type="button" class="btn btn-primary">新增</button>
+                            </a>
+				        </span>
+                        <h4 style="text-align:right">
+                            您当前所在位置：CC税则&nbsp;/&nbsp;<a href="javascript:void(0);" class="color">税则列表</a>
+                        </h4>
+			        </td>
+                </tr>
+<script>
+function cc_import(){
+    layer.open({
+        type: 2,
+        title:'导入',
+        offset: '30%',
+        // btn: ['关闭'],
+        area: ['800px', '350px'], //宽高
+        content: "{:U('TaxRulesClass/importView')}"
+    });
+}
+</script>                
+                <tr>
+                    <td>
+                        <form action="{:U('TaxRulesClass/index')}" method="get" class="form-inline">
+                            <!-- 中文搜索时必须的 -->
+                            <input type="hidden" name="m" value="{$Think.MODULE_NAME}" />
+                            <input type="hidden" name="c" value="{$Think.CONTROLLER_NAME}" />
+                            <input type="hidden" name="a" value="{$Think.ACTION_NAME}" />
+                            <!-- End -->
+
+                            <label>筛选：
+                                <input type="search" name="keyword" class="form-control" value="{$keyword}" style="width:200" />
+                            </label>
+
+                            <label>
+                                <select name="searchtype" class="form-control">
+                                    <option value="0">海关类别</option>
+                                    <option value="ONE" <eq name="searchtype" value="ONE">selected</eq>>一级类别</option>
+                                    <option value="TWO" <eq name="searchtype" value="TWO">selected</eq>>二级类别</option>
+                                    <option value="THREE" <eq name="searchtype" value="THREE">selected</eq>>三级类别</option>
+                                    <option value="FOUR" <eq name="searchtype" value="FOUR">selected</eq>>四级类别</option>
+                                    <option value="FIVE" <eq name="searchtype" value="FIVE">selected</eq>>五级类别</option>
+                                    
+                                </select>
+                            </label>
+
+                            <label>
+                                <input type="search" name="hscode" class="form-control" value="{$hscode}" style="width:200" placeholder="行邮税号" />
+                            </label>
+                            
+                            <label>
+                                &nbsp;&nbsp;行数：
+                                <select name="ePage" id="" class="form-control" >
+                                    <option value="10" <eq name="ePage" value="10">selected</eq>>10</option>
+                                    <option value="20" <eq name="ePage" value="20">selected</eq>>20</option>
+                                    <option value="30" <eq name="ePage" value="30">selected</eq>>30</option>
+                                    <option value="50" <eq name="ePage" value="50">selected</eq>>50</option>
+                                    <option value="100" <eq name="ePage" value="100">selected</eq>>100</option>
+                                </select>
+                            </label>
+                            <label>
+                                    <button type="submit" class="btn btn-primary btn-lg" onclick="ccc()" >查询</button>
+                            </label>
+                        </form>
+                    </td>
+                
+                </tr>
+	        </table>
+        </div>
+        
+        <div class="container" style="width:100% !important;">
+	        <table border="0" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>行邮税号</th>
+                        <th>一级类别</th>
+                        <th>二级类别</th>
+                        <th>三级类别</th>
+                        <th>四级类别</th>
+                        <th>五级类别</th>
+                        <th>规格单位</th>
+                        <th>数量单位</th>
+                        <th>完税价格(元)</th>
+                        <th>税率(%)</th>
+                        <th>状态</th>
+                        <th>操作</th>                        
+                    </tr>
+                </thead>
+		        <tbody style="font-size:15px;">
+			        <foreach name="list" item='v'>
+                        <tr {$key % 2 == 0 ?'':'style="background-color:#ddd;"'}>
+                            <td class="td1">{$key + 1}</td>
+                            <td class="td1">{$v['hs_code']}</td>
+                            <td class="td1">{$v['cname1'] ? $v['cname1'] : '-'}</td>
+                            <td class="td1">{$v['cname2'] ? $v['cname2'] : '-'}</td>
+                            <td class="td1">{$v['cname3'] ? $v['cname3'] : '-'}</td>
+                            <td class="td1">{$v['cname4'] ? $v['cname4'] : '-'}</td>
+                            <td class="td1">{$v['cname5'] ? $v['cname5'] : '-'}</td>
+                            <td class="td1">{$v['specifications']}</td>
+                            <td class="td1">{$v['number']}</td>
+                            <td class="td1">{$v['price']}</td>
+                            <td class="td1">{$v['rate']}</td>
+                            <td class="td1">
+
+                                <switch name="v.status">
+                                    <case value="0">
+                                        <font color="red">禁用</font>
+                                    </case>
+                                    <case value="1">
+                                        <font color="green">启用</font>
+                                    </case>
+                                    <default />其他
+                                </switch>
+
+                            </td>
+                            <td align="center" class="td3">
+                                <a href="{:U('TaxRulesClass/info',array('id'=>$v['id']))}" data-toggle="modal" data-target="#myModal">查看</a>
+                                | 
+                                <a href="{:U('TaxRulesClass/edit',array('id'=>$v['id']))}" data-toggle="modal" data-target="#myModal">编辑</a>
+                            </td>                            
+                        </tr>
+                    </foreach>
+		        </tbody>
+	        </table>
+        </div>
+
+        <div id="pages" class="page">{$page}</div>
+		<div class="foot"></div>
+		<center>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"  >
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            ...
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
+        </center>
+    </div>
+</div>
+
+</block>

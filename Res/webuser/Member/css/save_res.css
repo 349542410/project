@@ -1,0 +1,65 @@
+.warp {
+  margin-top: 50px;
+}
+.line{
+    margin-top: 20px;
+    margin-left: 20px;
+  }
+.line .value {
+    width: 230px;
+    height: 38px;
+    border: 1px solid #dadada;
+    text-indent: 8px;
+    line-height: 38px;
+}
+.line label{
+  width: 130px;
+  display: inline-block;
+}
+.line .detail-add {
+    width: 550px;
+    height: 38px;
+    line-height: 38px;
+    border: 1px solid #dadada;
+    text-indent: 8px;
+}
+.line .lineselect {
+    width: 200px;
+    display: inline-block;
+}
+.line .cre_type{
+    width: 95px;
+    display: inline-block;
+}
+/*在线下单文件上传样式*/
+.obcont{width:360px;position:relative;margin-top:26px;height: 200px;border: 2px dotted #000;border-radius: 15px;margin-left: 20px;float: left;}
+.obcont p{font-size:18px;font-weight:700;color:#000;padding-left: 15px;padding-top: 5px;}
+.obcont input[id=file]{width:90px;height:41px;position:relative;z-index:9;opacity:0;top:-37px;margin-left: 270px;left: -13px;}
+.obcont label{position:absolute;background:#232323;display:inline-block;color:#ffde00;width:90px;height:41px;line-height:45px;text-align:center;top:123px;left:256px;border-radius:5px}
+input:disabled{background-color:#fff;border:none;border-bottom:1px solid #c9c9c9;text-indent:.5em;width:250px;margin-left:10px;font-size:17px}
+.obconts{width:360px;position:relative;margin-top:26px;height: 200px;border: 2px dotted #000;border-radius: 15px;margin-left: 20px;float: left;}
+.obconts p{font-size:18px;font-weight:700;color:#000;padding-left: 15px;padding-top: 5px;}
+.obconts input[id=files]{width:106px;height:41px;position:relative;z-index:9;opacity:0;top:-37px;margin-left: 270px;left: -13px}
+.obconts label{position:absolute;background:#232323;display:inline-block;color:#ffde00;width:90px;height:41px;line-height:45px;text-align:center;top:123px;left:256px;border-radius:5px}
+/*在线下单线路样式*/
+.ordbody .lineul{width: 85%;margin:0 auto;height: 70px;}
+.ordbody .lineul li{float: left;margin: 15px 13.5px 0px 13.5px;}
+.ordbody .lineulus{width: 85%;margin:0 auto;margin-left: 320px;}
+.ordbody input[type='radio'].radio {opacity:0; display:inline-block; height:20px;height: 30px;}
+.ordbody label.radio {background:url(../images/kuang.png) no-repeat; height:30px; padding-left:25px;background-position-y: 4px;cursor: pointer;}
+.ordbody input[type='radio'].radio:checked + .radio {background:url(../images/gougou.png) no-repeat;color:#e90000;font-weight: bold;background-position-y: 4px;}
+.savebtn {
+  margin: 20px 0;
+  float: right;
+  margin-right: 20px;
+}
+.savebtn .sa_sub_btn{
+    border: none;
+    background-color: #232323;
+    color: #ffde00;
+    border-radius: 5px;
+    width: 60px;
+    height: 30px;
+    outline: none;
+    text-align: center;
+}

@@ -1,0 +1,59 @@
+﻿.reg-container .c-loginprocess {margin-top:15px}
+.registermain {margin-bottom:50px}
+.prevstep {left:0;bottom:0;}
+
+.upload-lg-img {text-align:center;}
+.upload-lg-img li {width:255px;float:left;margin:20px 186px 20px 0}
+.upload-lg-img .last {margin-right:0}
+.upload-lg-img .filebox {width:250px;height:250px;background-color:#efefef;border:2px solid #ccc;position:relative;overflow:hidden}
+.upload-lg-img .file { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter:alpha(opacity=0);opacity:0;width:250px;height:250px;*width:2000px;position:absolute;top:0;right:0;font-size:210px}
+.upload-lg-img .submit {display:none}
+.upload-lg-img .imgloaded,.upload-lg-img .addsign {position:absolute;top:0;left:0}
+.upload-lg-img .imgloaded {_width:250px;_height:250px;max-height:250px;max-width:250px;}
+.upload-lg-img .filebox,.upload-lg-img .addsign{width:250px;height:250px}
+.upload-lg-img .addsign {font:bold 50px/250px "Microsoft yahei";color:#666;}
+.upload-lg-img .hover {filter:progid:DXImageTransform.Microsoft.Gradient(gradientType='0',startColorStr='#88ffffff',endColorStr='#88ffffff');background:rgba(250, 250,250, 0.5)}
+
+.ly-mg-tb-height40 {text-align:left;height:40px;vertical-align:baseline;}
+
+.registertype {margin-bottom:100px;line-height:26px;}
+.registertype .ht110 {height:110px;}
+    .registertype .ht80 {
+    height:80px;}
+.registertype .right {width:400px;}
+.regmod {width:553px;height:400px;background-color:#fff;border:1px solid #ddd;padding:20px;}
+.ly-mg-r-10 {margin-right:10px;}
+.personimg,.companyimg {width:88px;height:140px;background:url(../images/personreg.jpg) no-repeat;float:left;margin-right:20px;}
+.companyimg {background:url(../images/companyreg.jpg) no-repeat;}
+
+.personimg-EN,.companyimg-EN {width:120px;height:140px;background:url(../images/personreg_en.png) no-repeat;float:left;}
+.companyimg-EN {background:url(../images/companyreg_en.png) no-repeat;}
+
+/*注册首页*/
+.reghome-banner {height:43px;background:url(../images/reghome.jpg) no-repeat;margin-top:-30px;text-align:center;padding-top:200px;}
+.reghome-banner-EN {height:73px;background:url(../images/reghomeEN.jpg) no-repeat;margin-top:-30px;text-align:center;padding-top:200px;}
+.reghome-banner a {display:inline-block;width:225px;height:43px;}
+.countries {text-align:center;margin-bottom:200px}
+.countries .item {width:102px;height:131px;display:inline-block;vertical-align:middle;background:url(../images/flagbg.png) no-repeat;margin:20px 8px;}
+.icon-flag{display:inline-block;width:80px;height:60px;border:1px solid #fff;background:url(../images/flag.png) no-repeat;}
+.nextcountry {display:inline-block;width:80px;vertical-align:middle;font-size:50px;}
+.countries .item:hover {background:url(../images/flagbghover.png) no-repeat;color:#fff;}
+.country-us {background-position:0 0;}
+.country-rbt {background-position:-90px 0;}
+.country-fr {background-position:-180px 0;}
+.country-jp {background-position:-270px 0;}
+.country-au {background-position:-361px 0;}
+.country-en {background-position:-451px 0;}
+
+.verticaltab {background-color:#efefef;padding:20px 0 20px 20px;}
+.verticaltab .hd-item {width:78px;height:109px;background:url(../images/sq1.jpg) no-repeat;margin:0 0 20px 10px;}
+
+.verticaltab .hover {border:2px solid #D2B284;}
+.verticaltab .left {width:120px;}
+.verticaltab .right {width:1000px;overflow-y:auto;height:400px;}
+.c-div-textarea {background-color:#fff;border:1px solid #eee;width:950px;height:980px;}
+.c-div-textarea .inner {padding:30px;}
+.certtitle {color:#D2B284;}
+
+/*发票示例*/
+.invoiceexample {height:691px;background:url(../images/example.jpg) no-repeat top center;}

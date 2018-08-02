@@ -1,0 +1,78 @@
+<?php
+return array(
+	'lng'		 => 'zh-cn',
+	/* Register 控制器*/
+	/* 注册提示 */
+	'Please_nickname_re'         => '请输入用户名！',
+	'Nickname_le_re'             => '昵称至少6个字符,最多18个字符！',
+	'Please_password_re'         => '请设置密码！',
+	'Password_le_re'             => '密码范围在6~16位之间',
+	'Please_en_re'               => '请再输入一次密码！',
+	'You_two_re'                 => '确认密码不一致！',
+	'Please_e_re'                => '请输入电子邮箱！',
+	'Email_ree_re'               => '邮箱地址格式不对！',
+	'Pleas_nc_re'                => '请输入您的姓氏！',
+	'Length_10_re'               => '长度不能超过10个字符！',
+	'Please_name_re'             => '请输入您的名字！',
+	'User_exists_re'             => '用户名已存在' ,
+	'This_email_re'              => '该邮箱已被注册',
+	'Please_code_re'             => '请输入验证码',
+	'V_code_error_re'            => '验证码错误',
+	'Submit_err_re'              => '提交失败,请联系客服！',
+	'Com_name_re'                => '公司名称',
+	'Please_company_re'          => '请输入公司名称！',
+	
+	// RegisterController.class.php  控制器 语言
+	'Paved_rc'                   => '道路铺设中...',
+	'Page_not_rc'                => '页面不存在',
+	'ill_operation_rc'           => '非法操作',
+	'personage_rc'               => '个人',
+	'enterprise_rc'              => '企业',
+	'Verification_c_h_rc'        => '验证码已过期，请重新获取',
+	'Validation_is_su_rc'        => '验证成功,正在跳转...',
+	'Submit_su_rc'               => '提交成功,正在跳转...',
+	'Please_upload_rc'           => '请上传身份证/驾照/护照',
+	'Please_upload_2_rc'         => '请上传信用卡或银行账单',
+	'The_s_4_rc'                 => '单个图片的大小不可超过4M',
+	'Documents_m_rc'             => '文件必须为图片！',
+	'Upload_file_rc'             => '上传失败，请重新再试',
+	'Submit_su_1_rc'             => '提交成功',
+	'Submit_er_2_rc'             => '提交失败',
+	'Please_upload_bu_rc'        => '请上传营业执照',
+	'Registered_successfully_rc' => '授权成功',
+	'Registration_failed_rc'     => '授权失败，请联系客服',
+	'Tuser_name_m_rc'            => '用户名是必填项!',
+	'Please_fill2_rc'            => '请填入字母或数字的组合,长度为6~16个字符',
+	'have_access_to_rc'          => '可以使用',
+	
+	'LAY_MesPar'                 => '参数错误',
+	're_Meikuai'                 => '美快国际物流',
+	're_Email_v'                 => '邮箱验证',
+	'phone_is_required'          => '手机、固话必填一个',
+
+	'user_not_exist' => '账户信息不存在！',
+	'auth_failed'    => '认证出错！请重试或联系客服',
+	'auth_success'   => '认证成功！',
+
+	//个人资料完善  2017-08-01
+	'provinceMsg'         => '请选择州',
+	'cityMsg'             => '请选择市',
+	'IdTypeMsg'           => '请选择证件类型',
+	'IdNumberMsg'         => '请填写证件号码',
+	'addressMsg'          => '请填写发件国退件地址',
+	'postCodeMsg'         => '请填写退件邮编',
+	'ResidentContryMsg'   => '请选择所在国家',
+	'ContactsUserNameMsg' => '请填写姓名',
+	'ContactsAddressMsg'  => '请填写详细地址',
+	'ContactsPostCodeMsg' => '请填写邮编',
+
+	//企业资料完善
+	'CompanyAddressMsg'        => '请填写公司注册地址',
+	'CompanyRepresentativeMsg' => '请填写公司代表人',
+	'BusinessLicenseMsg'       => '请填写营业执照编号',
+	'VATNumberMsg'             => '请填写税号',
+	'AddressMsg'               => '请填写发件因退件地址',
+	'PostCodeMsg'              => '请填写退件邮编',
+	'CompanyContactMsg'        => '请填写联系人',
+
+);

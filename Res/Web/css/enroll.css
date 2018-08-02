@@ -1,0 +1,15 @@
+/* content 样式 **/
+.content{width: 100%; min-width: 1004px; height: 472px; }
+.banner_01{ width: 100%;min-width: 1004px;  background: url(../img/reg_bj.jpg) repeat-x; margin-top: 135px;}
+.banner_01 p{ /*display: block; margin: 0 auto; width: 1184px;*/}
+.banner_01 p img{ width: 100%; min-width: 1004px;    max-width: 1184px;    display: block;    margin: 0 auto;}
+.content .added{ margin: 0 auto; width: 255px; height: 34px; background: #c58f40; color:#fff; font-size: 22px; line-height: 170%; text-align: center;}
+.content .addeds{width: 0px; margin: 0 auto; height: 0; border-top: 12px solid #c58f40; border-left:127px solid transparent;border-right:127px solid transparent;}
+.content .flag{ width: 690px; height: 110px; margin: 129px auto;}
+.content .flag p{ text-align: center; color: #484848; line-height: 50px;}
+.content .flag a{ display:inline-block; height: 100px; background: #ccc; margin: 0 10px; cursor: pointer; position: relative;color: #414ae5;}
+.content .flag a:hover{background:#c58f40; }
+.content .flag a img{ padding: 12px 7px 0 7px;}
+.content .flag a span{display: block;width: 100%; text-align: center;  font-size: 17px; line-height: 100%; position: absolute; bottom:8px;}
+.content .flag p.dds{  padding: 0 48px;}
+.content .flag p.dds a{float: left;}

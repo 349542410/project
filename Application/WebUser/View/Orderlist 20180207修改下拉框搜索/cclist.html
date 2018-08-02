@@ -1,0 +1,372 @@
+                <div class="ordhead"><h3>{:L('GoodsList')}</h3></div>
+                <div class="ordbody oblast" style="width: 1267px;">
+                    <table class="table_now" 
+                    <if condition="$html_name eq 'index'">
+                     style="margin:10px auto;height:110px;width: 1339px;position: relative;margin-left:-70px"
+                    <elseif condition="$html_name eq 'import'"/>
+                     style="margin:10px auto;height:110px;width: 1339px;position: relative;margin-left:-70px"
+                    <else/>
+                     style="margin:10px auto;height:110px;width: 1366px;position: relative;margin-left:-68px;"
+                    </if> id="table">
+                    <input type="hidden" id="num" value="{$count-1}" autocomplete="off" >
+                    <input type="hidden" id="max_row" value="{$count-1}" autocomplete="off" >
+                        <tr>
+                            <td width="10%" style="font-weight: bold;" class="copy_r"></td>
+                            <!-- 品牌 -->
+                            <td width="10%" style="font-weight: bold;">{:L('BrandName')}</td>
+                            <!-- 货品名称 -->
+                            <td width="10%" style="font-weight: bold;">{:L('ProductName')}</td>
+                            <!-- 规格/容量 -->
+                            <td width="10%" style="font-weight: bold;">{:L('l_speci')}</td>
+                            <!-- 海关所属类别 -->
+                            <td width="40%" style="font-weight: bold;">{:L('Customs')}</td>
+                            <!-- 数量 -->
+                            <td width="10%" style="font-weight: bold;">{:L('Amount')}</td>
+                            <!-- 单位 -->
+                            <td width="10%" style="font-weight: bold;">{:L('Unit')}</td>
+                            <!-- 产地 -->
+                            <td width="10%" style="font-weight: bold;">{:L('CountryOfOrigin')}</td>
+                            <!-- 单价 -->
+                            <td width="10%" style="font-weight: bold;">{:L('UnitPrice')}（$）</td>
+                            <!-- 备注 -->
+                            <td width="10%" style="font-weight: bold;">{:L('Remarks')}</td>
+                            <td class="imgnull" style="border:none"><img src="__MEMBER__/images/null.png"  /></td>  
+                        </tr>
+                        <!-- 示例 stat -->
+                        <tr class="stta">
+                        <td <if condition="(L('lng') eq 'en-us')"> class="infopus copy_r" style="left: -38px;top:65px;"<else /> class="infopcn copy_r" style="left: 0px;top:65px;"</if>>{:L('l_exm')}：</td>
+                            <!-- 品牌 -->
+                            <td width="10%;"><input type="text" value="Abbott" disabled class="clchang" maxlength="50"></td>
+                            <!-- 货品名称 -->
+                            <td width="10%;"><input type="text" value="1段婴儿奶粉" disabled class="clchang" maxlength="50"></td>
+                            <!-- 规格/容量 -->
+                            <td width="10%;"><input type="text" value="0.96kg" disabled class="clchang" maxlength="10"></td>
+                            <!-- 海关所属类别 -->
+                            <td width="40%;">---</td>
+                            <!-- 数量 -->
+                            <td width="10%;"><input type="number" min="1" value="1" class="clzhong" disabled maxlength="9"></td>
+                            <!-- 单位 -->
+                            <td width="10%;"><input type="text" value="罐" disabled class="clzhong" maxlength="9"></td>
+                            <!-- 产地 -->
+                            <td width="10%;"><input type="text" value="美国" disabled class="clzhong" maxlength="9"></td>
+                            <!-- 单价 -->
+                            <td width="10%;"><input type="text" class="clzhong" value="24" disabled maxlength="9"></td>
+                            <!-- 备注 -->
+                            <td width="10%;" ><input type="text" value="" name="remark_{$j}" class="clchang"></td>
+                            <!-- 删除行 -->
+                            <td style="border:none;" class="nows"></td>
+                        </tr>
+                        <tr class="stta">
+                            <td class="copy_r"></td>
+                            <!-- 品牌 -->
+                            <td width="10%;"><input type="text" value="COLUMBIA" disabled class="clchang" maxlength="50"></td>
+                            <!-- 货品名称 -->
+                            <td width="10%;"><input type="text" value="男童短裤" disabled class="clchang" maxlength="50"></td>
+                            <!-- 货品类别 -->
+                            <td width="10%;"><input type="text" value="S" disabled class="clchang" maxlength="5"></td>
+                            <!-- 海关所属类别 -->
+                            <td width="40%;">---</td>
+                            <!-- 数量 -->
+                            <td width="10%;"><input type="number" min="1" value="1" disabled class="clzhong" maxlength="9"></td>
+                            <!-- 单位 -->
+                            <td width="10%;"><input type="text" value="件" disabled class="clzhong" maxlength="9"></td>
+                            <!-- 产地 -->
+                            <td width="10%;"><input type="text" value="美国" disabled class="clzhong" maxlength="9"></td>
+                            <!-- 单价 -->
+                            <td width="10%;"><input type="text" class="clzhong" value="13" disabled maxlength="9"></td>
+                            <!-- 备注 -->
+                            <td width="10%;" ><input type="text" value="" name="remark_{$j}" class="clchang"></td>
+                            <!-- 删除行 -->
+                            <td style="border:none;" class="nows"></td>
+                        </tr>
+                        <!-- 示例 end -->
+                        <!-- 配置控制行数 gan -->
+                        <for start="0" end="$count" name="j"> 
+                        <tr class="stta" cid="{$j}">
+                            <!-- <td class="copy_r"></td> -->
+                            <!-- 复制行 -->
+                            <td class="copy_r "><if condition="$j eq 0"><else/><a onclick="del_row(this)" href="javascript:void(0)">{:L('l_del')}</a></if></td>
+                            <input class="ttc" type="hidden" name="oid_{$j}" value="{$pro_list[$j][oid]}"/>
+                            <!-- 品牌 -->
+                            <td width="10%;" class="brand"><input type="text" value="{$pro_list[$j]['brand']}" name="brand_{$j}" class="clchang" maxlength="50" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></td>
+                            <!-- 货品名称 -->
+                            <td width="10%;" class="detail"><input type="text" value="{$pro_list[$j]['detail']}" name="detail_{$j}" class="clchang" maxlength="50" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></td>
+                            <!-- 货品类别 -->
+                            <td width="10%;" class="catname"><input type="text" name="catname_{$j}" value="{$pro_list[$j]['catname']}" class="clchang" maxlength="5" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></td>
+                            <!-- 海关所属类别 -->
+                            <td width="40%;">---</td>
+                            <!-- 数量 -->
+                            <td width="10%;" class="amount"><input type="number" min="1" name="amount_{$j}" value="{$pro_list[$j]['number']}" class="clzhong" maxlength="9" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></td>
+                            <!-- 单位 -->
+                            <td width="10%;"><input type="text" name="unit_{$j}" value="{$pro_list[$j]['unit']}" class="clzhong" maxlength="9" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></td>
+                            <!-- 产地 -->
+                            <td width="10%;"><input type="text" name="source_area_{$j}" value="{$pro_list[$j]['source_area']}" class="clzhong" maxlength="9" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></td>
+                            <!-- 单价 -->
+                            <td width="10%;"><input type="text" name="price_{$j}" class="clzhong" value="{$pro_list[$j]['price']}" maxlength="9" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></td>
+                            <!-- 货币 -->
+                            <input type="hidden" name="coin_{$j}" value="USD">
+                            <!-- 备注 -->
+                            <td width="10%;" ><input type="text" value="{$pro_list[$j]['remark']}" name="remark_{$j}" class="clchang"></td>
+                            <!-- 删除行 -->
+                            <td style="border:none;" class="nows nows{$j}"><a href="javascript:void(0);" title="{:L('Delete')}"><img width="22" height="22" src="__MEMBER__/images/clean.png" /></a></td>
+                        </tr>
+                        </for>
+                    </table>
+                    <div onclick="copy_row(this)" class="btn" id="copy_btn" style="line-height: 22px;">{:L('l_add')}</div>
+                    <span class="forspan">{:L('Notice_Product')}</span>
+            
+<!-- **************************************************** -->
+                <!-- 按钮部分 -->
+                <tr>
+                    <table style="width: 1000px;float: right;margin: 0 auto;">
+                        <tr>
+                            <td id="hide_boxs">
+                                <input type="hidden" value="{$user_id}" name="uid">
+                            </td>
+                            <td style="text-align: right;">
+                                <span id="loading" style="bottom:180px;left:650px !important;"></span>
+                                <button type="submit" class="btn" id="BtnSave">{:L('BtnSave')}</button>
+                                <!-- <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button> -->
+                                <span id="messagebox" class="msgbox" style="bottom:180px;left:650px !important"></span>                 
+                            </td>
+                        </tr>
+                    </table>
+                </tr>
+            </div>
+                </div>
+                <if condition="$html_name eq 'edit'">
+                        <script type="text/javascript">
+                        // (编辑)货品声明 删除行效果    
+                        $(function(){
+                            var acname = "{$html_name}";
+                            if(acname == 'edit'){
+                            $("td.nows a").css('display','none');
+                            $(".stta").hover(function(){
+                                var ttc= $(this).find('.ttc').attr('value');
+                                var src= $(this).find('img');
+                                if(ttc!=''){
+                                    var d=$(this);
+                                    $(this).find('.nows').find('a').css('display','inline');
+                                    $(this).find('.nows').find('a').click(function(){
+                                        layer.confirm("{:L('LAY_MesDel')}", {icon:3,offset: '300px',btn:["{:L('LAY_BtnOK')}","{:L('LAY_BtnCancel')}"],title:"{:L('LAY_Information')}"}, function(){
+                                            $.ajax({
+                                                url: "{:U('Order/del')}",
+                                                type: "POST",
+                                                data:{'ttc':ttc},
+                                                dataType: "json",
+                                                success:function(result){
+                                                    if(result.state == '1'){
+                                                        layer.msg(result.msg, {icon: 6,offset: '350px'});
+                                                        d.find('input').attr('value','');
+                                                        d.find('select').val('1');
+                                                        d.find('.chuijin').find('label').html('0.00');
+                                                        src.remove();
+                                                    }else{
+                                                        layer.open({
+                                                            type: 0,
+                                                            title : "{:L('LAY_SystemMessage')}",
+                                                            content : result.msg,
+                                                            icon : 5,
+                                                            offset: '300px',
+                                                            btn:"{:L('LAY_BtnOK')}",
+                                                        });
+                                                        src.attr('src',"__MEMBER__/images/clean.png");
+                                                    }
+                                                    d.find('.nows').find('a').css('display','none');
+                                                }
+                                            });
+                                        });                 
+                                    })
+                                }        
+                            },function(){
+                                $(this).find('.nows').find('a').css('display','none');  
+                                $(this).find('.nows').find('a').unbind();
+                            })            
+                            }
+                        });
+                        </script>
+                <elseif condition="$html_name eq 'newOrder'"/>
+                    <script type="text/javascript">
+                    // (再次下单)货品声明 删除行效果 
+                    $(function(){
+                        $("td.nows a").css('display','none');
+                        $(".stta").hover(function(){
+                            var src= $(this).find('img');
+                            var d=$(this);
+                            $(this).find('.nows').find('a').css('display','inline');
+                            $(this).find('.nows').find('a').click(function(){
+                                layer.open({
+                                    type: 0,
+                                    title : "{:L('LAY_SystemMessage')}",
+                                    content : "{:L('LAY_Empty')}",
+                                    btn: ["{:L('LAY_BtnOK')}","{:L('LAY_BtnCancel')}"],
+                                    yes:function(){
+                                        layer.msg("{:L('LAY_EmptyOK')}",{icon: 6,offset: '350px'});
+                                        d.find('input').attr('value','');
+                                        d.find('select').val('1');
+                                        d.find('.chuijin').find('label').html('0.00');
+                                        src.remove();
+                                    },
+                                    icon : {icon:5},
+                                    offset: '300px'
+                                });                            
+                            })
+                        },function(){
+                            $(this).find('.nows').find('a').css('display','none');  
+                            $(this).find('.nows').find('a').unbind();
+                        })
+                    });
+                    </script>
+                <else/>
+                    <script type="text/javascript">
+                    // 货品声明 删除行效果 
+                    $(function(){
+                        $(".nows").css('display','none');
+                        $("td.nows a").css('display','none');
+                        $(".imgnull").css('display','none');
+                    });
+                    </script>
+                </if>
+<script type="text/javascript">
+    $(function(){
+        window.acname = "{$html_name}";
+        if(acname == 'import'){
+            $('#table').before(excelcont(prolist));
+        }
+    });
+    /**
+     * 更新锁定状态
+     *
+     * @method   update
+     * @param   {Number} 增加的数值
+     * @time    20180202
+     * @author  gan
+     */
+    function clock_row(num){
+
+        var obj = $('#copy_btn');
+        if(num>=30){
+            layer.open({
+                title:"{:L('LAY_SystemMessage')}",
+                offset: '300px',
+                icon : 0,
+                content: "{:L('LAY_AddRow')}",
+            });
+            $(obj).addClass('disabled');
+            $(obj).attr('disabled','disabled');
+            return false;
+        }else{ 
+            $(obj).removeClass('disabled');
+            $(obj).removeAttr('disabled','disabled');
+            return true;
+        }
+    }
+
+    /**
+     * 添加行
+     *
+     * @method   add row
+     * @param   {object} 当前对象
+     * @time    20180202
+     * @author  gan
+     */
+    function copy_row(obj)
+    {
+        // 控制行数的值
+        var num=$("#num").val();
+        // 只加的值
+        var max_row = $('#max_row').val();
+
+        if(clock_row(num)){
+            max_row++;
+            $('#max_row').val(max_row);
+            num++;
+            var str='<tr class="stta" cid="'+max_row+'"><td class="copy_r"><a onclick="del_row(this)" href="javascript:void(0)">'+"{:L('l_del')}"+'</a></td><input type="hidden" name="oid_'+max_row+'" value="{$pro_list[$j][oid]}"/><td width="10%;" class="noneline brand"><input type="text" class="clchang" name="brand_'+max_row+'"></td><td width="10%;" class="noneline detail"><input type="text" class="clchang" name="detail_'+max_row+'"></td><td width="10%;" class="noneline catname"><input type="text" class="clchang" name="catname_'+max_row+'"></td><td width="20%;">---</td><td width="10%;" class="amount"><input type="number" min="0" class="clzhong" name="amount_'+max_row+'"></td><td width="10%;"><input type="text" name="unit_'+max_row+'" value="{$pro_list[$j]['unit']}" class="clzhong" maxlength="9" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></td><td width="10%;"><input type="text" name="source_area_'+max_row+'" value="{$pro_list[$j]['source_area']}" class="clzhong" maxlength="9" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></td><td width="10%;"><input type="text" class="clzhong" name="price_'+max_row+'"></td><input type="hidden" name="coin_'+max_row+'" value="USD"><td width="10%;" ><input type="text" class="clchang" name="remark_'+max_row+'"></td></tr>';  
+            $("#table").append(str);
+            $("#num").val(num);
+        }      
+    }
+
+    /**
+     * 删除行
+     *
+     * @method   del
+     * @param   {object} 当前对象
+     * @time    20180202
+     * @author  gan     
+     */
+    function del_row(obj){
+        var num=$("#num").val();
+        num--;
+        $("#num").val(num);
+        if(window.acname == 'edit'){
+            var ttc = $(obj).parent().parent().find('.ttc').attr('value');
+            layer.confirm("{:L('LAY_MesDel')}", {icon:3,offset: '300px',btn:["{:L('LAY_BtnOK')}","{:L('LAY_BtnCancel')}"],title:"{:L('LAY_Information')}",}, function(){
+                $.ajax({
+                    url: "{:U('Order/del')}",
+                    type: "POST",
+                    data:{'ttc':ttc,},
+                    dataType: "json",
+                    success:function(result){
+                        if(result.state == '1'){
+                            layer.msg(result.msg, {icon: 6,offset: '350px'});
+                            $(obj).parent().parent('tr').remove();
+                            clock_row(num);
+                        }else{
+                            layer.open({
+                                type: 0,
+                                title : "{:L('LAY_SystemMessage')}",
+                                content : result.msg,
+                                icon : 5,
+                                offset: '300px',
+                                btn:"{:L('LAY_BtnOK')}",
+                            });
+                        }
+                    }
+                });
+            }); 
+        }else{
+            $(obj).parent().parent('tr').remove();
+            clock_row(num);
+        }
+    }
+    /**
+     * 显示导入订单
+     *
+     * @method   显示导入订单的示例
+     * @time    20180202
+     * @author  gan     
+     */  
+    function excelcont(prolist){
+        var str ='';
+        str+='<table width="90%" border="0" cellpadding="10" cellspacing="10"  class="table table-hover" style="margin-left:0;color:#CC3366">';
+        str+='<thead>';
+        str+='<tr>';
+        str += '<th>'+"{:L('BrandName')}"+'</th>';
+        str += '<th>'+"{:L('ProductName')}"+'</th>';
+        str += '<th>'+"{:L('l_speci')}"+'</th>';
+        str += '<th>'+"{:L('Customs')}"+'</th>';
+        str += '<th>'+"{:L('Amount')}"+'</th>';
+        str += '<th>'+"{:L('Unit')}"+'</th>';
+        str += '<th>'+"{:L('CountryOfOrigin')}"+'</th>';
+        str += '<th>'+"{:L('UnitPrice')}"+'</th>';
+        str+='</tr>';
+        str+='</thead>';
+        str+='<tbody>';
+        $.each(prolist,function(k,v){
+            str+='<tr>';
+            str += '<td>'+v.brand+'</td>';
+            str += '<td>'+v.detail+'</td>';
+            str += '<td>'+v.catname+'</td>';
+            str += '<td>---</td>';
+            str += '<td>'+v.number+'</td>';
+            str += '<td>'+v.unit+'</td>';
+            str += '<td>'+v.source_area+'</td>';
+            str += '<td>'+v.price+'</td>';
+            str+='</tr>';
+        });
+        str+='</tbody>';
+        str+='</table>';
+        return str;
+    }
+</script>

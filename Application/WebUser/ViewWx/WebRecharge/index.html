@@ -1,0 +1,470 @@
+<!-- 在线下单 -->
+<extend name="Member/base" />
+
+
+<block name="main">
+<meta charset="utf-8">
+<script type="text/javascript" src="__APPWX__/js/city/jquery.js"></script>
+<script type="text/javascript" src="__APPWX__/js/city/area.js"></script>
+<script type="text/javascript" src="__APPWX__/js/city/location.js"></script>
+<script type="text/javascript" src="__APPWX__/js/city/select2.js"></script>
+<script type="text/javascript" src="__APPWX__/js/city/select2_locale_zh-CN.js"></script>
+<script src="__APPWX__/js/cityselected.js"></script>
+<link href="__APPWX__/css/select2.css" rel="stylesheet"/>
+<link href="__APPWX__/css/wrindex.css" rel="stylesheet">
+<!-- <link href="__MEMBER__/css/one.css" rel="stylesheet">
+<script src="__MEMBER__/js/add.js"></script> -->
+<!-- <script type="text/javascript" src="__MEMBER__/js/city/city.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/edit.js"></script>-->
+    <div class="warrp">
+        <div class="fr wi940">
+            <div class="he50 wddd">
+                <div class="fl ddd-h2">
+                    <h2><span>{:L('PersonalCenter')}</span></h2>
+                </div>
+            </div>
+            <div class="aboutmoney mywallets">
+                <div class="usermoney">
+                    <div class="usertop">
+                        <h2>{:L('AccountOverview')}</h2>
+                        <!-- 审核模块 end -->
+<!--                         <div class="logins login_vz">
+                            <p><span style="font-size:14px;" title="{:L('MyCenter_VZ')}"><a href="{:U('Member/index')}"><php>echo substr($mkuser,0 ,8)</php></a>&nbsp;</span></p>
+                            <a class="logout" href="{:U('Index/Login_out')}">{:L('EXIT_VZ')}</a>
+                        </div>
+                        <php>
+                        $ccd = cookie('think_language');
+                        $value = session();        
+                        $mkuser = S('mkuser');
+                        </php> -->
+                        <div style="clear: both;"></div>
+                        <div class="userstep">
+                            <!-- 审核模块 -->
+                            <if condition="($user_status eq 0) && ($user_step eq 5)">
+                            <span class="headermsgs"><img src="__MEMBER__/images/btnicon0_03.png">{:L('InAudit')}</span>
+                            <elseif condition="($user_status eq 1) && ($user_step eq 5)"/>
+                            <span class="headermsgs">{:L('Authenticated')}</span>
+                            <else />
+                            <span class="headermsg" id="bell"><img src="__MEMBER__/images/btnicon0_02.png">{:L('NotSubmitted')}</span>
+                            </if>
+                        </div>
+                        <div class="usercontent">
+                            <ul class="account-balance">
+                                <li>
+                                    <div class="balance"><p>{:L('AccountBalance')}</p></div>
+                                    <div class="account"><h3>${:number_format($amount,2)}</h3></div>
+                                    <div class="topup">
+                                        <span class="tuchong"><a  onclick="mywalletstopup()">{:L('Recharge')}</a></span>
+                                        <!-- <span class="tuchong"><a href="{:U('WebRecharge/test')}">充值</a></span> -->
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+    <!--                     <div class="userc">
+                            <ul>
+                                <li><span>交易记录</span></li>
+                            </ul>
+                        </div> -->
+                    </div>
+                    <div class="userdown">
+                        <div class="userdown-top">
+                            <ul>
+                                <a href="{:U('WebRecharge/index')}"><li <if condition="!I('type')">class="alllist"</if>>{:L('RechargeRecord')}</li></a>
+                                <a href="{:U('WebRecharge/index',array('type'=>'order'))}"><li <if condition="I('type') eq 'order'">class="alllist"</if>>{:L('RecordsConsump')}</li></a>
+                            </ul>
+                        </div>
+                        <hr style="height: 1px; background: #dedede; border: none; margin-top: -2px;" />
+                        <if condition="!I('type')">
+                            <!-- 充值记录 -->
+                            <div class="userdown-down recharge_log">
+                                <div class="ttmt">
+                                    <ul>
+                                        <li>{:L('Times')}</li>
+                                        <li>{:L('Status')}</li>
+                                        <li>{:L('Money')}</li>
+                                        <li>{:L('PaymentMethod')}</li>
+                                    </ul>
+                                </div>
+                                <div class="ttmt-list">
+                                <volist name="list" id="v" mod="2" empty="{:L('NoRecord')}">
+                                    <ul>
+                                        <li>{$v['ordertime']}</li>
+                                        <li><if condition="$v['pay_state'] eq 0">{:L('PendingPayment')}<else/>{:L('AlreadyPaid')}</if></li>
+                                        <li>${:number_format($v['amount_usa'],2)}</li>
+                                        <li>
+                                            <if condition="$v[paykind] eq 'wechat'">{:L('WechatPlays')}
+                                            <elseif condition="$v[paykind] eq 'alipay'" />{:L('Alipay')}
+                                            </if>
+                                        </li>
+                                    </ul>
+                                </volist>
+                                </div>
+                            </div>
+                            <div class="page" id="pages">{$page}</div>
+                        <else/>
+                        <!-- 消费记录 -->
+                            <div class="userdown-down consume_log ttwidth">
+                                <div class="ttmt">
+                                    <ul>
+                                         <li>{:L('Times')}</li>
+                                         <li>{:L('Status')}</li>
+                                         <li>{:L('Money')}</li>
+                                         <li>{:L('PaymentMethod')}</li>
+                                         <li>{:L('Operation')}</li>
+                                    </ul>
+                                </div>
+                                <div class="ttmt-list ttwidth">
+                                <volist name="slist" id="vo" mod="2" empty="{:L('NoRecord')}">
+                                    <ul>
+                                        <li>{$vo['ordertime']}</li>
+                                        <li><if condition="$vo['pay_state'] eq 0">{:L('PendingPayment')}<else/>{:L('AlreadyPaid')}</if></li>
+                                        <li>${:number_format($vo['freight'],2)}</li>
+                                        <li>
+                                            <if condition="$vo[paykind] eq 'wechat'">{:L('WechatPlays')}
+                                            <elseif condition="$vo[paykind] eq 'alipay'" />{:L('Alipay')}
+                                            <elseif condition="$vo[paykind] eq 'balance'" />{:L('Balance')}
+                                            <else/>
+                                            &nbsp;
+                                            </if>
+                                        </li>
+                                        <li><a href="javascript:void(0);" <if condition="$vo.MKNO eq ''">onclick="showinfo(this,false);" <else />onclick="showinfo(this,true);"</if>
+                                    id="{$vo['order_no']}" ordid="{$vo['order_id']}">{:L('CheckOut')}</a></li>
+                                    </ul>
+                                </volist>
+                                </div>
+                            </div>
+                            <div class="page" id="pages">{$page2}</div>
+                        </if>
+                    </div>
+                </div>
+            </div>
+            <div class="aboutmoney addmon" style="display:none">
+                <div class="usermoney topup-money">
+                    <div class="userdown-top network-topup">
+                        <ul>
+                            <li class="alllist" style="margin-left: -1px">{:L('BankingRecharge')}</li>
+                        </ul>
+                        <p onClick="mywalletsa();">{:L('BackPersonal')}</p>
+                    </div>
+                    <hr style="height: 1px; background: #dedede; border: none; margin-top: -2px;" />
+                    <div class="choicetu">
+                        <p>{:L('SelectRecharge')}：</p>
+                        <div class="monettu">
+                            <div class="fop-main">
+                                <div class="m-tagbox m-multi-tag">
+
+                                    <a href="javascript:void(0)" rel="50" class="tag-item">$50.00<i class="t-check tptig"></i></a>
+
+                                    <a href="javascript:void(0)" rel="100" class="tag-item">$100.00<i class="t-check"></i></a>
+
+                                    <a href="javascript:void(0)" rel="200" class="tag-item">$200.00<i class="t-check"></i></a>
+
+                                    <a href="javascript:void(0)" rel="500" class="tag-item">$500.00<i class="t-check"></i></a>
+                                    
+                                    <div class="tag-define" data_id="tag_157">
+                                        <span class="define-label" style="display: block;"><i class="i-pen"></i><em>{:L('InputAmount')}</em></span>
+                                        <input type="text" class="define-input" id="input_val" style="display: none;" maxlength="5">
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="fop-choice">
+                                <form action="{:U('Topup/recharge')}" method="post" id="recharge_form">
+                                    <div class="orde-sjyy">
+                                        <div class="bsjy-g">
+                                            <dl>
+                                                <dd>
+                                                 <div class="order-payment-area">
+                                                     <div class="dsfzfpte">
+                                                         <b>{:L('SelectPayment')}</b>                               
+                                                     </div>
+                                                     <div class="po-re dsfzf-ee">
+                                                         <ul>   
+                 <!--                                            <li>
+                                                                <div class="payment-area">
+                                                                    <input type="radio"  value="wechat" class="radio vam" name="paykind" <if condition="$k eq 'wechat'">checked</if>>
+                                                                    <label for="">
+                                                                        <img src="__MEMBER__/image/winxinlogo.jpg" width="120" height="40" onClick="change_pay(this);" />
+                                                                    </label>
+                                                                </div>
+                                                             </li>     -->                       
+                                                             <li>
+                                                                <div class="payment-area">
+                                                                    <input type="radio"  value="alipay" class="radio vam" name="paykind" <if condition="$k eq 'alipay'">checked</if>>
+                                                                    <label for="">
+                                                                        <img src="__MEMBER__/image/zhifulogo.jpg" width="120" height="40" onClick="change_pay(this);" />
+                                                                    </label>
+                                                                </div>
+                                                             </li>
+                                                         </ul>
+                                                     </div>
+                                                 </div>
+                                                <!--第三方网银支付 start-->
+    <!--                                          <foreach name="bankCodeList" item="v"  key="k">
+                                                  <div class="order-payment-area">
+                                                        <div class="dsfzfpte">
+                                                           <b>{$paymentList[$k]['name']}</b>
+                                                           <em>网银支付</em>
+                                                        </div>
+                                                        <div class="po-re dsfzf-ee">
+                                                            <ul>
+                                                            <foreach name="v" item="v2"  key="k2">
+                                                              <li>
+                                                                <div class="payment-area">
+                                                                    <input type="radio" name="pay_radio" class="radio vam" value="pay_code={$k}&bank_code={$v2}" id="input-ALIPAY-1">
+                                                                    <label for="">
+                                                                    <img src="__STATIC__/images/images-out/{$bank_img[$k2]}" width="120" height="40" onClick="change_pay(this);"/>
+                                                                    </label>
+                                                                </div>
+                                                               </li>
+                                                            </foreach>                                                               
+                                                            </ul>
+                                                        </div> 
+                                                    </div>
+                                                    </foreach>      -->              
+                                                <!--第三方网银支付 end -->                             
+                                                </dd>
+                                            </dl>
+                                            <input type="hidden" name="amount" id="add_money" value="50">
+                                            <span id="out">{:L('RMB')}叁佰肆拾元整</span>
+                                            <div class="order-payment-action-area" id="hide_boxs">                    
+                                                <a class="button-style-5 button-confirm-payment" href="javascript:void(0);" onClick="recharge_submit()">{:L('ConfirmPayment')}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    var ustrmb ={$US_TO_RMB_RATE};
+     $('#input_val').blur(function(){
+         var num=$("#input_val").val();
+         // if(isNaN(num) || parseInt(num)<=0){
+         //     alert("您输入的不是数字，请重新输入！");
+         //    $("#input_val").val('');
+         //     return false;
+         // }
+         var hrel = num * ustrmb;
+         var derel = decimal(hrel,2);
+         var o=jqNumToMoney(derel);
+        $("#out").text("{:L('RMB')}"+o);
+     });
+    function decimal(num,v){
+        var vv = Math.pow(10,v);
+        return Math.ceil(num*vv)/vv;
+    }
+    // 数字金额转大写中文金额
+    function jqNumToMoney(n){
+        var fraction = ['角','分'];
+        var digit    = ['零','壹','贰','叁','肆','伍','陆','柒','捌','玖'];
+        var unit     = [['元','万','亿'],['','拾','佰','仟']];
+        var head     = n < 0?'欠':'';
+        n = Math.abs(n);
+        var s = '';
+        for (var i = 0; i < fraction.length; i++) {  
+            s += (digit[Math.floor(n * 10 * Math.pow(10, i)) % 10] + fraction[i]).replace(/零./, '');
+        }
+        s = s || '整';
+        n = Math.floor(n);
+        for (var i = 0; i < unit[0].length && n > 0; i++) {
+            var p = '';
+            for (var j = 0; j < unit[1].length && n > 0; j++) {
+                p = digit[n % 10] + unit[1][j] + p;
+                n = Math.floor(n / 10);
+            }
+            s = p.replace(/(零.)*零$/, '').replace(/^$/, '零') + unit[0][i] + s;
+        }
+        return head + s.replace(/(零.)*零元/,'元').replace(/(零.)+/g, '零').replace(/^整$/, '零元整');
+    }
+
+    $(function () {
+         $(".userdown-top ul li").click(function () {
+            $(this).addClass('alllist').siblings().removeClass('alllist');
+         });
+    });
+    
+    function mywalletsa() {
+        $('.mywallets').show();
+        $('.addmon').hide();
+    };
+    function mywalletstopup() {
+       $('.addmon').show();
+       $('.mywallets').hide();
+    };
+
+    $(document).ready(function() {
+        $(document).on('click','.tag-item',function(){
+            $(this).find('.t-check').addClass('tptig').parent().siblings().find('.t-check').removeClass('tptig');
+            // 修改BUG 2017.5.12 stat
+            $('.define-label').show();
+            // end
+            var rel = $(this).attr('rel');            
+            var hrel = rel * ustrmb;
+            var derel = decimal(hrel,2);
+            var o=jqNumToMoney(derel);
+            $("#out").text("{:L('RMB')}"+o);
+            $('#add_money').val($(this).attr('rel'));
+        });
+        $('.tag-define').click(function(){
+            var goods_id = $(this).attr('data_id').substr(4);
+            $('.tag-item').find('.t-check').removeClass('tptig');
+            $(this).find('.define-label').hide();
+            $(this).find('.define-input').show().focus();
+            $(this).find('.define-input').blur(function(){
+                var ce = $(this).val();
+                $('#add_money').val(ce);
+                ce = ce.replace(/\D|^0/g,'')                           
+                $(this).parent('.tag-define').siblings('.tag-item').each(function(){
+                    var a_text = $(this).text();
+                    if(ce == a_text && ce != ''){
+                        alert('已有该标签!');
+                        ce = '';
+                        $('.define-input').val('');
+                    }
+                });
+                if(ce == ''){
+                    $(this).prev('.define-label').show();
+                    $(this).hide();
+                }else{
+
+                }
+            })
+        });
+        
+    });
+
+    // 查看订单号
+    function showinfo(obj,status){
+        var url = '';
+        var id = obj.id;
+        var ordid = $(obj).attr('ordid');
+        if(status){
+            url = "{:U( 'Member/info',array( 'type'=>'Ulist' ) )}?order_no="+id+"&id="+ordid;
+        }else{
+            url = "{:U( 'Member/info',array( 'type'=>'index' ) )}?order_no="+id+"&id="+ordid;
+        }
+        //console.log(url);
+        layer.open({
+              type: 2,
+              shadeClose: true,
+              title: false,
+              area : ['95%' , '95%'],
+              scrollbar: false,
+              resize: false,
+              btn: ["{:L('ToClose')}"],
+              closeBtn: 0,
+              skin: 'demo-class',//自定义样式demo-class
+              offset: '20px',
+              content: url,
+                success: function(layero, index){
+                    this.enterEsc = function(event){
+                        if(event.keyCode === 13){
+                            layer.closeAll();
+                            return false; //阻止系统默认回车事件
+                        }
+                    };
+                    $(document).on('keydown', this.enterEsc);
+                    //监听键盘事件，关闭层
+                }
+        });
+    }
+
+
+
+
+    $(function () {
+        //高亮显示
+        var active = '{$active_status}';
+        if(!active)
+            active = 'ALL';
+        $('.wddd-li li').removeClass('wddd-red');
+        $('#'+active).addClass('wddd-red');
+
+        $("#h-s").mouseover(function () {
+            $('.ec-ta-x').css('left','124px');
+            $('.ec-ta-x').css('width','110px');
+            $(this).addClass("cullent");
+        });
+        $("#h-s").mouseout(function () {
+            $('.ec-ta-x').css('left','0px');
+            $('.ec-ta-x').css('width','124px');
+            $(this).removeClass("cullent");
+        });
+        $("#q-s").mouseover(function () {
+            $('.ec-ta-x').css('left','0px');
+            $(this).addClass("cullent");
+        });
+        $("#q-s").mouseout(function () {
+            $('.ec-ta-x').css('left','0px');
+        });
+    });
+    
+    function recharge_submit(){
+        // ***************************** 2017.5.12 stat ******************************************
+        var cont = $('#add_money') .val();
+        if(isNaN(cont) || cont<0 || cont==''){
+            alert("{:L('LAY_AmountMsg')}");
+            return false;
+        }else{
+            $.ajax({
+                cache: false,
+                type: "post",
+                url:"{:U('Topup/checkForm')}",
+                data:$('#recharge_form').serialize(),// 你的formid
+                async: false,
+                beforeSend:function(){
+                    $("#loading").html('<img style="width:28px;height:28px;" src="__MEMBER__/images/msg_loading_d.gif"/>');
+                },
+                error: function(request) {
+                    layer.alert("Connection error");
+                },
+                success: function(data) {
+                    if(data.state == 'no'){
+                        layer.open({
+                            type: 0,
+                            offset: '300px',
+                            shadeClose: true,
+                            title: "{:L('LAY_SystemMessage')}",
+                            content : data.msg,
+                            icon : 5,
+                        });
+                            $("#loading").html('');
+                    }else{
+                        var box_part='<input type="hidden" value="'+data.order_no+'" name="order_no">';
+                        $("#hide_boxs").append(box_part);
+                        $('#recharge_form').submit();
+                    }
+                }
+            });
+        }
+        //********************************* end *******************************************
+
+    }
+    
+    // 选择 充值方式
+    function change_pay(obj)
+    {
+        $(obj).parent().siblings('input[name="paykind"]').trigger('click');
+    }       
+    
+   function switchTab(obj,showdiv){
+    $(obj).siblings().removeClass('alllist');
+    $(obj).addClass('alllist');
+    if(showdiv == 'recharge_log'){
+        $('.recharge_log').show();
+        $('.consume_log').hide();
+    }else{
+        $('.recharge_log').hide();
+        $('.consume_log').show();
+    }
+   }
+    </script>
+    <div class="foot"></div>
+</block>
+
+</body>
+</html>

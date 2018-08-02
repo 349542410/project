@@ -1,0 +1,407 @@
+<!-- 在线下单 -->
+<extend name="Member/base" />
+
+
+<block name="main">
+<!--<script type="text/javascript" src="__MEMBER__/js/city/search_area.js"></script>-->
+<script type="text/javascript" src="__MEMBER__/js/city/jquery.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/zh-cn/area.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/zh-cn/location.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/select2.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/zh-cn/select2_locale_zh-CN.js"></script>
+<script src="__MEMBER__/js/cityselected.js"></script>
+<link rel="stylesheet" type="text/css" href="__MEMBER__/css/validationEngine.jquery.css">
+<script src="__MEMBER__/js/jquery.validationEngine.js" type='text/javascript'></script>
+<script src="__MEMBER__/js/jquery.validationEngine-{:L('lng')}.js" type='text/javascript'></script>
+<script type="text/javascript" src="__MEMBER__/js/jquery.form.js"></script>
+<link href="__MEMBER__/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
+<script src="__MEMBER__/js/fileinput.js" type="text/javascript"></script>
+<link href="__MEMBER__/css/select2.css" rel="stylesheet"/>
+<!-- Latest compiled and minified CSS -->
+<!-- <link rel="stylesheet" href="__MEMBER__/css/bootstrap-select.min.css"> -->
+<!-- Latest compiled and minified JavaScript -->
+<!-- <script src="__MEMBER__/js/bootstrap-select.min.js"></script> -->
+<script type="text/javascript" src="__MEMBER__/js/feg_relevance.js"></script>
+<!-- <script type="text/javascript" src="__MEMBER__/js/underscore.js"></script> -->
+    <div class="form form_index" >
+    <div class="form-signin" style="width:100%;min-height:500px;margin:0 auto;padding:0;">
+        <form action="{:U('Order/checkForm')}" method="POST" class="form-inline" id="tempForm" name="add" enctype="multipart/form-data" onsubmit="tempform(this)" onkeydown="if(event.keyCode==13){return false;}">
+            <input type="hidden" name="lib_idcard" value="" id="card_id" />
+            <input type="hidden" value="" id="old_idno" />
+            <input type="hidden" name="addr_pro_img" value="" id="addr_pro_img" />
+            <input type="hidden" name="addr_bak_img" value="" id="addr_bak_img" />
+            <input type="hidden" name="addr_pro_img_small" value="" id="addr_pro_img_sm" />
+            <input type="hidden" name="addr_bak_img_small" value="" id="addr_bak_img_sm" />
+        <!-- **************************************************** -->
+            <!-- 选择线路 -->
+            <div class="ordhead"><h3>{:L('l_Select_Route')}</h3></div>
+            <div class="ordbody" id="ordbody">
+                <ul <if condition="(L('lng') eq 'zh-cn')"> id="ul_line" class="lineul"</if><if condition="(L('lng') eq 'en-us')">class="lineulus"  id="ul_line"</if>>
+                    <volist name="tranline" id="vl">
+                        <li style="position: relative;"><input type="radio" name="TransferLine" id="{$vl['id']}" value="{$vl['id']}" class="radio" onclick="changeline(this,0)" iupid="{$vl['input_idno']}"><label class="radio" for="{$vl['id']}"><php>$l = L('MKLINES');echo $l[$vl['lngname']];</php></label><span <if condition="(L('lng') eq 'zh-cn')"> style="position: absolute;top: 30px;left: 10px;font-size: 13px;width: 175px;color: #e90000;"<else/>style="position: absolute;top: 0px;right: 175px;font-size: 13px;color: #e90000;"</if> id="line_pice_{$vl['id']}"></span></li>
+                    </volist>
+                </ul>
+                <ul style="display:none;">
+                    <volist name="tranline" id="vl">
+                        <li class="m{$vl['id']}">
+                            <php>
+                                $l = L('MKRemarks');echo $l[$vl['lngremark']];
+                            </php>
+                        </li>
+                    </volist>
+                </ul>
+                <p id="mimenu"></p>
+            </div>
+            <!-- **************************************************** -->
+            <div class="ordhead"><h3>{:L('l_Shipper_Receiver')}</h3></div>
+            <div class="ordtop">
+                <!-- **************************************************** -->
+                <!-- 寄件人信息 -->
+                <div class="ordsender">
+                    <h4>{:L('SenderInfo')}</h4>
+                    <div class="changebtn">
+                        <a href="javascript:;" onclick="addsern(this)"><i class="addse_icon"></i><span>{:L('l_Address_Book')}</span></a>
+                    </div>
+                    <ul>
+                        <li><label>{:L('FullName')}：</label><input type="text" class="inputstyle comm_style comheight" value="{$sender_data['s_name']|default=''}" autocomplete="off" id="postname" name="PostName" placeholder="{:L('Placeholder_PostName')}" data-validation-engine="validate[required,custom[chinalett]]" maxlength="30"></li>
+                        <div class="hiddenbox" style="display: none" id="hiddenbox">
+                            <dl id="dlbox">
+                            </dl>
+                        </div>
+                        <li><label>{:L('Phone')}：</label><input type="phone" id="postphone" class="inputstyle comm_style comheight" value="{$sender_data['s_tel']|default=''}" name="PostPhone" placeholder="{:L('Placeholder_PostPhone')}" data-validation-engine="validate[required,custom[phone]]" maxlength="14"></li>
+                        <li><label>{:L('ZipCode')}：</label><input type="text" class="inputstyle comm_style comheight" id="postcode" value="{$sender_data['s_code']|default=''}" name="PostCode" placeholder="{:L('Placeholder_PostCode')}" data-validation-engine="validate[required,custom[chinaZip]]" maxlength="10"></li>
+                        <li>
+                            <label>{:L('l_Detailed_Address')}：</label>
+                            <!-- <input type="text" value="{$info['PostStreet']|default=''}" id="poststreet" name="PostStreet" placeholder="{:L('Placeholder_PostAddress')}" data-validation-engine="validate[required,custom[repadd]]" maxlength="50"> -->
+                            <textarea type="text" class="inputstyle" id="poststreet" name="PostStreet" placeholder="{:L('l_shipper_address')}" data-validation-engine="validate[required,custom[repadd]]" maxlength="50">{$sender_data['s_street']|default=''}</textarea>
+                        </li>
+                        <li style="position: relative;">
+                            <label>{:L('l_Area')}：</label>
+                            <select class="selcountry" disabled="disabled" >
+                                <option selected="selected" value="">U.S.A</option>
+                            </select><br>
+                            <select id="MainContent_ddProvince" <if condition="(L('lng') eq 'zh-cn')"> style="margin-left: 78px;height: 49px;width: 105px;"<else/> style="margin-left: 138px;height: 49px;width: 105px;"</if> data-validation-engine="validate[required]">
+                                <option value="">{:L('Cr_Select')}</option>
+                            </select>
+                            <input id="Postcity" name="PostCity" value="{$sender_data['s_city']}" placeholder="请填写城市" maxlength="40" class="inputstyle comheight" style="width: 235px;display: inline-block;border: 1px solid #ccc;height: 42px;text-indent: 0.5em;position: absolute;bottom: 7px;margin-left: 10px;" />
+<!--                             <select id="MainContent_ddCity" data-validation-engine="validate[required]">
+                                <option value="">{:L('Cr_Select')}</option>
+                            </select><br> -->
+                            <input id="Postcountry" name="PostCountry" value="U.S.A" style="display: none;" />
+                            <input id="Postprovince" name="PostState" value="{$sender_data['s_state']}" style="display: none" />
+<!--                             <input id="Postcity" name="PostCity" value="{$info['Fremont']|default=''}" style="display: none" /> -->
+                        </li>
+                    </ul>
+                    <button type="button" class="clearSender orsenbutton" onclick="empty_shipper()">{:L('EmptyInfo')}</button>
+                </div>
+                <!-- **************************************************** -->
+                <!-- 收件人信息 -->
+                <div class="ordrec">
+                    <input type="hidden" name="addr_id" value="" id="hidaddr_id">
+                    <h4>{:L('RecInfo')}</h4>
+                    <div class="changebtn">
+                        <a href="javascript:;" onclick="infoselect(this)"><i class="addse_icon"></i><span>{:L('l_Address_Book')}</span></a>
+                    </div>
+                    <ul>
+                        <li><label>{:L('FullName')}：</label><input type="text" class="inputstyle comheight" data-validation-engine="validate[required,custom[chinese]]" name="RecName" placeholder="{:L('Placeholder_RecName')}" value="" maxlength="40" id="fullName" onblur="get_idno_data()">
+                        </li>
+                        <li><label>{:L('Phone')}：</label><input type="text" value="" class="inputstyle comheight" data-validation-engine="validate[required,custom[rephone]]" name="RecPhone" placeholder="{:L('Placeholder_RecPhone')}"  maxlength="14" id="phone" onblur="get_idno_data()"></li>
+                        <li id="id_card">
+                            <label style="float: left">{:L('l__cre_num')}：</label>
+                            <select name="Id_tpye" id="Id_tpye" class="selcountry" style="float: left">
+                                <volist name="ID_TYPE" id="ty">
+                                    <option value="{$key}">{:L($ty)}</option>
+                                </volist>
+                            </select>
+                            <!--<input type="text" name="IdNo" class="inputstyle comheight" placeholder="{:L('l_receiver_ID_number')}" id="idno" style="width:245px !important;" maxlength="18" value="" data-validation-engine="validate[custom[chinaId]]">-->
+                            <div id="idno" style="float: left;margin-left: 10px;">
+                                <el-row class="demo-autocomplete">
+                                    <el-col :span="50">
+                                        <el-autocomplete class="inline-input" clearable v-model="state1" :fetch-suggestions="querySearch" placeholder="{:L('l_receiver_ID_number')}" name="IdNo" @select="handleSelect"></el-autocomplete>
+                                    </el-col>
+                                </el-row>
+                            </div>
+                            <div style="clear: both"></div>
+                        </li>
+                        <li><label>{:L('ZipCode')}：</label><input type="text" class="inputstyle comheight" value="" data-validation-engine="validate[required,custom[chinaZip]]" name="RecCode" placeholder="{:L('Placeholder_RecCode')}"  maxlength="10" id="zipcode"></li>
+                        <li style="position: relative;">
+<!--                             <label>地址搜索：</label>
+                            <input type="search" id="search_address"><br> -->
+                            <div id="re_area">
+                                <div class="block">
+                                    <label>{:L('l_Area')}：</label>
+                                    <el-cascader clearable v-model="selectedOptions" placeholder="{:L('l_Search_pcd')}" :options="options" filterable @change="handleChange"></el-cascader>
+                                </div>
+                            </div>
+                            <!-- <label>{:L('Address')}：</label> -->
+<!--                             <select id="loc_province" style="width:100px;">
+                            </select>
+                            <select id="loc_city" style="width:115px; margin-left: 5px">
+                            </select>
+                            <select id="loc_town" style="width:115px;margin-left: 5px">
+                            </select> -->
+                            <input id="province" name="Province" value="" style="display: none;" />
+                            <input id="city" name="City" value="" style="display: none;" />
+                            <input id="town" name="Town" value="" style="display: none;" />
+                            <input type="hidden" name="token" value="{:session('token')}">
+                        </li>
+                        <span class="re_area_tips">{:L('l_re_area_tips')}</span>
+                        <li>
+                            <label style="position: relative;">{:L('DetaileAddress')}：<br><a href="javascript:;" onclick="add_desc()" style="color:#0099ff;position: absolute;font-size: 12px;width: 58px;left: 5px;text-align: left;line-height: 14px;top: 34px;">{:L('l_Smart_Address')}<i class="glyphicon glyphicon-question-sign"></i></a></label>
+                            <!-- <input type="text" value="" data-validation-engine="validate[required,custom[repadd]]"  name="RecAddress" placeholder="{:L('Placeholder_RecAddress')}" maxlength="80" id="detaileaddress"> -->
+                            <div class="text_bg"></div>
+                            <textarea type="text" value="" class="inputstyle" style="text-indent: 0px;width: 320px;" data-validation-engine="validate[required,custom[repadd]]"  name="RecAddress" placeholder="粘贴整段地址，自动识别姓名、电话、地址例：张三,158737386688,广东省广州市天河区某某街道某某大厦001号" maxlength="80" id="detaileaddress"></textarea>
+                        </li>
+                        <button type="button" class="clearSender senbutton" onclick="intelAddResolution();">{:L('l_Smart_Address_Submit')}</button>
+                        <div class="save_addbos_tyep"><input type="checkbox" id="radiobox" name="is_save_addr" class="radio" value="1"><label class="radio sat_lab" for="radiobox">{:L('l_Save_to_Address_Book')}</label></div>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 异步加载相关线路信息 -->
+            <div class="disno" id="disno">
+            </div>
+<!-- **************************************************** -->
+        </form>
+    </div>
+    </div>
+
+
+<script type="text/javascript">
+    // 提供加载语言包
+    var unit_lng = "{:L('l_Unit')}";
+    var Total_Tax = "{:L('Total_Tax')}";
+    var Duty_Free = "{:L('Duty_Free')}";
+    var find_indo_data = "{:U('Order/find_indo_data')}";
+    var member_url = "__MEMBER__";
+</script>
+<script type="text/javascript" src="__MEMBER__/js/element_cascader.js?t=201806211107"></script>
+<script type="text/javascript" src="__MEMBER__/js/idcard/check_idcard.js?t=2018006271632"></script>
+<script>
+
+    // 获取货品声明货品分类数据
+    window.category_list = {$category_list};
+    $(function(){
+        set_element_idcard();
+        main_addr();
+//        $("input[name='IdNo']").attr("data-validation-engine","validate[custom[chinaId]]");
+        $("input[name='IdNo']").bind("blur",get_idno_data);
+        objctor.restaurants = [];
+    });
+
+    // 智能地址分析
+    function intelAddResolution(){
+
+        var addrval = $("#detaileaddress").val();
+        $.ajax({
+           type: "GET",
+           url: "{:U('Order/address_analysis')}",
+           dataType:'json',
+           data: {
+                "addr" : addrval
+           },
+           success: function(data){
+               console.log("index");
+               // 清空默认值
+               window.re_area.selectedOptions = [];
+               $('#province').val('');
+               $('#city').val('');
+               $('#town').val('');
+                // 如果不是只有详细地址 则
+                if(data.length != 0){
+                    if(data.addrinfo == ''){
+                        // 地址返回结果为空时
+                        layer.msg("{:L('l_set_address_manually')}", {icon: 5});
+                    }else{
+                        // 地址返回结果有值时
+
+                        // 省
+                        var pro  = data.addrinfo.province;
+                        if(!_empty__(pro)){
+                            set_aere_def([pro]);
+                            $('#province').val(pro);
+                        }
+                        // 市
+                        var city = data.addrinfo.city;
+                        if(!_empty__(city)){
+                            set_aere_def([pro,city]);
+                            $('#province').val(pro);
+                            $('#city').val(city);
+                        }
+                        // 区
+
+                        var town = data.addrinfo.town;
+                        if(true){
+                            set_aere_def([pro,city,town]);
+                            // 查出邮政
+                            for (let i = 0; i < window.re_area.options.length; i++) {
+                                let e1 = window.re_area.options[i];
+                                if (e1.value==pro) {
+                                    for (let j = 0; j < e1.children.length; j++) {
+                                        let e2 = e1.children[j];
+                                        if (e2.value==city) {
+                                            $('#zipcode').val(e2.zipcode);
+                                            if (town) {
+                                                    for (let k = 0; k < e2.children.length; k++) {
+                                                let e3 = e2.children[k];
+                                                if (e3.value==town) {
+                                                    $('#zipcode').val(e3.zipcode);
+                                                    stop = true;
+                                                   break;
+                                                }
+                                            }
+                                            }else{
+                                              stop = true;
+                                              break;
+                                            }
+                                        }
+                                        // if (stop) {
+                                        //   break;
+                                        // }
+                                    }
+                                }
+                                // if (stop) {
+                                //  break;
+                                // }
+                            }
+                            // $.each(window.re_area.options,function(k,v){
+                            //     if(v.value.indexOf(pro) != -1){
+                            //         $.each(v.children,function(k1,v1){
+                           
+                            //             if(v1.value.indexOf(city) != -1){
+                            //                 console.log(v1);
+                            //                 $('#zipcode').val(v1.zipcode);
+                            //                 $.each(v1.children,function(k2,v2){
+                            //                     if(v2.value.indexOf(town) != -1) {
+                            //                         // 把级联选择器中第三个分类赋值到 邮编地址
+                            //                         $('#zipcode').val(v2.zipcode);
+                            //                         stop = true;
+                            //                         return false;
+                            //                     }
+                            //                 });
+                            //                 if(stop){
+                            //                     return false;
+                            //                 }
+                            //             }
+                            //         });
+                            //         if(stop){
+                            //             return false;
+                            //         }
+                            //     }
+                            // });
+                            $('#province').val(pro);
+                            $('#city').val(city);
+                            $('#town').val(town);
+                        }
+                        // 详细地址
+                        var addr = data.addrinfo.addr;
+                        console.log(addr);
+                        
+                        if(!_empty__(addr)){
+                            $('#detaileaddress').val('');
+                            // console.log($('#detaileaddress'));
+                            $('#detaileaddress').val(addr);
+                        }else{
+                            $('#detaileaddress').val('');
+                        }
+                        // console.log(search_area);
+                    }
+                    // 收件人姓名
+                    var inputRec = data.name;
+                    if(inputRec != null){
+                        $('input[name="RecName"]').val("");
+                        $('input[name="RecName"]').val(inputRec);
+                    }
+                    // 收件人电话号码
+                    var inputTel = data.tel;
+                    if(inputTel != null){
+                        $('input[name="RecPhone"]').val("");
+                        $('input[name="RecPhone"]').val(inputTel);
+                    }
+                    get_idno_data();
+                }
+           }
+        });
+    }
+
+    // 智能地址说明
+    function add_desc(){
+        layer.open({
+            type: 1,
+            title: "{:L('l_Smart_Address_Illustration')}",
+            skin: 'demo-class',//自定义样式demo-class
+            area : ['800px' , '500px'],
+            // offset: '20%',
+            scrollbar: false,
+            closeBtn: 1,
+            content: '<img src="__MEMBER__/image/intadd.jpg">',
+        });
+    }
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+    window.addr_id = 0;
+    // $(window).bind('beforeunload',function(){
+    //     return '您输入的内容尚未保存，确定离开此页面吗？';
+    // });
+    $("#MainContent_ddProvince").select2();
+    // 设置默认收件人选中
+    get_addrinfo("{$addr_id}",{$addr_data_json});
+    // console.log("{$addr_data['info']['id']}");
+    // 设置默认寄件人选中
+    senderAjax("{$sender_id}",{$sender_data_json});
+});
+</script>
+<script type="text/javascript">
+    // 选择
+    var Cr_Select = "{:L('Cr_Select')}";
+    var select_cr = "{:L('Cr_Select')}"; 
+    // 地址var
+    var p         = $('#province').val();
+    var c         = $('#city').val();
+    var t         = $('#town').val();
+    var sendstate = "{$sender_data['s_state']}";
+    var sendcity  = "{$sender_data['s_city']}";
+    // 收件人var
+    var get_addr_info_ajax = "{:U('order/get_addr_info_ajax')}";
+    var selectRecipient    = "{:U('Order/selectRecipient')}";
+    var Placeholder_IdPT   = "{:L('Placeholder_IdPT')}";
+    var Placeholder_IdNo   = "{:L('Placeholder_IdNo')}";
+    var l_cho_rec          = "{:L('l_cho_rec')}";
+    var lay_ms             = "{:L('LAY_SystemMessage')}";
+    // 寄件人var
+    var l_select_sender  = "{:L('l_select_sender')}";
+    var getSenderInfourl = "{:U('sender/getSenderInfo')}";
+    // 实时搜索功能
+    var real_time_search_ajax = "{:U('Sender/real_time_search_ajax')}";
+    var senderAjaxurl         = "{:U('Sender/senderAjax')}";
+    // 线路
+    var consoleurl    = "{:U('Orderlist/console')}";
+    var ShowSelectlng = "{:L('ShowSelect')}";
+
+    var valvalEng_Msg_frelng = "{:L('valEng_Msg_fre')}";
+    var valEng_Msg_frelng    = "{:L('valEng_Msg_fre')}";
+    var l_the_lng = "{:L('l_the_err')}";
+    var l_line_lng = "{:L('l_line_err')}";
+    var lienpic_url="{:U('order/getLinePriceAjax')}";
+    var l_first_weight_lng = "{:L('l_first_weight')}";
+    var l_addi_weight_lng = "{:L('l_addi_weight')}";
+
+    var get_addr_url = "{:U('Order/get_addr_cache')}";
+</script>
+<script type="text/javascript" src="__MEMBER__/js/sender.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/orderindex.js?t=20180703"></script>
+<script type="text/javascript" src="__MEMBER__/js/rtsearch.js"></script>
+<script type="text/javascript">
+$(function(){
+    s_send_addr(sendstate,sendcity);
+    validatione_init('#tempForm');
+});
+</script>
+<!-- END -->
+    <div class="foot"></div>
+
+</block>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+          <div class="bs-docs-sidebar hidden-print hidden-xs hidden-sm" role="complementary">
+            <ul class="nav bs-docs-sidenav">
+                <li><img src="__PUBLIC__/images/1.png"/><b style="font-size:18px">&nbsp;&nbsp;BC货品管理</b></li>
+                <select class="selector form-control" name="center" onchange="layer.load(1, {shade: [0.1,'#000']});window.location=this.value;">
+                    <!-- 线路列表 -->
+                    <option value="{:U('product/index')}">请选择BC报关线路</option>
+                    <volist name="center" id="xt">
+                        <option value="{:U('product/index',array('line'=>$xt['id']))}" <if condition="I('line') eq $xt['id']">selected</if>>{$xt['name']}</option>
+                    </volist>
+                </select>
+            </ul>
+	        <script type="text/javascript">
+            $(document).ready(function(){
+                // 分类树
+                $("#navigation").treeview({
+                    persist: "location",
+                    collapsed: true,
+                    unique: true,
+                    animated: "fast",
+                });
+
+            });
+	        </script>	
+            <!-- 加载货品的顶级分类和二级分类 -->
+            <ul id="navigation">
+            <volist name="naw" id="vo">
+                <li><a href="{:U('Product/index',array('line'=>I('line'), 'cat'=>$vo['id'], 'view'=>I('view','on')))}" <if condition="I('cat') eq $vo['id']">class="selected"</if>>{$vo['cat_name']}</a>
+                    <ul>
+                    <volist name="vo['child']" id="vt">
+                        <li><a href="{:U('Product/index',array('line'=>I('line'), 'cat'=>$vt['id'], 'view'=>I('view','on')))}" <if condition="I('cat') eq $vt['id']">class="selected"</if>>{$vt['cat_name']}</a></li>
+                    </volist>
+                    </ul>
+                </li>
+            </volist>
+            </ul>
+          </div>

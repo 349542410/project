@@ -1,0 +1,177 @@
+				<div class="ordhead"><h3>{:L('GoodsList')}</h3></div>
+					<div class="goodshow">
+					<input type="hidden" id="num" value="{$count-1}" autocomplete="off">
+						<for start="0" end="$count" name="j"> 
+							<ul id="table" class="goodsbox">
+							<input class="ttc" type="hidden" name="oid_{$j}" value="{$pro_list[$j][oid]}"/>
+								<!-- 品牌 -->
+								<li><label>{:L('BrandName')}：</label><input type="text" name="brand_{$j}" class="clchang" value="{$pro_list[$j]['brand']}" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></li>
+								<!-- 货品名称 -->
+								<li><label>{:L('ProductName')}：</label><input type="text" name="detail_{$j}" class="clchang" value="{$pro_list[$j]['detail']}" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></li>
+								<!-- 规格/容量 -->
+								<li><label>{:L('l_speci')}：</label><input type="text" name="catname_{$j}" class="clchang" value="{$pro_list[$j]['catname']}" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></li>
+								<!-- 海关所属类别 -->
+								<li class="seleopt"><label>{:L('Customs')}</label>&nbsp;
+									<select style="width:95px;" name="category_one_{$j}" onchange="selecchang(this)">
+										<option value="">{:L('ClassOne')}</option>
+										<volist name="cat_list" id="vvo">
+	                                        <php>
+	                                        if($vvo['id'] == $pro_list[$j]['category_one']){
+	                                            $catoid = $vvo['id'];
+	                                        }
+	                                        </php>
+	                                        <option value="{$vvo['id']}" <if condition="$vvo['id'] eq $pro_list[$j]['category_one']">selected</if>>{$vvo['cat_name']}</option>
+	                                    </volist>
+									</select>
+									<select style="width:95px;" class="cattwo" name="category_two_{$j}" onchange="selectc(this)">
+										<option value="">{:L('ClassTwo')}</option>
+										<volist name="cat_list[$catoid]['child']" id="vvto">
+	                                        <php>
+	                                        if($vvto['id'] == $pro_list[$j]['category_two']){
+	                                            $price = $vvto['price'];
+	                                            $num = $pro_list[$j]['number'];
+	                                            $product_id = $pro_list[$j]['product_id'];
+	                                        }
+	                                        </php>
+	                                        <option value="{$vvto['id']}" price="{$vvto['price']}" <if condition="$vvto['id'] eq $pro_list[$j]['category_two']">selected</if>  pic="{$product_id}">{$vvto['cat_name']}</option>
+	                                    </volist>
+                                    </select>
+								</li>
+								<!-- 税金 -->
+								<li class="chuijin"><label>{:L('Tax')}（$）</label><label class="shuijinshow">0.00</label></li>
+								<!-- 数量 -->
+								<li class="flaotl ordsmli amount"><label>{:L('Amount')}：</label><input type="text" name="amount_{$j}" class="clzhong" value="{$pro_list[$j]['number']}" onblur="amper(this)" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></li>
+								<!-- 单位 -->
+								<li><label>{:L('Unit')}：</label><input type="text" name="unit_{$j}" class="clzhong" value="{$pro_list[$j]['unit']}" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></li>
+								<!-- 产地 -->
+								<li><label>{:L('CountryOfOrigin')}：</label><input type="text" name="source_area_{$j}" class="clzhong" value="{$pro_list[$j]['source_area']}" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></li>
+								<!-- 单价 -->
+								<li class="flaotl ordsmli price"><label>{:L('UnitPrice')}：</label><input type="text" name="price_{$j}" class="clzhong" value="{$pro_list[$j]['price']}" onblur="priper(this)" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></li>
+								<!-- 货币 -->
+								<li class="flaotl ordsmli">
+									<label>{:L('Currency')}：</label>
+									<select name="coin_{$j}" id="" class="clduan">
+										<option value="USD" selected="selected">$</option>
+									</select>
+								</li>
+								<!-- 备注 -->
+								<li class="flaotl ordsmli marbot"><label>{:L('Remarks')}：</label><input type="text" name="remark_{$j}" class="clzhong" value="{$pro_list[$j]['remark']}"></li>
+								<div style="clear: both;"></div>
+							</ul>
+						</for>
+					</div>
+					<span class="ordbtn"><a onclick="copy_row(this)" href="javascript:void(0)">+</a></span>
+				<!-- 按钮部分 -->
+				<table style="width: 100%;float: right;margin: 0 5%;">
+					<tr>
+						<td id="hide_boxs">
+							<input type="hidden" value="{$user_id}" name="uid">
+						</td>
+						<h5 style="float: right;" id="contper">{:L('Total_Tax')}（$）：0.00</h5>
+                    	<input type="hidden" value="{$free_duty}" id="free_duty">
+						<td style="text-align: right;">
+							<!-- 总税金 -->
+							<span id="loading" style="bottom:180px;left:650px !important;"></span>
+							<button type="submit" class="btn" id="BtnSave">{:L('BtnSave')}</button>
+							<!-- <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button> -->
+							<span id="messagebox" class="msgbox" style="bottom:180px;left:650px !important"></span>					
+						</td>
+					</tr>
+				</table>
+				<!-- END -->	
+		    	<div style="clear:both;"></div>
+		    	<script type="text/javascript">
+				// 添加删除行 20170316 gan
+				function copy_row(obj)
+				{
+					layer.open({
+						title:false,
+						btn:false,
+						closeBtn:0,
+						shadeClose:true,
+						time:500,
+						content:"<p style='text-align:center'>添加成功！</p>",
+						offset: '300px'
+					});
+					var num=$("#num").val();
+					num++;
+					if(num>=10){
+						layer.open({
+							title:"{:L('LAY_SystemMessage')}",
+							offset: '300px',
+							icon : 0,
+							content: "{:L('LAY_AddRow')}",
+						});
+						$('.copy_r').find('a').remove();
+					}
+					var str='<ul id="table" class="goodsbox"><input class="ttc" type="hidden" name="oid_'+num+'" value="{$pro_list[$j][oid]}"/><li><label>{:L("BrandName")}：</label><input type="text" name="brand_'+num+'" class="clchang"></li><li><label>{:L("ProductName")}：</label><input type="text" name="detail_'+num+'" class="clchang"></li><li><label>{:L("l_speci")}：</label><input type="text" name="catname_'+num+'" class="clchang"></li><li class="seleopt"><label>'+"{:L('Customs')}"+'</label>&nbsp;&nbsp;<select style="width:95px;" name="category_one_'+num+'" onchange="selecchang(this)"><option value="">'+"{:L('ClassOne')}"+'</option><volist name="cat_list" id="vvo"><option value="'+"{$vvo['id']}"+'" <if condition="$vvo['id'] eq $pro_list[$j]['category_one']">selected</if>>'+"{$vvo['cat_name']}"+'</option></volist></select><select style="width:95px;" class="cattwo" name="category_two_'+num+'" onchange="selectc(this)"><option value="">{:L("ClassTwo")}</option><volist name="cat_list[$catoid]['child']" id="vvto"><option value="'+"{$vvto['id']}"+'" price="'+"{$vvto['price']}"+'" <if condition="$vvto['id'] eq $pro_list[$j]['category_two']">selected</if>  pic="{$product_id}">'+"{$vvto['cat_name']}"+'</option></volist></select></li><li class="chuijin"><label>{:L("Tax")}（$）</label><label class="shuijinshow">0.00</label></li><li class="flaotl ordsmli amount"><label>{:L("Amount")}</label><input type="text" name="amount_'+num+'" class="clzhong" onblur="amper(this)"></li><li><label>{:L("Unit")}：</label><input type="text" name="unit_'+num+'" class="clzhong"></li><li><label>{:L("CountryOfOrigin")}：</label><input type="text" name="source_area_'+num+'" class="clzhong"></li><li class="flaotl ordsmli price"><label>{:L("UnitPrice")}</label><input type="text" name="price_'+num+'" class="clzhong" onblur="priper(this)"></li><li class="flaotl ordsmli"><label>{:L("Currency")}</label><select name="coin_'+num+'" id="" class="clduan"><option value="USD" selected="selected">$</option></select></li><li class="flaotl ordsmli marbot"><label>{:L("Remarks")}</label><input type="text" name="remark_'+num+'" class="clzhong"></li><div style="clear: both;"></div></ul>';
+					$(".goodshow").append(str);
+					$("#num").val(num);
+				}
+			    // 一级分类
+			    function selecchang(obj){
+			        var no = $(obj).find('option:selected').val();
+			        $.ajax({
+			            type: "GET",
+			            url: "{:U('Orderlist/next_level')}",
+			            data: "id="+no,
+			            success:function(data){
+			                $(obj).next('select').find('option').remove();
+			                $(obj).next('select').append("<option value=''>{:L('Cr_Select')}</option>");
+			                $.each(data, function (i, item) {  
+			                    $(obj).next('select').append("<option value=" + item.id + " price="+ item.price +">" + item.cat_name + "</option>");//赋值
+			                }); 
+			            }
+			        });
+			    } 
+			    var textbox = 0;
+				// 二级分类
+			    function selectc(obj){
+			        var showglod = $(obj).parent('li').siblings('.chuijin').find('.shuijinshow');
+			        var aminput = $(obj).parent('li').siblings('.amount').find('input').val();
+			        var uprice = $(obj).parent('li').siblings('.price').find('input').val();
+			        var tax = $(obj).find("option:selected").attr("price");
+			        if(aminput != '' && uprice != ''){
+			            var upri =  (aminput*tax*uprice)/100;
+			            var percen = upri.toFixed(2);
+			            $(showglod).html(percen); 
+			            getsum();
+			        }
+			    } 
+				// 单价计税  
+			    function priper(obj){
+			        var showglod = $(obj).parent('li').siblings('.chuijin').find('.shuijinshow');
+			        var thisv = $(obj).val();
+			        var selpric = $(obj).parent('li').siblings('.seleopt').children().next().next().find("option:selected").attr("price");
+			        var aminput = $(obj).parent('li').siblings('.amount').find('input').val();
+			        var upri =  (thisv*selpric*aminput)/100;
+			        var percen = upri.toFixed(2);
+			        $(showglod).html(percen);
+			        getsum();
+			    }
+			    // 数量计税  
+			    function amper(obj){
+			        var showglod = $(obj).parent('li').siblings('.chuijin').find('.shuijinshow');
+			        var thisv = $(obj).val();
+			        var selpric = $(obj).parent('li').siblings('.seleopt').children().next().next().find("option:selected").attr("price");
+			        var priinput = $(obj).parent('li').siblings('.price').find('input').val();
+			        var upri =  (thisv*selpric*priinput)/100;
+			        var percen = upri.toFixed(2);
+			        $(showglod).html(percen);
+			        getsum();
+			    }
+				// 计算总价
+			    function getsum(){
+			        textbox = 0;
+			        $('.shuijinshow').each(function(index, item) {
+			            textbox += parseFloat($(item).text()) || 0;
+			        });
+			        var freed = parseFloat($('#free_duty').val());
+			        
+			        if((textbox.toFixed(2)) > freed){
+			            $('#contper').html("{:L('Total_Tax')}（$）："+textbox.toFixed(2));
+			        }else{
+			            $('#contper').html("{:L('Total_Tax')}（$）：<span style='color:red;'>{:L('Duty_Free')}</span>");
+			        }
+			    } 				
+		    	</script>

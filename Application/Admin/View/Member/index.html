@@ -1,0 +1,239 @@
+<extend name="./base" />
+
+<block name="main">
+
+<div class="container" >
+			<table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px">
+					<tr >
+						<h4 style="text-align:right">
+							您当前所在位置：<a href="javascript:void(0);" class="color">会员资料</a>
+						</h4>
+
+					</tr>
+					<tr>
+						<td>
+						<form action="{:U('Member/index')}" method="get" class="form-inline">
+						<!-- 中文搜索时必须的 -->
+						<input type="hidden" name="m" value="{$Think.MODULE_NAME}" />
+						<input type="hidden" name="c" value="{$Think.CONTROLLER_NAME}" />
+						<input type="hidden" name="a" value="{$Think.ACTION_NAME}" />
+						<!-- End -->
+						<label>筛选：</label>
+						<lable><input type="search" name="keyword" value="{$keyword}" class="form-control" placeholder="" style="width:200" /></lable>
+						<label>
+						<select name="searchtype" class="form-control" >
+						<option value="username" <eq name="searchtype" value="username">selected</eq>>用户名</option>
+						<option value="email" <eq name="searchtype" value="email">selected</eq>>邮箱</option>
+						<option value="self_name" <eq name="searchtype" value="self_name">selected</eq>>联系人</option>
+						<option value="self_phone" <eq name="searchtype" value="self_phone">selected</eq>>手机号码</option>
+						</select>
+						</label>
+						<label>
+						&nbsp;&nbsp;余额：
+						<input type="search" class="form-control" placeholder="" name="minamount" value="{$minamount}" style="width:200" > -- <input type="search" class="form-control" placeholder="" name="maxamount" value="{$maxamount}" style="width:200" >
+						</label>
+						<label>
+						<select name="type" class="form-control" >
+						<option value="">注册类型</option>
+						<option value="person" <eq name="type" value="person">selected="selected"</eq>>个人</option>
+						<option value="company" <eq name="type" value="company">selected="selected"</eq>>企业</option>
+						</select>
+						</label>
+						<label>
+						<select name="status" class="form-control" >
+						<option value="">状态</option>
+						<option value="1" <eq name="status" value="1">selected="selected"</eq>>通过</option>
+						<option value="2" <eq name="status" value="2">selected="selected"</eq>>不通过</option>
+						<option value="0" <eq name="status" value="0">selected="selected"</eq>>未审核</option>
+						</select>
+						</label>
+						<label>
+						&nbsp;&nbsp;行数：
+						<select name="ePage" id="" class="form-control" >
+							<option value="10" <eq name="ePage" value="10">selected</eq>>10</option>
+							<option value="20" <eq name="ePage" value="20">selected</eq>>20</option>
+							<option value="30" <eq name="ePage" value="30">selected</eq>>30</option>
+							<option value="50" <eq name="ePage" value="50">selected</eq>>50</option>
+							<option value="100" <eq name="ePage" value="100">selected</eq>>100</option>
+						</select>
+						</label>
+						<label>
+
+								<button type="submit" class="btn btn-primary btn-lg" >查询</button>
+						</label>
+						</form>
+						</td>
+					</tr>
+			</table>
+</div>	
+
+<form action="">
+<div class="container" >
+	<table border="0" cellpadding="0" cellspacing="0" class="table table-hover" >
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>用户名</th>
+				<th>注册类型</th>
+				<th>电子邮箱</th>
+				<!-- <th>发件人姓名/公司名称</th> -->
+				<!-- <th>发件国退件地址</th> -->
+				<th>联系人</th>
+				<th>手机</th>
+				<th>固话</th>
+				<th>余额(￥)</th>
+				<th>注册时间</th>
+				<th>状态</th>
+				<th>发货总数</th>
+				<th>在途数量</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody style="font-size:15px;">
+			<volist name="list" id="vo" mod="2">
+			<tr id="tr_{$vo.id}" <eq name="mod" value="1"> style="background-color:#ddd;"</eq>>
+				<td align="center" style="vertical-align:middle;">
+						{$vo.id}
+				</td>
+				<td class="td1" align="center">
+						{$vo.username}
+				</td>
+				<td class="td1" align="center">
+						<if condition="$vo['type'] eq 'person'">
+						个人
+						<else />
+						企业
+						</if>
+				</td>
+				<td class="td1" align="center">
+						{$vo.email}
+				</td>
+<!-- 				<td align="center">
+					<if condition="$vo['type'] eq 'person'">
+						{$vo.FirstName} {$vo.LastName}
+					<else />
+						{$vo.CompanyName}
+					</if>
+				</td> -->
+<!-- 				<td align="center">{$vo.sender_address}</td> -->
+				<td class="td1" align="center">
+						{$vo.self_name}
+				</td>
+				<td class="td1" align="center">
+						<if condition="$vo.self_phone neq ''">
+							{$vo.self_phone}	
+						<else />
+							&nbsp;
+						</if>
+				</td>
+				<td class="td1" align="center">
+						<if condition="$vo.self_telephone neq ''">
+							{$vo.self_telephone}	
+						<else />
+							&nbsp;
+						</if>
+				</td>
+				<td class="td1" align="center">
+						{$vo.amount}
+				</td>
+				<td class="td1" align="center">
+						<if condition="$vo['reg_time'] == null">
+							
+						<else />
+							{$vo.reg_time|date='Y-m-d H:i:s',###}
+						</if>
+				</td>
+				<td class="td1" align="center">
+						<if condition="$vo['status'] eq '1'">
+							<font color="green">通过</font>	
+						<elseif condition="$vo['status'] egt '2'" />
+							<font color="blue">不通过</font>
+						<elseif condition="$vo['status'] eq '0'"/>
+							<font color="red">未审核</font>
+						</if>
+				</td>
+				<td class="td1" align="center">
+						&nbsp;
+				</td>
+				<td class="td1" align="center">
+						&nbsp;
+				</td>
+				<td align="center">
+					<if condition="$vo['is_lock'] eq '1'">
+						<a class="unlock" href="javascript:;" onclick="unlockUser('{$vo.id}')" >解锁</a>
+						<span class="unlock" style="vertical-align:text-middle;">|</span>
+					</if>
+					<if condition="$vo['status'] eq '1'">
+						<a href="javascript:;" onclick="javascript:window.open('{:U('Member/member_of_discount',array('id'=>$vo['id'],'type'=>$vo['type']))}');">优惠</a>
+					<elseif condition="$vo['status'] eq '0'" />
+						<a href="javascript:;" onclick="javascript:window.open('{:U('Member/show',array('id'=>$vo['id'],'type'=>$vo['type']))}');">审核</a>
+					<else/>
+						<font color="#ccc">审核</font>
+					</if>
+
+						 <span style="vertical-align:text-middle;">|</span> 
+						<a href="{:U('Member/edit',array('id'=>$vo['id'],'type'=>$vo['type']))}" data-toggle="modal" data-target="#myModal">修改</a>
+
+						 <span style="vertical-align:text-middle;">|</span> 
+						<a href="javascript:void(0);" onclick="toDel('{$vo.id}','{:U(CONTROLLER_NAME.'/delete')}')">删除</a>
+
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+</div>
+</form>
+<script type="text/javascript" src="__PUBLIC__/js/imgbox/js/sweetalert.min.js"></script>
+<link rel="Stylesheet" type="text/css" href="__PUBLIC__/js/imgbox/css/sweetalert.css" />
+
+<script>
+	function unlockUser(uid) {
+        swal({
+            title: "解锁",
+            text: "你确定解锁吗?",
+            type: "warning",
+            showCancelButton: true,
+            closeOnConfirm: true,
+            html:true,
+            confirmButtonText: "确定",
+            confirmButtonColor: "#ec6c62"
+        }, function() {
+            $.ajax({
+                type:'get',
+                url:"{:U(CONTROLLER_NAME.'/unLock')}",
+                data:{
+                    'user_id':uid,
+                }
+            }).done(function(data) {
+                if(data.state == 'yes'){
+                    swal("提示信息", data.msg, "success");
+                    $('.unlock').remove();
+                }else{
+                    swal("提示信息",data.msg, "error");
+                }
+
+            });
+        });
+
+	}
+</script>
+<div id="pages" class="page">{$page}</div>
+			<div class="foot"></div>
+<center>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+   aria-labelledby="myModalLabel" aria-hidden="true"  >
+   <div class="modal-dialog">
+      <div class="modal-content">
+    
+         <div class="modal-body">
+            ...
+         </div>
+   
+      </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+</div>
+</center>
+
+</block>
+

@@ -1,0 +1,19 @@
+#navigation{margin:30px auto;}
+.treeviewview,.treeviewview ul,.treeviewview li{list-style:none;margin:0;padding:0;zoom: 1;}
+.treeviewview ul{margin-left:8px;}
+.treeview li a{color:#555;padding:.1em 7px .1em 27px;display:block;text-decoration:none;border:1px dashed #fff;margin-top: -11px;}
+.treeview ul.treeview-group-collapsed{display:none;}
+
+
+
+
+
+#flic{margin:0px auto;}
+.flic,.flic ul,.flic li{list-style:none;margin:0;padding:0;zoom: 1;}
+.flic ul{margin-left:8px;}
+.flic li a{color:#555;padding:.1em 7px .1em 27px;display:block;text-decoration:none;border:1px dashed #fff;margin-top: 5px;}
+.flic a.selected {
+    border: 1px solid #e2f3fb;
+    background-color: #f2fafd;
+}
+#showline .addbtn{color:#555;margin-left: 7px;}

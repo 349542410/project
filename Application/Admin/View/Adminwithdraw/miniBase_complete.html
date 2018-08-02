@@ -1,0 +1,229 @@
+<form action="{:U('Adminwithdraw/withdraw_hadd')}" method='post'>
+
+	<div class="container" style="margin-bottom:0;margin-top:0;">
+	<!-- 会员提现详细信息	start -->
+		<label class="col-sm-12 control-label"><h3>会员提现信息</h3></label>
+		<div class="form-signin" style="padding-top:40px;background:#F7F7F9 !important;margin-bottom:40px">
+			
+			<div class="form-group">
+				<label class="col-sm-1 control-label" for="username" style="text-align:right;">会员名称:</label>
+				<div class="col-sm-3">
+					{$row['username']}
+					<!-- <input class="form-control" placeholder="会员名称" name="username" value="{$row['username']}" type="text"> -->
+				</div>
+				<label class="col-sm-1 control-label" for="username" style="text-align:right;">申请金额:</label>
+				<div class="col-sm-3">
+					{$row['request_amount']}
+					<!-- <input class="form-control" placeholder="申请金额" name="request_amount" value="{$row['request_amount']}" type="text"> -->
+				</div>
+				<label class="col-sm-1 control-label" for="username" style="text-align:right;">申请时间:</label>
+				<div class="col-sm-3">
+					{$row['create_time']}
+					<!-- <input class="form-control" placeholder="申请时间" name="create_time" value="{$row['create_time']}" type="text"> -->
+				</div>			
+			</div>
+			<label class="col-sm-12 control-label"></label>
+			<div class="form-group">
+				<label class="col-sm-1 control-label" for="username" style="text-align:right;">账号即时余额:</label>
+				<div class="col-sm-3">
+					{$row['useramount']}
+					<!-- <input class="form-control" placeholder="账号即时余额" name="useramount" value="{$row['useramount']}" type="text"> -->
+				</div>
+				<label class="col-sm-1 control-label" for="username" style="text-align:right;">冻结金额:</label>
+				<div class="col-sm-3">
+					{$row['freeze_amount']}
+					<!-- <input class="form-control" placeholder="冻结金额" name="freeze_amount" value="{$row['freeze_amount']}" type="text"> -->
+				</div>
+				<!-- <label class="col-sm-1 control-label" for="username" style="text-align:right;">手续费:</label>
+				<div class="col-sm-3">
+					<input class="form-control" placeholder="手续费" name="service_charge" value="{$row['service_charge']}" type="text">
+				</div> -->
+				<!-- <label class="col-sm-1 control-label" for="username" style="text-align:right;">申请时间:</label>
+				<div class="col-sm-3">
+					{$row['create_time']}
+					<input class="form-control" placeholder="申请时间" name="create_time" value="{$row['create_time']}" type="text">
+				</div> -->
+				<label class="col-sm-1 control-label" for="username" style="text-align:right;">状态:</label>
+				<div class="col-sm-3">
+					{$row['examine_status_name']}
+					<!-- <input class="form-control" placeholder="状态" name="mode_name" value="{$row['examine_status_name']}" type="text"> -->
+				</div>						
+			</div>	
+			<label class="col-sm-12 control-label"></label>
+			<div class="form-group">
+				<!-- <label class="col-sm-1 control-label" for="username" style="text-align:right;">提现方式:</label>
+				<div class="col-sm-3">
+					<input class="form-control" placeholder="提现方式" name="mode_name" value="{$row['mode_name']}" type="text">
+				</div> -->	
+				<!-- <label class="col-sm-1 control-label" for="username" style="text-align:right;">状态:</label>
+				<div class="col-sm-3">
+					{$row['examine_status_name']}
+					<input class="form-control" placeholder="状态" name="mode_name" value="{$row['examine_status_name']}" type="text"> 
+				</div> -->							
+			</div>
+			<if condition="$row['examine_status'] eq 1 ">	
+				<label class="col-sm-12 control-label"></label>
+				<div class="form-group">
+					<label class="col-sm-1 control-label" for="username" style="text-align:right;">在线支付金额:</label>
+					<div class="col-sm-3">
+						<input class="form-control" placeholder="在线支付金额" name="online_amount" type="text">
+					</div>
+					<label class="col-sm-1 control-label" for="username" style="text-align:right;">在线支付手续费:</label>
+					<div class="col-sm-3">
+						<input class="form-control" placeholder="在线支付手续费" name="cash_service" type="text">
+					</div>	
+					<label class="col-sm-1 control-label" for="username" style="text-align:right;">退款方式:</label>
+					<div class="col-sm-3">
+						<!-- <input class="form-control" placeholder="退款方式" name="cash_mode" type="text">
+						 -->
+						<select class="form-control" name="cash_mode" id="line_zcode">
+							<option style="margin:5px 3px; padding-left:5px; "  value="0">请选择退款方式</option>
+							<volist name="paykind" id="pk">
+								<option  style="margin:5px 3px; padding-left:5px; " value="{$key}" <if condition="$row['cash_mode'] eq $key">selected=""</if> >{$pk}</option>
+							</volist>
+						</select>
+					</div>							
+				</div>	
+			</if>
+			<if condition="$row['examine_status'] eq 2">	
+				<label class="col-sm-12 control-label"></label>
+				<div class="form-group">
+					<label class="col-sm-1 control-label" for="username" style="text-align:right;">在线支付金额:</label>
+					<div class="col-sm-3">
+						{$row['online_amount']}
+						<!-- <input class="form-control" placeholder="在线支付金额" name="online_amount" value="{$row['online_amount']}"  type="text"> -->
+					</div>
+					<label class="col-sm-1 control-label" for="username" style="text-align:right;">在线支付手续费:</label>
+					<div class="col-sm-3">
+						{$row['cash_service']}
+						<!-- <input class="form-control" placeholder="在线支付手续费" name="cash_service"  value="{$row['cash_service']}"  type="text"> -->
+					</div>	
+					<label class="col-sm-1 control-label" for="username" style="text-align:right;">退款方式:</label>
+					<div class="col-sm-3">
+						<!-- <input class="form-control" placeholder="退款方式" name="cash_mode" type="text">
+						 -->
+						{$row['cash_mode_name']}
+					</div>							
+				</div>
+				<label class="col-sm-12 control-label"></label>
+				<div class="form-group">
+					<label class="col-sm-1 control-label" for="username" style="text-align:right;">审核人:</label>
+					<div class="col-sm-3">
+						{$row['username']}
+						<!-- <input class="form-control" placeholder="在线支付金额" name="online_amount" value="{$row['online_amount']}"  type="text"> -->
+					</div>
+					<label class="col-sm-1 control-label" for="username" style="text-align:right;">审核时间:</label>
+					<div class="col-sm-3">
+						{$row['examine_time']}
+						<!-- <input class="form-control" placeholder="在线支付手续费" name="cash_service"  value="{$row['cash_service']}"  type="text"> -->
+					</div>					
+				</div>						
+					
+			</if>
+		
+		</div>
+	<!-- 会员提现详细信息	end -->
+	<!-- 会员提现审核操作	start -->
+		<if condition="$row['examine_status'] eq 2">
+		<label class="col-sm-12 control-label"></label>
+		<table border="0" cellpadding="0" cellspacing="0" class="table table-hover" style="border-bottom:none !important">
+			<thead>
+				<!-- <tr>
+					<td class="col-sm-1 control-label" style="text-align:right">操作:</td>
+					<td class="col-sm-11">
+						<div>
+							<input type="hidden" name="id" value="{$row['id']}">
+							<if condition="$row['examine_status'] eq 0">
+								<input type="hidden" name="examine" id="examine">
+								<button type="button"  class="btn card" onclick="$('#examine').attr('value', '1')">通过</button>
+							</if>
+							<if condition="$row['examine_status'] eq 1">
+								<input type="hidden" name="confirm" id="confirm"/>
+								
+								<button class="btn card" type="button"  name="confirm"  onclick="$('#confirm').attr('value', '1')">确认</button>	
+							</if>
+								 <input type="hidden" name="cancel" id="cancel" />
+								<button class="btn card" type="button" onclick="$('#cancel').attr('value', '1')">取消</button>
+							
+						</div>
+					</td>						
+				</tr> -->
+				<tr>
+					<td class="col-sm-1 control-label" style="text-align:right">备注:</td>
+					<td class="col-sm-11">
+						<!-- <textarea name="note" id="note" class="col-sm-10" placeholder="操作记录">{$row['note']}</textarea>  -->
+						<div class="col-sm-10" >{$row['note']}</div>
+					</td>							
+				</tr>
+			</thead>
+		</table>
+		</if>	
+	
+	<!-- 会员提现审核操作	end -->
+	<!-- 会员提现-历史信息	start -->
+				<label class="col-sm-12 control-label"><h3>提现信息</h3></label>
+				<table border="0" cellpadding="0" cellspacing="0" class="table table-hover" style="border-bottom:none !important">
+					<thead>
+						<tr>
+							<!-- <th>序号</th>
+							<th>会员名称</th> -->
+							<th>申请时间 / 审核时间</th>
+							<th>提现金额 / 冻结金额</th>
+							<th>在线支付金额/ 在线支付手续费</th>
+							<th>状态</th>
+							<th>退还方式</th>
+							<!-- <th>操作员</th> -->
+							
+						</tr>
+					</thead>
+					<tbody style="font-size:15px;" class="rech">
+						<volist name="complete" id="vo">
+							<tr>
+								<!--<td align="center"  class="td1">
+										{$vo.id}
+								</td>
+								<td align="center" class="td1">
+										{$vo.username}
+								</td>-->
+								<td align="center" class="td1">
+										{$vo.create_time}
+										<br />
+										{$vo.examine_time}
+								</td>
+								<td align="center" class="td1">
+										{$vo.request_amount}
+										<br />
+										{$vo.freeze_amount}
+								</td>
+								<td align="center" class="td1">
+										{$vo.online_amount}
+										<br />
+										{$vo.cash_service}
+								</td>
+								<td align="center" class="td1">
+										{$vo.examine_status_name}
+								</td>
+								<td align="center"  class="td1">
+										{$vo.cash_mode_name}
+								</td>
+								<!-- <td align="center"  class="td1">
+										<if condition="$vo.status_name">
+											{$vo.adminname}
+										<else/>
+											会员充值
+										</if>
+								</td> -->
+
+								
+							</tr>
+						</volist>
+						<tr>
+							<td colspan="8">
+								<div id="pages" class="page rech" page_type="rech">{$show_complete}</div>								
+							</td>
+						</tr>
+					</tbody>
+
+				</table>
+				
+	<!-- 会员提现-历史信息	end -->

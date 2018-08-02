@@ -1,0 +1,663 @@
+                <div class="ordhead"><h3>{:L('l_Package_Information')}</h3></div>
+<!--                 <div class="btn_box" style="width: 1107px;">
+                    <button class="formright fir_b" onclick="return false;">模板下载</button>
+                    <button class="formright fir_b" onclick="return false;">导入</button>
+                    <div style="clear: both;"></div>
+                </div> -->
+                <div class="ordbody oblast" style="width: 1270px;">
+                    <table class="table_now" 
+                    <if condition="$html_name eq 'index'">
+                     style="margin:10px auto;height:110px;width: 1346px;"
+                     <elseif condition="$html_name eq 'import'"/>
+                     style="margin:10px auto;height:110px;width: 1350px;"
+                     <else/> 
+                     style="margin:10px auto;height:110px;width: 1345px;"
+                     </if> id="table">
+                    <input type="hidden" id="num" value="{$count-1}" autocomplete="off" >
+                    <input type="hidden" id="max_row" value="{$count-1}" autocomplete="off" >
+                        <tr>
+                            <td width="5%" style="font-weight: bold;" class="copy_r"></td>
+                            <!-- 海关所属类别 -->
+                            <td width="20%" style="font-weight: bold;">{:L('Customs')}</td>
+                            <!-- bc状态可用货品类别 -->
+                            <!-- <td width="10%" style="font-weight: bold;">{:L('ProCate')}</td> -->
+                            <!-- bc状态可用税金 -->
+                            <td width="10%" class="chuijin" style="font-weight: bold;">{:L('Tax')}（$）</td>
+                            <!-- 数量 -->
+                            <td width="10%" style="font-weight: bold;">{:L('Amount')}</td>
+                            <!-- 单价 -->
+                            <td width="10%" style="font-weight: bold;">{:L('UnitPrice')}（$）</td>
+                            <!-- 备注 -->
+                            <td width="10%" style="font-weight: bold;">{:L('Remarks')}</td>
+                            <td width="5%" style="border:none"><img src="__MEMBER__/images/null.png"  /></td>  
+                        </tr>
+                        <!-- 配置控制行数 gan -->
+                        <for start="0" end="$count" name="j"> 
+                        <tr class="stta" cid="{$j}">
+                            <!-- 复制行 -->
+                            <td class="copy_r "><if condition="$j eq 0"><else/><a onclick="del_row(this)" href="javascript:void(0)">{:L('l_del')}</a></if></td>
+                            <input class="ttc" type="hidden" name="oid_{$j}" value="{$pro_list[$j][oid]}"/>
+                            <!-- 品牌 -->
+                            <td width="10%;" class="brand" style="display: none;"><input type="text" value="{$pro_list[$j]['brand']}" name="brand_{$j}" class="clchang" maxlength="50"></td>
+                            <!-- 货品名称 -->
+                            <td width="10%;" class="detail" style="display: none"><input type="text" value="{$pro_list[$j]['detail']}" name="detail_{$j}" class="clchang" maxlength="50"></td>
+                            <!-- 货品类别 -->
+                            <td width="10%;" class="catname" style="display: none"><input type="text" value="{$pro_list[$j]['catname']}"  name="catname_{$j}" class="clchang" maxlength="5"></td>
+                            <!-- bc状态可用 海关所属类别 下拉框 -->
+                            <td width="30%;" class="seleopt" style="position: relative;">
+<!--                                 <select name="category_one_{$j}" style="width:120px;" class="catone" <if condition="$j eq 0">data-validation-engine="validate[required]"</if> onchange="selecchang(this)">
+                                    <option value="">{:L('ClassOne')}</option>
+                                    <volist name="cat_list" id="vvo">
+                                        <php>
+                                        if($vvo['id'] == $pro_list[$j]['category_one']){
+                                            $catoid = $vvo['id'];
+                                        }
+                                        </php>
+                                        <option value="{$vvo['id']}" <if condition="$vvo['id'] eq $pro_list[$j]['category_one']">selected</if>>{$vvo['cat_name']}</option>
+                                    </volist>
+                                </select>
+                                <select style="width:120px;" class="cattwo" name="category_two_{$j}" onchange="selectc(this)">
+                                    <option value="">{:L('ClassTwo')}</option>
+                                    <volist name="cat_list[$catoid]['child']" id="vvto">
+                                        <php>
+                                        if($vvto['id'] == $pro_list[$j]['category_two']){
+                                            $price = $vvto['price'];
+                                            $num = $pro_list[$j]['number'];
+                                            $product_id = $pro_list[$j]['product_id'];
+                                        }
+                                        </php>
+                                        <option value="{$vvto['id']}" price="{$vvto['price']}" <if condition="$vvto['id'] eq $pro_list[$j]['category_two']">selected</if>  pic="{$product_id}">{$vvto['cat_name']}</option>
+                                    </volist>
+                                </select>    -->
+                                <div id="app_category_{$j}">
+                                    <div class="block" id="selec_box">
+                                        <el-cascader v-model="selectedOptions" placeholder="{:L('l_ott_cat')}" :options="options" filterable @change="goryChange"></el-cascader>
+                                        <input type="hidden" name="category_one_{$j}" id="cate_one" value="{$pro_list[$j][category_one]}">
+                                        <input type="hidden" name="category_two_{$j}" id="cate_two" value="{$pro_list[$j][category_two]}">
+                                        <input type="hidden" name="product_type_{$j}" id="product_t"  <if condition="$html_name eq 'import'"> value="{$pro_list[$j][catname]}"<else/> value="{$pro_list[$j][product_id]}"</if>>
+                                        <input type="hidden" id="cate_pirce" value="">
+                                    </div>
+                                </div>
+                            </td>
+                            <!-- bc状态可用 商品类别 下拉框-->
+<!--                             <td class="pidc">
+                                <select name="product_type_{$j}" onchange="selelast(this)" class="catband" style="width:100px;">
+                                <option value="">{:L('ProCate')}</option>
+                                </select>
+                            </td> -->
+                            <!-- bc状态 可用税金 -->
+                            <td width="10%;" class="chuijin"><label>0.00</label></td>
+                            <!-- 数量 -->
+                            <td width="10%;" class="amount"><input type="number" min="1" onblur="amper(this)" value="{$pro_list[$j]['number']}" name="amount_{$j}" class="clzhong" maxlength="9" <if condition="$j eq 0">data-validation-engine="validate[required]"</if>></td>
+                            <!-- 单价 -->
+                            <td width="10%;"><input type="text" name="price_{$j}" value="{$pro_list[$j]['price']}" class="clzhong" maxlength="9"></td>
+                            <!-- 货币 -->
+                            <input type="hidden" name="coin_{$j}" value="USD">
+                            <!-- 备注 -->
+                            <td width="10%;" ><input type="text" name="remark_{$j}" value="{$pro_list[$j]['remark']}" class="clchang"></td>
+                            <!-- 删除行 -->
+<!--                             <td style="border:none;" class="nows nows{$j}"><a href="javascript:void(0);" title="{:L('Delete')}"><img width="22" height="22" src="__MEMBER__/images/clean.png" /></a></td> -->
+                        </tr>
+                        </for>
+                    </table>
+                    <div onclick="copy_row(this)" class="btn" id="copy_btn" style="line-height: 22px;">{:L('l_add')}</div>
+                    <span class="forspan">{:L('Notice_Product')}</span>
+                <!-- **************************************************** -->
+                <!-- 按钮部分 -->
+                <tr>
+                    <table style="width: 1000px;float: right;margin: 0 auto;">
+                        <tr>
+                            <td id="hide_boxs">
+                                <input type="hidden" value="{$user_id}" name="uid">
+                            </td>
+                            <td style="text-align: right;">
+                                <span id="loading" style="bottom:180px;left:650px !important;"></span>
+                                <button type="submit" class="btn" id="BtnSave">{:L('BtnSave')}</button>
+                                <!-- <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button> -->
+                                <span id="messagebox" class="msgbox" style="bottom:180px;left:650px !important"></span>                 
+                            </td>
+                        </tr>
+                    </table>
+                </tr>
+            </div>
+            </div>
+                <if condition="$html_name eq 'edit'">
+                        <script type="text/javascript">
+                        // (编辑)货品声明 删除行效果    
+                        $(function(){
+                            var acname = "{$html_name}";
+                            if(acname == 'edit'){
+                            $("td.nows a").css('display','none');
+                            $(".stta").hover(function(){
+                                var ttc= $(this).find('.ttc').attr('value');
+                                var src= $(this).find('img');
+                                if(ttc!=''){
+                                    var d=$(this);
+                                    $(this).find('.nows').find('a').css('display','inline');
+                                    $(this).find('.nows').find('a').click(function(){
+                                        layer.confirm("{:L('LAY_MesDel')}", {icon:3,offset: '300px',btn:["{:L('LAY_BtnOK')}","{:L('LAY_BtnCancel')}"],title:"{:L('LAY_Information')}",}, function(){
+                                            $.ajax({
+                                                url: "{:U('Order/del')}",
+                                                type: "POST",
+                                                data:{'ttc':ttc,},
+                                                dataType: "json",
+                                                success:function(result){
+                                                    if(result.state == '1'){
+                                                        layer.msg(result.msg, {icon: 6,offset: '350px'});
+                                                        d.find('input').attr('value','');
+                                                        d.find('select').val('1');
+                                                        d.find('.chuijin').find('label').html('0.00');
+                                                        src.remove();
+                                                    }else{
+                                                        layer.open({
+                                                            type: 0,
+                                                            title : "{:L('LAY_SystemMessage')}",
+                                                            content : result.msg,
+                                                            skin: 'demo-class',//自定义样式demo-class
+                                                            icon : 5,
+                                                            offset: '300px',
+                                                            btn:"{:L('LAY_BtnOK')}",
+                                                        });
+                                                        src.attr('src',"__MEMBER__/images/clean.png");
+                                                    }
+                                                    d.find('.nows').find('a').css('display','none');
+                                                }
+                                            });
+                                        });                 
+                                    })
+                                }        
+                            },function(){
+                                $(this).find('.nows').find('a').css('display','none');  
+                                $(this).find('.nows').find('a').unbind();
+                            })            
+                            }
+                        });
+                        </script>
+                <elseif condition="$html_name eq 'newOrder'"/>
+                        <script type="text/javascript">
+                        // (再次下单)货品声明 删除行效果 
+                        $(function(){
+                            $("td.nows a").css('display','none');
+                            $(".stta").hover(function(){
+                                var src= $(this).find('img');
+                                    var d=$(this);
+                                    $(this).find('.nows').find('a').css('display','inline');
+                                    $(this).find('.nows').find('a').click(function(){
+                                        layer.open({
+                                            type: 0,
+                                            skin: 'demo-class',//自定义样式demo-class
+                                            title : "{:L('LAY_SystemMessage')}",
+                                            content : "{:L('LAY_Empty')}",
+                                            btn: ["{:L('LAY_BtnOK')}","{:L('LAY_BtnCancel')}"],
+                                            yes:function(){
+                                                layer.msg("{:L('LAY_EmptyOK')}",{icon: 6,offset: '350px'});
+                                                d.find('input').attr('value','');
+                                                d.find('select').val('1');
+                                                d.find('.chuijin').find('label').html('0.00');
+                                                src.remove();
+                                            },
+                                            icon : {icon:5},
+                                            offset: '300px',
+                                        });
+                                        
+                                    })        
+                            },function(){
+                                $(this).find('.nows').find('a').css('display','none');  
+                                $(this).find('.nows').find('a').unbind();
+                            })
+                        });
+                        </script>
+                <else/>
+                    <script type="text/javascript">
+                    // 货品声明 删除行效果 
+                    // $(function(){
+                    //     $("td.nows a").css('display','none');
+                    // });
+                    </script>
+                </if>
+<script type="text/javascript">
+$(function(){
+    window.acname = "{$html_name}";
+    // 获取线路ID
+    var t_line = $("input[name='TransferLine']:checked").val();
+    // 声明全局变量 装载element-ui所需的数据格式
+    window.globa_selec_gory = {options:[]};
+    // 数据组装
+    if(category_list[t_line] != undefined){
+        $.each(category_list[t_line],function(k,v){
+            globa_selec_gory.options.push(v);
+        });
+    }
+
+    // console.log(globa_selec_gory);
+    // 获取声明的个数
+    var num=$("#num").val();
+    
+    if("{$html_name}" == 'index'){
+        // 添加页面
+        // 调用默认级联
+        bc_ele_cascader_all(num,1);
+    }else if("{$html_name}" == 'edit' || "{$html_name}" == 'newOrder'){
+        // 编辑页面
+        var n = 0;
+        // 装载级联选择器的默认选中项
+        var def = [];
+        // 遍历载入数据
+        for(;n<{$count};n++){
+            def.push($('input[name="category_one_'+n+'"]').val());
+            def.push($('input[name="category_two_'+n+'"]').val());
+            def.push($('input[name="product_type_'+n+'"]').val());
+            bc_ele_cascader(n,def,1);
+            // 清空数据
+            def = [];
+        }
+    }else{
+        // 显示批量下单示例
+        $('#table').before(excelcont(prolist));
+        // 批量下单页面
+        var n = 0;
+        // 装载级联选择器的默认选中项
+        var def = [];
+        // 遍历载入数据
+        for(;n<{$count};n++){
+            var category_oval = $('input[name="category_one_'+n+'"]').val();
+            var category_tval = $('input[name="category_two_'+n+'"]').val();
+            var product_val   = $('input[name="product_type_'+n+'"]').val();
+            var stop = false;
+            $.each(globa_selec_gory.options,function(k,v){
+                if(v.label == category_oval){
+                    def.push(v.value);
+                    $.each(v.children,function(k1,v1){
+                        if(v1.label == category_tval){
+                            def.push(v1.value);
+                            $.each(v1.children,function(k2,v2){
+                                if(v2.label == product_val){
+                                    def.push(v2.value);
+                                    stop = true;
+                                    return false;
+                                }
+                            });
+                            if(stop){
+                                return false;
+                            }
+                        }
+
+                    });
+                    if(stop){
+                        return false;
+                    }
+                }
+            });
+            // def.push($('input[name="category_one_'+n+'"]').val());
+            // def.push($('input[name="category_two_'+n+'"]').val());
+            bc_ele_cascader(n,def,1);
+            // 清空数据
+            def = [];
+        }
+
+    }
+        // 根据状态预选择
+        // window.acname = "{$html_name}";
+        // if(acname != 'index' && acname != 'import'){
+        //     $('.cattwo').change();         
+        // }
+        // if(acname == 'import'){
+            
+        // }
+        
+});
+
+    /**
+     * 更新锁定状态
+     *
+     * @method   update
+     * @param   {Number} 增加的数值
+     * @time    20180202
+     * @author  gan
+     */
+    function clock_row(num){
+
+        var obj = $('#copy_btn');
+        if(num>=30){
+            layer.open({
+                title:"{:L('LAY_SystemMessage')}",
+                offset: '300px',
+                icon : 0,
+                skin: 'demo-class',//自定义样式demo-class
+                content: "{:L('LAY_AddRow')}",
+            });
+            $(obj).addClass('disabled');
+            $(obj).attr('disabled','disabled');
+            return false;
+        }else{ 
+            $(obj).removeClass('disabled');
+            $(obj).removeAttr('disabled','disabled');
+            return true;
+        }
+    }
+    /**
+     * 添加行
+     *
+     * @method   add row
+     * @param   {object} 当前对象
+     * @time    20180202
+     * @author  gan
+     */
+    function copy_row(obj)
+    {
+        // 控制行数的值
+        var num=$("#num").val();
+        // 只加的值
+        var max_row = $('#max_row').val();
+
+        if(clock_row(num)){
+            max_row++;
+            $('#max_row').val(max_row);
+            num++;
+            var strline = '<tr class="stta" cid="'+max_row+'"><td class="copy_r"><a onclick="del_row(this)" href="javascript:void(0)">'+"{:L('l_del')}"+'</a></td><input type="hidden" name="oid_'+max_row+'" value="{$pro_list[$j][oid]}"/><td width="10%;" class="showline brand" style="display: none;"><input type="text" class="clchang" name="brand_'+max_row+'"></td><td width="10%;" class="showline detail" style="display: none;"><input type="text" class="clchang" name="detail_'+max_row+'"></td><td width="10%;" class="showline catname" style="display: none;"><input type="text" class="clchang" name="catname_'+max_row+'"></td><td width="20%;" class="showline" style="display: none;">---</td><td width="30%;" class="seleopt"><div id="app_category_'+max_row+'"><div class="block" id="selec_box"><el-cascader v-model="selectedOptions" placeholder="'+"{:L('l_ott_cat')}"+'" :options="options" filterable @change="goryChange"></el-cascader><input type="hidden" name="category_one_'+max_row+'" id="cate_one"><input type="hidden" name="category_two_'+max_row+'" id="cate_two"><input type="hidden" name="product_type_'+max_row+'" id="product_t"><input type="hidden" id="cate_pirce" value=""></div></div></td><td width="10%;" class="chuijin noneline"><label>0.00</label></td><td width="10%;" class="amount"><input type="number" min="0" class="clzhong" onblur="amper(this)" name="amount_'+max_row+'"></td><td width="10%;"><input type="text" class="clzhong" name="price_'+max_row+'"></td><input type="hidden" name="coin_'+max_row+'" value="USD"><td width="10%;" ><input type="text" class="clchang" name="remark_'+max_row+'"></td></tr>';
+            $("#table").append(strline);  
+            $("#num").val(num);
+            bc_ele_cascader(max_row,[],1);
+        }
+    }
+    /**
+     * 删除行
+     *
+     * @method   del
+     * @param   {object} 当前对象
+     * @time    20180202
+     * @author  gan     
+     */
+    function del_row(obj){
+        var num=$("#num").val();
+        num--;
+        $("#num").val(num);
+        if(window.acname == 'edit'){
+            var ttc = $(obj).parent().parent().find('.ttc').attr('value');
+            layer.confirm("{:L('LAY_MesDel')}", {icon:3,offset: '300px',btn:["{:L('LAY_BtnOK')}","{:L('LAY_BtnCancel')}"],title:"{:L('LAY_Information')}",}, function(){
+                $.ajax({
+                    url: "{:U('Order/del')}",
+                    type: "POST",
+                    data:{'ttc':ttc,},
+                    dataType: "json",
+                    success:function(result){
+                        if(result.state == '1'){
+                            layer.msg(result.msg, {icon: 6,offset: '350px'});
+                            $(obj).parent().parent('tr').remove();
+                            clock_row(num);
+                        }else{
+                            layer.open({
+                                type: 0,
+                                title : "{:L('LAY_SystemMessage')}",
+                                content : result.msg,
+                                icon : 5,
+                                skin: 'demo-class',//自定义样式demo-class
+                                offset: '300px',
+                                btn:"{:L('LAY_BtnOK')}",
+                            });
+                        }
+                    }
+                });
+            }); 
+        }else{
+            $(obj).parent().parent('tr').remove();
+            clock_row(num);
+        }
+    }
+    /**
+     * 一级分类
+     *
+     * @method   获取一级分类
+     * @param   {object} 当前对象
+     * @time    20180202
+     * @author  gan     
+     */
+//    function selecchang(obj){
+//        var no = $(obj).find('option:selected').val();
+//        //alert(no);
+//        if(no != ''){
+//            var text = $(obj).find("option:selected").text();
+//            $(obj).parent('td').prevAll('.brand').find('input').val(text);
+//        }else{
+//            $(obj).parent('td').prevAll('.brand').find('input').val('');
+//        }
+//        $.ajax({
+//            type: "GET",
+//            url: "{:U('Orderlist/next_level')}",
+//            data: "id="+no,
+//            success:function(data){
+//                $(obj).next('select').find('option').remove();
+//                $(obj).next('select').append("<option value=''>{:L('Cr_Select')}</option>");
+//                $.each(data, function (i, item) {
+//                    $(obj).next('select').append("<option value=" + item.id + " price="+ item.price +">" + item.cat_name + "</option>");//赋值
+//                });
+//                if(acname=='import'){
+//                    var namenos = $(obj).attr('name').replace(/[^0-9]/ig,"");
+//                    if(!_empty__(prolist[namenos])){
+//                        // 导入订单设置所属类别(二级类别) stat-->
+//                        $(obj).next('select').find("option:contains('"+prolist[namenos].category_two+"')").prop("selected",true);
+//                        // #######调用下面计算税金函数
+//                        selectc($(obj).next('select'));
+//                        // end-->
+//                    }
+//                }
+//            }
+//        });
+//    }
+    /**
+     * 二级分类
+     *
+     * @method   获取二级分类
+     * @param   {object} 当前对象
+     * @time    20180202
+     * @author  gan     
+     */
+//    function selectc(obj){
+//        var selected_text = $(obj).find('option:selected').text();
+//        if(selected_text == '无'){
+//            // alert('请选择正确的二级海关类别');
+//            layer.open({
+//                type: 0,
+//                title : "{:L('LAY_SystemMessage')}",
+//                content : "{:L('l_psc')}",
+//                skin: 'demo-class',//自定义样式demo-class
+//                icon : 5,
+//                offset: '300px',
+//                btn:"{:L('LAY_BtnOK')}",
+//            });
+//            return false;
+//        }
+//        var lsid = $(obj).find('option:selected').val();
+//        if(lsid != ''){
+//            var text = $(obj).find('option:selected').text();
+//            $(obj).parent('td').prevAll('.detail').find('input').val(text);
+//        }else{
+//            $(obj).parent('td').prevAll('.detail').find('input').val('');
+//        }
+//        var tt =$(obj).parent().next('.pidc').children().attr('pid','{$product_id}');
+//        $.ajax({
+//            type: "GET",
+//            url: "{:U('Orderlist/product')}",
+//            data:"id="+lsid,
+//            success:function(data){
+//                $(obj).parent('td').next().children('select').find('option').remove();
+//                $(obj).parent('td').next().children('select').append("<option value=''>{:L('Cr_Select')}</option>");
+//                var picid = $(obj).children('option:selected').attr('pic');
+//                var text = '';
+//                $.each(data, function (i, item) {
+//                    if(picid == item.id){
+//                        text += '<option value="' + item.id + '" selected>'+ item.name +'</option>';
+//                    }else{
+//                        text = '<option value="' + item.id + '">'+ item.name +'</option>';
+//                    }
+//                    $(obj).parent('td').next().children('select').append(text);//赋值
+//                });
+//                if(acname=='import'){
+//                    var namenos = $(obj).parent('td').next().children('select').attr('name').replace(/[^0-9]/ig,"");
+//                    if(!_empty__(prolist[namenos])){
+//                        $(obj).parent('td').next().children('select').find("option:contains('"+prolist[namenos].catname+"')").prop("selected",true);
+//                        var text = $(obj).parent('td').next().children('select').find('option:selected').text();
+//                        $(obj).parent('td').prevAll('.catname').find('input').val(text);
+//                    }
+//                }
+//            }
+//        });
+//        var aminp = $(obj).parent('td').siblings('.amount').find('input');
+//        var sui = $(obj).parent('td').siblings('.chuijin').find('label');
+//        var gg = $(obj).find("option:selected").attr("price");
+//        var aminp = $(obj).parent('td').siblings('.amount').find('input');
+//        var aipv = $(aminp).val();
+//        if(aipv != ''){
+//            var conts = (aipv*gg).toFixed(2);
+//            if(isNaN(conts)){
+//                $(sui).html('0.00');
+//            }else{
+//                $(sui).html(conts);
+//            }
+//        }else{
+//            $(sui).html(gg);
+//        }
+//        $(aminp).blur(function(){
+//            var inpn = $(this).val();
+//            //alert(sui);
+//            var cont = (inpn*gg).toFixed(2);
+//            if(isNaN(cont)){
+//                $(obj).parent('td').siblings('.chuijin').find('label').html('0.00');
+//            }else{
+//                $(obj).parent('td').siblings('.chuijin').find('label').html(cont);
+//            }
+//        });
+//
+//    }
+
+    function amper(obj){
+        // 税金存放位置
+        var showglod = $(obj).parent('td').siblings('.chuijin').find('label');
+        // 税金
+        var selpric = $(obj).parent().siblings('.seleopt').find('#cate_pirce').val();
+        // 数量
+        var thisv = $(obj).val();
+        var percen = (thisv*selpric).toFixed(2);
+        if(isNaN(percen)){
+            $(showglod).html('0.00');
+        }else{
+            $(showglod).html(percen);
+        }
+    }
+
+
+    function on_sumtax(thisdom){
+        // 税金的位置
+        var showglod = thisdom.parent().parent().find('.chuijin').children();
+        // 数量
+        var aminput = thisdom.parent().parent().find('.amount').children().val();
+        // 选择中的税金
+        var tax = thisdom.find('#cate_pirce').val();
+        // console.log(thisdom.parent().parent().find('.amount').children().val());
+
+        if(aminput != ''){
+            // 税金计算方法：数量*选中的金额*单价/100
+            var upri =  aminput*tax;
+            var percen = upri.toFixed(2);
+            if(isNaN(percen)){
+                $(showglod).html('0.00');
+            }else{
+                $(showglod).html(percen);
+            }
+        }
+    }
+    /**
+     * 货品类别
+     *
+     * @method   获取货品类别
+     * @param   {object} 当前对象
+     * @time    20180202
+     * @author  gan     
+     */
+//    function selelast(obj){
+//        var selected_text = $(obj).find('option:selected').text();
+//        if(selected_text == '无'){
+//            // alert('请选择正确的二级海关类别');
+//            layer.open({
+//                type: 0,
+//                title : "{:L('LAY_SystemMessage')}",
+//                content : "{:L('l_lsc')}",
+//                icon : 5,
+//                offset: '300px',
+//                skin: 'demo-class',//自定义样式demo-class
+//                btn:"{:L('LAY_BtnOK')}",
+//            });
+//            return false;
+//        }
+//        var no = $(obj).find('option:selected').val();
+//        if(no != ''){
+//            var text = $(obj).find('option:selected').text();
+//            $(obj).parent('td').prevAll('.catname').find('input').val(text);
+//        }else{
+//            $(obj).parent('td').prevAll('.catname').find('input').val('');
+//        }
+//    }
+// 总金额限制按单价
+// function sumpir(obj){
+//     var textbox = 0;
+//     $('.sump').each(function(index, item) {
+//         textbox += parseFloat($(item).val()) || 0;
+//     });
+//     var amount = parseFloat($(obj).parent().prev().children().val()) || 0;;
+//     if((amount*textbox) > 294){
+//         layer.msg('总价（单价*数量）不能超$294！');
+//         $('.btn').attr('disabled','disabled');
+//     }else{
+//         $('.btn').removeAttr('disabled');
+//     }
+// }
+// 总金额限制按数量
+// function sumnump(obj){
+//     var textbox = 0;
+//     $('.sump').each(function(index, item) {
+//         textbox += parseFloat($(item).val()) || 0;
+//     });
+//     var amount = parseFloat($(obj).val()) || 0;;
+//     if((amount*textbox) > 294){
+//         layer.msg('总价（单价*数量）不能超$294！');
+//         $('.btn').attr('disabled','disabled');
+//     }else{
+//         $('.btn').removeAttr('disabled');
+//     }
+// }
+    /**
+     * 显示导入订单
+     *
+     * @method   显示导入订单的示例
+     * @time    20180202
+     * @author  gan     
+     */  
+    function excelcont(prolist){
+        var str ='';
+        str+='<table width="100%" border="0" cellpadding="10" cellspacing="10"  class="table table-hover" style="margin:0 auto;color:#CC3366">';
+        str+='<thead>';
+        str+='<tr>';
+        str += '<th>'+"{:L('Customs')}"+'</th>';
+        str += '<th>'+"{:L('ProCate')}"+'</th>';
+        str += '<th>'+"{:L('Tax')}"+'（$）</th>';
+        str += '<th>'+"{:L('Amount')}"+'</th>';
+        str += '<th>'+"{:L('UnitPrice')}"+'（$）</th>';
+        str += '<th>'+"{:L('Remarks')}"+'</th>';
+        str+='</tr>';
+        str+='</thead>';
+        str+='<tbody>';
+        $.each(prolist,function(k,v){
+            str+='<tr>';
+            str += '<td>'+v.category_one+' --- '+v.category_two+'</td>';
+            str += '<td>'+v.catname+'</td>';
+            str += '<td>***</td>';
+            str += '<td>'+v.number+'</td>';
+            str += '<td>'+v.price+'</td>';
+            str += '<td></td>';
+            str+='</tr>';
+        });
+        str+='</tbody>';
+        str+='</table>';
+        return str;
+    }
+</script>

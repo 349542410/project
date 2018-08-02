@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <style type="text/css">
+      body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+
+      }
+
+      .container{margin:0 auto;}
+      .form-signin {
+        max-width: 900px;
+        margin-top:60px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+    .form-signin table th{height:36px;font-size:16px;line-height:36px;background:#F7F7F9;}
+    .form-signin table td{height:36px;line-height:36px;font-size:14px;text-indent:2em;background:#F7F7F9;}
+    .form-signin table td a{text-decoration:none;color:#000;}
+    .form-signin table td a:hover{color:blue;}
+    .form-signin .form-control{width:400px !important;}
+    .radio_price{width: 70;height: 34px;padding: 6px 10px;font-size: 14px;line-height: 1.42857143;color: #555;background-color: #fff;border: 1px solid #ccc;border-radius: 4px;}
+    </style>
+    <link href="__PUBLIC__/css/one.css" rel="stylesheet">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+    <![endif]-->
+    </head>
+  <body>
+<script type="text/javascript">
+      $(function(){
+          $('#tempForm').validationEngine('attach', {
+            promptPosition: 'topRight',
+            scroll: false,
+            addPromptClass:'formError-white',
+            autoPositionUpdate:true
+          });
+        });
+</script>
+    <div class="container" >
+      <div class="form-signin" style="padding: 40px 0;background:#F7F7F9 !important;margin-bottom:40px">
+        <form class="form-horizontal" id="tempForm" name="myform" role="form" action="{:U('CategoryForCc/edit_method')}" method="post" class="form-inline">
+          <tr>
+              <td style="text-align:right" width="240"><h3><label>&nbsp;&nbsp;&nbsp;&nbsp;编辑类别</label></h3></td>
+              <td width="700"></td>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">一级类别：</label>
+              <div class="formright" style="margin-top:5px">
+                <select name="cat_id" id="cat">
+                  <option value="0">---顶级类别---</option>
+                  <volist name="select_list" id="vt">
+                    <option value="{$vt['id']}" level="{$vt['level']}" <if condition="$info['fid'] eq $vt['id']">selected</if>>
+                    {:str_repeat('&nbsp;',($vt['level']+1)*4)}<neq name="vt['fid']" value="0">├</neq>{:str_repeat('─',($vt['level']))} {$vt['cat_name']}
+                    </option>
+                  </volist>
+                </select>
+                二级类别：<input type="text" name="cat_name" value="{$info['cat_name']}" id="cat_name" data-validation-engine="validate[required]" >
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group formgroup" id="formgroup" style="margin-left: ">
+              <label for="inputEmail3" class="formleft control-label">所含线路(可多选)：</label>
+              <div class="formright">
+              <div style="width:630px;">
+                <volist name="line_list" id="vo">
+                <smap style="min-width:150px;display: inline-block;">
+                  <input type="checkbox" name="{$vo['id']}" id="{$vo['id']}" <if condition="in_array($vo['id'],$info['TranKd'])">checked</if> style="float:left;padding-top:4px;padding-left:54px"><span style="float:left;">&nbsp;<label style="font-weight:lighter;padding-right:10px;" for="{$vo['id']}">{$vo['name']}</label></span>
+                  </smap>
+                </volist>
+              </div>
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">行邮税号：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="hs_code" value="{$info['hs_code']}" id="hs_code" placeholder="" class="form-control" onkeyup="showResult(this.value)">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">行邮税号类别：</label>
+              <div class="formright" style="margin-top:5px" id="livesearch">
+                <font>{$cname_code}</font>
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">HGID：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="hgid" value="{$info['hgid']}" id="" placeholder="" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <!-- <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">税金：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="price" value="{$info['price']}" id="" placeholder="" class="form-control">
+              </div>
+            </div>
+          </tr> -->
+
+          <input type="hidden" value="{$info['price']}" id="yuan_price">
+
+          <if condition="$info['default_value'] NEQ 1"><!--代表使用的是默认税率-->
+
+            <tr>
+              <div class="form-group">
+                <label for="inputEmail3" class="formleft control-label">税率/税金：</label>
+                <div class="formright" style="margin-top:5px">
+  
+                  <input type="radio" name="rate" style="width:20 !important" id="rate" value="0" checked/>默认
+  
+                  <span id="moren">
+                      <input type="text" name="price" id="rate_val1" class="radio_price" value="{$rate_moren}" disabled>
+                  </span>
+  
+                  <input type="radio" name="rate" style="width:20 !important" id="rate2" value="1"/>自定义
+  
+                  <span id="zidingyi" style="display:none;">
+                      <input type="number" name="price" id="rate_val2" min="0" class="radio_price" value="{$info['price']}">
+                  </span>
+  
+  
+                </div>
+              </div>
+            </tr>
+          
+          <else />
+
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">税率/税金：</label>
+              <div class="formright" style="margin-top:5px">
+
+                <input type="radio" name="rate" style="width:20 !important" id="rate" value="0"/>默认
+
+                <span id="moren" style="display:none;">
+                    <input type="text" name="price" id="rate_val1" class="radio_price" value="{$rate_moren}" disabled>
+                </span>
+
+                <input type="radio" name="rate" style="width:20 !important" id="rate2" value="1" checked/>自定义
+
+                <span id="zidingyi">
+                    <input type="number" name="price" id="rate_val2" min="0" class="radio_price" value="{$info['price']}">
+                </span>
+
+
+              </div>
+            </div>
+          </tr>
+
+          </if>
+
+          
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label" style="margin-top:60px">备注：</label>
+              <div class="formright">
+                <textarea name="remarks" class="form-control" rows="3" style="width:450;height:150;resize:none;">{$info['remarks']}</textarea>
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">排序：</label>
+              <div class="formright" style="margin-top:5px">
+                <input type="text" name="sort" value="{$info['sort']}" id="" placeholder="" class="form-control">
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">是否显示：</label>
+              <div class="formright" style="margin-top:5px">
+              <label class="radio-inline">
+                <input type="radio" name="is_show" id="" value="1" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['is_show']" value="1">checked="checked"</eq>>是 
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="is_show" id="" value="0" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['is_show']" value="0">checked="checked"</eq>>否
+              </label>
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group">
+              <label for="inputEmail3" class="formleft control-label">是否激活：</label>
+              <div class="formright" style="margin-top:5px">
+              <label class="radio-inline">
+                <input type="radio" name="status" id="" value="1" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['status']" value="1">checked="checked"</eq>>是 
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="status" id="" value="0" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['status']" value="0">checked="checked"</eq>>否
+              </label>
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div class="form-group" style="text-align:left !important;padding-left:580px">
+              <div class="col-sm-offset-1 col-sm-11">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="submit" class="btn btn-primary" id="BtnSave">提交</button>
+                <input type="hidden" name="id" value="{$id}">
+                <input type="hidden" name="lines" id="lines">
+                <input type="hidden" name="lineId" value="{$line}">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button>
+
+              </div>
+              <div id="messagebox" class="msgbox"></div>
+            </div>
+          </tr>
+          </form>
+          </div>
+        </div>
+<script type="text/javascript">
+function showResult(str) {
+
+  var len = str.length;
+
+  if(len == 0){ 
+
+      $('#livesearch').empty();
+
+      return false;
+
+  }else if(len > 8 || len < 8){
+
+      $('#livesearch').empty();
+      
+      $('#livesearch').append('<font color="red">请输入8位数税号</font>');
+
+      return false;
+
+  }else{
+
+    $.ajax({
+      type : 'post',
+      url : '{:U("CategoryForCc/livesearch")}',
+      data : {'str':str,},
+      success : function(data){
+
+        if(data.state == 'no'){
+
+            $('#livesearch').empty();
+      
+            $('#livesearch').append('<font color="red">'+data.msg+'</font>');
+
+        }else{
+
+            $('#livesearch').empty();
+      
+            $('#livesearch').append('<font>'+data.msg+'</font>');
+        }
+      },
+
+      beforeSend:function(){
+
+        $("#livesearch").html('<img style="width:20px;height:20px;" src="__PUBLIC__/images/msg_loading_d.gif"/>搜索中...');
+      }
+    });
+  }
+}
+
+//默认税率
+$('#rate').click(function(){
+  
+    //判断是否填写税号
+    var code = $('#hs_code').val();
+
+    var len = code.length;
+    
+    if(len == 0){ 
+
+      $('#messagebox').html('<font style="color:red;font-size:16px;">行邮税号为空，默认税率不存在</font>').fadeIn(1000);
+
+      layer.closeAll('loading');
+
+      return false;
+
+    }else if(len > 8 || len < 8){
+
+      $('#messagebox').html('<font style="color:red;font-size:16px;">请输入8位数税号</font>').fadeIn(1000);
+      
+      layer.closeAll('loading');
+
+        return false;
+
+    }else{
+
+      $.ajax({
+        type : 'post',
+        url : '{:U("CategoryForCc/rate_moren")}',
+        data : {'code':code,},
+        success : function(data){
+
+          if(data.state == 'no'){
+
+              $('#messagebox').html('<font style="color:red;font-size:16px;">'+data.msg+'</font>').fadeIn(1000);
+            
+              layer.closeAll('loading');
+
+              return false;
+
+          }else{
+
+              //隐藏
+              $('#zidingyi').hide();
+
+              //显示
+              $('#moren').show();
+
+              $('#messagebox').empty();
+
+              $('#rate_val1').attr("value", data.msg);
+
+              $('#rate_val2').attr("value", data.msg);              
+              
+          }
+        },
+      });
+
+    }
+});
+
+//自定义税率
+$('#rate2').click(function(){
+
+    var price = $('#yuan_price').val();
+
+    //隐藏
+    $('#moren').hide();
+
+    //显示
+    $('#zidingyi').show();
+
+    $('#rate_val2').attr("value",price);                  
+
+    $('#messagebox').empty();
+});
+
+
+
+$(document).ready(function(){
+    $("#cat").change(function(){
+      var p = $(this).children('option:selected').val();//这就是selected的值
+      var pp = "{$info['fid']}";
+            if(p != 0){
+              $("#formgroup").css("display","none");
+            }else{
+              $("#formgroup").css("display","block");
+            }
+    });
+
+    var pp = "{$info['fid']}";
+    if(pp != 0){
+      $("#formgroup").css("display","none");
+    }else{
+      $("#formgroup").css("display","block");
+    }
+
+    
+        $("#BtnSave").click(function(){
+            var txt = '';
+            $.each($('input:checkbox'),function(){
+                if(this.checked){
+                  txt += $(this).attr('name')+","; 
+                }
+            });
+            $("#lines").val(txt);
+            var level = $("#cat").find("option:selected").attr("level");
+            if(level>=1){
+              layer.msg('二级分类以下暂时不可再创建分类', {offset :'350px',});
+              return false;
+            }
+        });
+});
+</script>
+<script src="__PUBLIC__/js/my.js"></script>
+
+</html>

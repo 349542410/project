@@ -1,0 +1,99 @@
+<extend name="./base" />
+
+<block name="main">
+    <div class="container">
+        <div class="col-md-2">
+        	<include file="Public:authNav" />
+        </div> 
+        <div class="col-md-10">
+        	<div class="rtop">
+        		<ul class="list-inline">
+ 				 	<li class="blue"><a href="javascript:void;">订单装板</a></li>
+
+ 					<li style="float:right;font-size: 17px;">您当前所在位置：西安物流&nbsp;/&nbsp;<a href="javascript:void(0);" class="color">订单装板</a></li>
+				</ul>
+				<table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px">
+					<tr>
+						<td>
+							<form action="{:U('OrdersBoxed/form_index')}" method="post" class="form-inline" onSubmit="return $.sub(this);">
+								<label>
+									搜索:&nbsp;
+									<textarea name="no" placeholder="各个单号之间用逗号间隔，最多输入1000个单号；批次号最多输入一个"></textarea>
+								</label>
+								<label>
+									<select name="searchtype" class="form-control" >
+										<option value="STNO">运单号</option>
+										<option value="MKNO">美快单号</option>
+										<option value="PNO">批次号</option>
+									</select>
+								</label>
+								<label>
+									<button class="btn btn-primary " style="background-color:#3071a9;">查询</button>
+								</label>
+								<!-- 搜索栏end -->
+
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="sub_msg"></div>
+						</td>
+					</tr>
+				</table>
+
+
+				<script>		
+				jQuery(function($) {
+					$.extend({
+						sub : function(obj){
+
+							var obj = $(obj);
+
+							$.ajax({
+								type : 'post',
+								url : obj.attr('action'),
+								data : obj.serialize(),
+								success : function(data){
+
+									$('.sub_msg').empty();
+
+									if(data.state == 'no'){
+
+										var str = '<p style="color:red;">';
+
+									}else{
+
+										var str = '<p style="color: green;">';
+									}
+
+									str += data.msg;
+
+									str += '</p>';
+
+									$('.sub_msg').append(str);
+								},
+
+								beforeSend:function(){
+
+									$(".sub_msg").html('<img style="width:20px;height:20px;" src="__PUBLIC__/images/msg_loading_d.gif"/>操作中...');
+								}
+							});
+
+							return false;
+						}
+					});
+				});			
+				</script>
+        	</div>
+        </div>
+	</div>		
+	<div class="foot"></div>
+</block>
+
+
+</body>
+
+
+
+</html>

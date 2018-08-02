@@ -1,0 +1,316 @@
+<extend name="Public:base_register" />
+<!-- 完善个人注册信息html -->
+<html>
+<!-- head -->
+<block name="css">
+<script type="text/javascript" src="__JS__/feg_relevance.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("ul.c-forms").validationEngine({ validationEventTriggers: "keyup" });
+        $('input#MainContent_btnNextStep').click(function () {
+            if ($('ul.c-forms').validationEngine({ returnIsValid: true })) {
+                if ($('#MainContent_ddIdType').val() == "") {
+                    alert(CertIDType_CheckSelect);
+                    return false;
+                }
+                if ($('ResidentContry').val() == "") {
+                    alert(CertResidentContry_CheckSelect);
+                    return false;
+                }
+                var sPhone = $('#MainContent_txtCnPhone').val();
+                var sTel = $('#MainContent_txtFixedTelephone').val();
+                var sProvince = $('#MainContent_ddProvince option:selected').text();
+                var sCity = $('#MainContent_ddCity').val();
+                var cPhone = $('#MainContent_txtContactsMobilePhone').val();
+                var cTel = $('#MainContent_txtContactsFixedPhone').val();
+                if (sPhone == "" && sTel == "") {
+                    alert(CertStep1_CheckPhoneAndFixedTel2);
+                    return false;
+                }
+                if (cPhone == "" && cTel == "") {
+                    alert(CertStep1_CheckPhoneAndFixedTel);
+                    return false;
+                }
+                if (sProvince == "Alaska" || sProvince == "District of Columbia") {
+
+                } else {
+                    if (sCity == "") {
+                        alert(CertSelectCity);
+                        return false;
+                    }
+                }
+                return true;
+            } else {
+                return false;
+            }
+        });
+        $('#ResidentContry').change(function () {
+            var result = "";
+            var residentCountryID = $('#ResidentContry option:selected').val();
+            switch (residentCountryID) {
+                case '2':
+                    result = "+86";
+                    break;
+                case '1':
+                    result = "+1";
+                    break;
+            }
+            $('#txtMobileAreaCode').val(result);
+            $('#txtFixedAreaCode').val(result);
+            $('#MainContent_mAreaCodeHidden').val(result);
+            $('#MainContent_fAreaCodeHidden').val(result);
+        });
+        $('#btnGo').click(function () {
+            $('#MainContent_divGo').layer("close");
+        });
+    });
+    function OpenGoWin() {
+        $('#MainContent_divGo').layer.open({
+            autoOpen: true,
+            width: 550,
+            modal: true,
+            close: function () {
+
+            }
+        });
+    }
+</script>
+</block>
+<!-- head end -->
+<body>
+<block name="banner">
+    <div class="banners">
+            <div class="left">
+                <div class="ads">
+                    <p class="now">个人注册</p>
+                    <p class="navleft">您正在进行个人注册流程(美国)</p>
+                </div>
+            </div>
+            <div class="right">
+                <img src="__IMG__/brief_01.jpg" width="100%" height="155">
+            </div>
+    </div>
+</block>
+<block name="content">
+<form method="post" action="{:U('per_base')}" id="form1">
+
+<div class="empty-container">
+
+    <!-- 顶部菜单 -->
+
+    <div class="empty-content">
+        <div class="empty-area">
+            
+     <div id="MainContent_errorInfo" style="font-size:medium;color:red;"></div>
+    <div class="reg-container">
+        
+  <ul class="c-loginprocess">
+    <li id="MainContent_RegisterProcess1_step1" class="passed">
+        <span>1.填写注册信息</span>
+    </li>
+    <li id="MainContent_RegisterProcess1_step2" class="passed">
+        <span>2.验证注册邮箱</span>
+    </li>
+    <li id="MainContent_RegisterProcess1_step3" class="passed">
+        <span id="MainContent_RegisterProcess1_cType">3.完善个人信息</span>
+    </li>
+    <li id="MainContent_RegisterProcess1_step4">
+        <span>4.上传证件</span>
+    </li>
+    <li id="MainContent_RegisterProcess1_step5">
+        <span>5.签署授权</span>
+    </li>
+    <li class="last">
+        <span>6.等待确认</span>
+    </li>
+</ul>
+         <div class="bg-white ly-pd-30 registermain">
+           <h2 id="MainContent_tMsg1" class="fc-yel" style="display:block;">您的邮箱已经通过验证，为了更好地为您提供服务，请进一步完善信息</h2>
+           <h2 id="MainContent_tMsg2" class="fc-yel" style="display:none;"></h2>
+           <div class="fc-999 ly-pd-tb-5">若您在填写的过程中有任何疑问，请点击页面右上角的QQ交谈在线联系或致电我们。</div>
+            <ul class="c-forms">
+              <li class="ly-mg-tb-20 c-hr-title">
+                  <b>发件人信息</b>
+                 <input name="mAreaCodeHidden" type="hidden" id="MainContent_mAreaCodeHidden" />
+                 <input name="fAreaCodeHidden" type="hidden" id="MainContent_fAreaCodeHidden" />
+              </li>
+              <li class="ly-mg-tb-20">
+                <div class="c-forms-label">姓名<span class="fc-red">*</span></div>
+                 <input name="UserName" type="text" value="{$FirstName} {$LastName}" maxlength="100" id="UserName" class="c-input-text mt_text validate[required]" />
+             </li>
+             <li class="ly-mg-tb-20">
+                <div class="c-forms-label">
+                    国家 : 
+                    美国
+                    <switch name="Think.session.reg_info.countryId">
+                            <case value="1">美国</case>
+                            <case value="4">德国</case>
+                            <case value="7">法国</case>
+                            <case value="5">澳大利亚</case>
+                            <case value="3">英国</case>
+                            <case value="6">日本</case>
+                            <default />      
+                    </switch>
+                </div>
+             </li>
+             <li class="ly-mg-tb-20">
+                <div class="ly-row">
+                    <div class="ly-col-m3">
+                        <div class="c-forms-label">省/州<span class="fc-red">*</span></div>
+                        <select name="province" id="MainContent_ddProvince" class="c-md-select validate[required]">
+      	                 <option selected="selected" value="">请选择</option>
+                        </select>
+                    </div>
+                    <div class="ly-col-m3">
+                        <div class="c-forms-label">市<span class="fc-red">*</span></div>
+                        <select name="city" id="MainContent_ddCity" class="c-input-text mt_text validate[required]">
+                          <option selected="selected" value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+             </li>
+
+             
+            <li class="ly-mg-tb-20">
+                 <div class="ly-row">
+                  <div class="ly-col-m3">
+                   <div class="c-forms-label">
+                  证件信息<span class="fc-red">*</span></div>
+                  <select name="IdType" id="IdType" class="c-md-select validate[required]">
+                  	<option value="">请选择证件类型</option>
+                  	<option value="驾照">驾照</option>
+                  	<option value="护照">护照</option>
+
+                  </select>
+                  </div>
+
+                  <div class="ly-col-m3">
+                  <div class="c-forms-label">&nbsp;</div>
+                   <input name="IdNumber" type="text" maxlength="100" id="IdNumber" class="c-input-text mt_text validate[required]" />
+                 </div>
+               </div>
+            </li>
+           
+           <li class="ly-mg-tb-20">
+               <div class="c-forms-label">发件国退件地址(方便退件)<span class="fc-red">*</span></div>
+               <input name="address" type="text" maxlength="200" id="address" class="c-input-text mt_text validate[required]" style="width:550px;" />
+            </li>
+           <li class="ly-mg-tb-20">
+               <div class="c-forms-label">退件邮编<span class="fc-red">*</span></div>
+               <input name="postCode" type="text" maxlength="20" id="postCode" class="c-input-text mt_text validate[required,custom[noSpecialCaracters]]" />
+            </li>
+            <li class="ly-mg-tb-20">
+               <div class="c-forms-label">手机(手机、固话必填一个)</div>
+                <!-- <input name="PhoneAreaCode" type="text" value="+1" readonly="readonly" id="PhoneAreaCode" class="c-input-text" style="width:25px;" /> -->
+                <input name="Phone" type="text" id="Phone" class="c-input-text mt_text validate[custom[onlyNumber]]" style="width:210px;" />
+            </li>
+           <li class="ly-mg-tb-20">
+               <div class="c-forms-label">固话</div>
+                <!-- <input name="FixedPhoneAreaCode" type="text" value="+1" readonly="readonly" id="FixedPhoneAreaCode" class="c-input-text" style="width:25px;" /> -->
+               <input name="FixedTelephone" type="text" id="FixedTelephone" class="c-input-text mt_text validate[length[0,30]]" style="width:210px;" />
+           </li>
+          <li class="ly-mg-tb-20 c-hr-title">
+             <b>联系人信息</b>
+           </li>
+          <li class="ly-mg-tb-20">
+              <div class="c-forms-label">所在国家<span class="fc-red">*</span></div>
+                  <select name="ResidentContry" id="ResidentContry" class="c-md-select validate[required]">
+                  	<option value="">请选择所在国家</option>
+                  	<option value="中国">中国</option>
+                  	<option value="美国">美国</option>
+
+                  </select>
+          </li>
+          <li class="ly-mg-tb-20">
+               <div class="c-forms-label">姓名<span class="fc-red">*</span></div>
+               <input name="ContactsUserName" type="text" maxlength="200" id="ContactsUserName" class="c-input-text mt_text validate[required]" />
+          </li>
+          <li class="ly-mg-tb-20">
+               <div class="c-forms-label">详细地址</div>
+               <input name="ContactsAddress" type="text" maxlength="200" id="ContactsAddress" class="c-input-text" style="width:550px;" />
+          </li>
+         <li class="ly-mg-tb-20">
+               <div class="c-forms-label">邮编</div>
+               <input name="ContactsPostCode" type="text" maxlength="20" id="ContactsPostCode" class="c-input-text mt_text validate[custom[noSpecialCaracters]]" />
+          </li>
+          <li class="ly-mg-tb-20">
+               <div class="c-forms-label">手机(手机、固话必填一个)</div>
+               <!-- <input name="ContactsMobileAreaCode" type="text" readonly="readonly" id="ContactsMobileAreaCode" class="c-input-text" style="width:25px;" /> -->
+               <input name="ContactsMobilePhone" type="text" maxlength="40" id="ContactsMobilePhone" class="c-input-text mt_text validate[custom[onlyNumber]]" style="width:210px;" />
+          </li>
+         <li class="ly-mg-tb-20">
+               <div class="c-forms-label">固话</div>
+               <!-- <input name="ContactsFixedAreaCode" type="text" readonly="readonly" id="ContactsFixedAreaCode" class="c-input-text" style="width:25px;" /> -->
+               <input name="ContactsFixedPhone" type="text" maxlength="40" id="ContactsFixedPhone" class="c-input-text mt_text validate[custom[onlyNumber]]" style="width:210px;" />
+         </li>
+         <li class="ly-mg-tb-20">
+               <div class="c-forms-label">QQ/微信</div>
+               <input name="ContactsQQ" type="text" maxlength="50" id="ContactsQQ" class="c-input-text" />
+         </li>
+          <li class="ly-mg-tb-20">
+                <input type="hidden" name="country" value="美国" />
+                <input type="submit" value="下一步" id="MainContent_btnNextStep" class="c-btn-lg-next" />
+                &nbsp;<span id="msgbox"></span>
+          </li>
+      </ul>
+    </div>
+    </div>
+   <div id="MainContent_divGo" class="c-alert-md" style="display:none;" title="您已完成邮箱验证">
+    <div class="bd clearfix">
+        <div class="ly-fl cont-info">
+            <h4 class="fc-yel" style="width:500px;">请您进一步完善个人信息，以便我们更好的为您提供服务。</h4>
+            <p class="fc-dim"></p>
+        </div>
+      </div>
+     <div class="bt ft-c">
+      <span class="ly-ib ly-vm">
+           <input type="submit" name="ctl00$MainContent$btnGo" value="继续" id="btnGo" class="c-btn-lg-next" />
+           <i class="c-btn-lg-next-after"></i>
+        </span>
+    </div>
+   </div>
+
+        </div>
+    </div>
+
+    <!-- footer -->
+
+</div>
+<script src="__JS__/jquery.form.js"></script>
+<style>
+#msgbox{font-weight:bold;}
+</style>
+<script language="JavaScript">
+// 发送邮件成功后的页面跳转动画
+jQuery(document).ready(function($){
+    $('#form1').ajaxForm({
+        beforeSend:function(){
+          $("#msgbox").html('&nbsp;<img style="width:20px;height:20px;" src="__PUBLIC__/images/msg_loading_d.gif"/>');
+        },
+        success: complete,  //成功则执行complete函数
+        dataType: 'json',
+    });
+});
+function complete(data){
+    if (data.status==1){
+        $('#msgbox').html('<span style="font-size:15px;padding-left:10px;color:green;">'+data.info+'</span>').fadeIn(300).delay(1000).fadeOut(300,function(){
+              window.location.href=data.url;
+
+        });
+      
+    }else{
+        $('#msgbox').html('<span style="font-size:15px;padding-left:10px;color:red;">'+data.info+'</span>').fadeIn(300).delay(1000).fadeOut(300,function(){
+            // $('#myverify').click();                //模拟用户点击刷新验证码
+        });
+    }
+}
+</script>   
+<script type="text/javascript">
+
+OpenGoWin();
+</script>
+</form>         
+</block>
+
+</body>
+</html>

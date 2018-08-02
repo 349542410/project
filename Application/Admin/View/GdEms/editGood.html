@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <style type="text/css">
+      body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+
+      }
+
+      .container{margin:0 auto;}
+      .form-signin {
+        max-width: 900px;
+        margin-top:60px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+    .form-signin table th{height:36px;font-size:16px;line-height:36px;background:#F7F7F9;}
+    .form-signin table td{height:36px;line-height:36px;font-size:14px;text-indent:2em;background:#F7F7F9;}
+    .form-signin table td a{text-decoration:none;color:#000;}
+    .form-signin table td a:hover{color:blue;}
+    .form-signin .form-control{width:400px !important;}
+    </style>
+    <link href="__PUBLIC__/css/one.css" rel="stylesheet">  
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+    <![endif]-->
+     </head>
+  <body>
+
+    <div class="container" >
+      <div class="form-signin" style="padding-top:40px;background:#F7F7F9 !important;margin-bottom:40px">
+
+      <form action="{:U(CONTROLLER_NAME.'/editGoodMethod')}" method="post" class="form-inline" id="tempForm">
+          <table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px;padding:0px">
+        <tr>
+            <td style="text-align:right" width="400"><h3>修改商品报备资料</h3></td>
+            <td width="700"></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>商品ID：</label></th>
+            <td>{$info.EntGoodsNo}</td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>上架品名：</label></th>
+            <td><input type="text" name="ShelfGName" value="{$info.ShelfGName}" class="form-control" required="required" /></td>
+        </tr>
+        <tr>
+          <th width="" style="padding-left:12px"><label>行邮税号：</label></th>
+            <td><input type="text" name="NcadCode" class="form-control" value="{$info.NcadCode}" required="required"/></td>
+        </tr>
+        <tr>
+          <th width="" style="padding-left:12px"><label>HS编码：</label></th>
+            <td><input type="text" name="HSCode" value="{$info.HSCode}" class="form-control" required="required"/></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>商品中文名称：</label></th>
+            <td ><input type="text" name="GoodsName" value="{$info.GoodsName}" class="form-control" required="required" /></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>规格型号：</label></th>
+            <td ><input type="text" name="GoodsStyle" value="{$info.GoodsStyle}" class="form-control" required="required" /></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>品牌：</label></th>
+            <td ><input type="text" name="Brand" value="{$info.Brand}" class="form-control" required="required" /></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>申报计量单位：</label></th>
+            <td >
+              <select name="GUnit" class="form-control" required>
+                <volist name="unit_arr" id="vo">
+                  <option value="{$key}" <eq name="info['GUnit']" value="$key" >selected="selected"</eq>>{$vo}</option>
+                </volist>
+              </select>
+            </td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>第一法定计量单位：</label></th>
+            <td >
+              <select name="StdUnit" class="form-control" required>
+                <volist name="unit_arr" id="vo">
+                  <option value="{$key}" <eq name="info['StdUnit']" value="$key" >selected="selected"</eq>>{$vo}</option>
+                </volist>
+              </select>
+            </td>
+        </tr>
+<!--         <tr>
+            <th width="" style="padding-left:12px"><label>第二法定计量单位：</label></th>
+            <td ><input type="text" name="SecUnit" value="{$info.SecUnit}" class="form-control" />非必需</td>
+        </tr> -->
+        <tr>
+            <th width="" style="padding-left:12px"><label>商品单价(￥)：</label></th>
+            <td ><input type="text" name="RegPrice" value="{$info.RegPrice}" class="form-control" required="required" /></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>是否赠品：</label></th>
+            <td >
+              <label class="radio-inline">
+                <input type="radio" name="GiftFlag" id="" value="1" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['GiftFlag']" value="1">checked</eq>>是 
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="GiftFlag" id="" value="0" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['GiftFlag']" value="0">checked</eq>>否
+              </label>
+            </td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>原产国：</label></th>
+            <td >
+              <select name="OriginCountry" class="form-control" required>
+                <volist name="country_arr" id="vo">
+                  <option value="{$key}" <eq name="info['OriginCountry']" value="$key" >selected="selected"</eq>>{$vo}</option>
+                </volist>
+              </select>
+            </td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>商品品质及说明：</label></th>
+            <td ><input type="text" name="Quality" value="{$info.Quality}" class="form-control" required="required" />如:"合格"、"优良"等</td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>生产厂家或供应商：</label></th>
+            <td ><input type="text" name="Manufactory" value="{$info.Manufactory}" class="form-control" required="required" /></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>净重({:C('SHOW_WEIGHT_UNIT')})：</label></th>
+            <td ><input type="text" name="NetWt" value="{$info.NetWt}" class="form-control" required="required" /></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>毛重({:C('SHOW_WEIGHT_UNIT')})：</label></th>
+            <td ><input type="text" name="GrossWt" value="{$info.GrossWt}" class="form-control" required="required" /></td>
+        </tr>
+        <tr>
+          <th width="" style="padding-left:12px"><label>备注：</label></th>
+          <td><textarea name="Notes" id="" cols="30" rows="10">{$info.Notes}</textarea></td>
+        </tr>
+        <tr>
+              <th  colspan="3" style="text-align:left !important;padding-left:600px">
+              <input type="hidden" name="id" value="{$info['id']}">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="submit" class="btn btn-primary" id="BtnSave">提交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button>
+                <span id="messagebox" class="msgbox" style="right:300px;!important"></span>
+              </th>
+            </tr>
+          
+          </table>
+      </form>
+      </div>
+    </div> 
+ 
+  </body>
+<script src="__PUBLIC__/js/my.js"></script>
+</html>

@@ -1,0 +1,201 @@
+<extend name="./base" />
+
+<block name="main">
+<script type="text/javascript" src="__PUBLIC__/js/datetime/DateTimePicker.js"></script>
+<link href="__PUBLIC__/js/datetime/DateTimePicker.css" rel="stylesheet">
+<script type="text/javascript">
+  $(document).ready(function()
+      {
+        $("#dtBox").DateTimePicker({
+
+          minuteInterval: 5
+
+        });
+      });
+</script>
+<div id="dtBox"></div>
+    <div class="container">
+        <div class="col-md-2">
+          <include file="Public:authNav" />
+        </div>
+        <div class="col-md-10">
+          <div class="rtop">
+            <ul class="list-inline">
+         <!-- <li class="blue"><a href="javascript:void;">申通转EMS列表</a></li> -->
+        <li>
+            <a href="{:U('MKBc3/transfer')}" target="_blank" style="display: inline-block;"><button type="button" class="btn btn-default" >导入快递单号</button></a>&nbsp;&nbsp;
+            <!-- <a href="javascript:void" id="show" onclick="switchTab()" style="display: inline-block;"><button type="button" class="btn btn-default" >按批次号推送服务商</button></a>&nbsp;&nbsp; -->
+            <a href="{:U('MKBc3/log_list')}" style="display: inline-block;"><button type="button" class="btn btn-primary" >按批次号推送服务商</button></a>&nbsp;&nbsp;
+        </li>
+
+        <li style="float:right;font-size: 17px;">您当前所在位置：美快优选3&nbsp;/&nbsp;<a href="javascript:void(0);" class="color">快递号导入</a></li>
+        </ul>
+<script type="text/javascript">
+//显示/隐藏
+// $(document).ready(function(){
+//   $("#show").click(function(){
+//   $(".log_list").toggle();
+//   $(".number_list").toggle();
+//   });
+// });
+</script>
+<div class="number_list">
+        <table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px">
+            <tr>
+              <td>
+              <form action="{:U(CONTROLLER_NAME.'/'.ACTION_NAME)}" method="get" class="form-inline">
+              <!-- 中文搜索时必须的 -->
+              <input type="hidden" name="m" value="{$Think.MODULE_NAME}" />
+              <input type="hidden" name="c" value="{$Think.CONTROLLER_NAME}" />
+              <input type="hidden" name="a" value="{$Think.ACTION_NAME}" />
+              <!-- End -->  
+
+              <label>筛选：<input type="search" name="keyword" placeholder="" value="{$keyword}" class="form-control" style="width:160" />
+              </label>
+              <label>
+                <select name="searchtype" class="form-control" >
+                  <option value="" selected>搜索类型</option>
+                  <option value="EMSNO" <eq name="searchtype" value="EMSNO">selected</eq>>快递运单号</option>
+                  <option value="MKNO" <eq name="searchtype" value="MKNO">selected</eq>>美快单号</option>
+                </select>
+              </label>
+              <label>
+                <select name="erp_state" class="form-control">
+                  <option value="">ERP</option>
+                  <option value="0" <if condition="$erp_state eq '0'">selected</if>>未推送</option>
+                  <option value="200" <eq name="erp_state" value="200">selected</eq>>已推送</option>
+                </select>
+              </label>
+              <label>
+                <select name="kd100_state" class="form-control">
+                  <option value="">物流信息服务商</option>
+                  <option value="0" <if condition="$kd100_state eq '0'">selected</if>>未推送</option>
+                  <option value="200" <eq name="kd100_state" value="200">selected</eq>>已推送</option>
+                </select>
+              </label>
+              <label>
+              &nbsp;&nbsp;操作时间：<input type="text" class="form-control one" data-field="datetime" size="25" id="createStarttime" value="<eq name="starttime" value=""><else />{$starttime|date='Y-m-d H:i:s',###}</eq>" style="width:160" > -- <input type="text" class="form-control two" data-field="datetime" size="25" id="createEndtime" value="<eq name="endtime" value=""><else />{$endtime|date='Y-m-d H:i:s',###}</eq>" style="width:160" >
+              </label>
+              <input type="hidden" id="starttime" name="starttime">
+              <input type="hidden" id="endtime" name="endtime">
+              <label>
+                &nbsp;&nbsp;行数：
+                <select name="ePage" id="" class="form-control" >
+                  <option value="10" <eq name="ePage" value="10">selected</eq>>10</option>
+                  <option value="20" <eq name="ePage" value="20">selected</eq>>20</option>
+                  <option value="30" <eq name="ePage" value="30">selected</eq>>30</option>
+                  <option value="50" <eq name="ePage" value="50">selected</eq>>50</option>
+                  <option value="100" <eq name="ePage" value="100">selected</eq>>100</option>
+                </select>
+              </label>
+
+              <input type="checkbox" name="Signed" id="Signed" <if condition="I('Signed') eq 'on'">checked</if>><label for="Signed" style="margin-bottom: 0px;">&nbsp;未签收&nbsp;&nbsp;</label>
+
+              <label>
+
+                  <button type="submit" class="btn btn-primary btn-lg" onclick="ccc()" >查询</button>
+              </label>
+              </form>
+              </td>
+            </tr>
+      </table>
+      <script type="text/javascript">
+      function ccc(){
+        var startTime=document.getElementById("createStarttime").value;
+        if(startTime != ''){
+          var startback = transdate(startTime);
+          document.getElementById("starttime").value=startback;
+        }
+
+        var endTime=document.getElementById("createEndtime").value;
+        if(endTime != ''){
+          var endback = transdate(endTime);
+          document.getElementById("endtime").value=endback;
+        }
+      }
+      function transdate(startTime){
+        var date=new Date();
+        date.setFullYear(startTime.substring(0,4));
+        date.setMonth(startTime.substring(5,7)-1);
+        date.setDate(startTime.substring(8,10));
+        date.setHours(startTime.substring(11,13));
+        date.setMinutes(startTime.substring(14,16));
+        date.setSeconds(startTime.substring(17,19));
+        return Date.parse(date)/1000;
+      }
+      function transdate(endTime){
+        var date=new Date();
+        date.setFullYear(endTime.substring(0,4));
+        date.setMonth(endTime.substring(5,7)-1);
+        date.setDate(endTime.substring(8,10));
+        date.setHours(endTime.substring(11,13));
+        date.setMinutes(endTime.substring(14,16));
+        date.setSeconds(endTime.substring(17,19));
+        return Date.parse(date)/1000;
+      }
+      </script>
+        <table border="0" cellpadding="0" cellspacing="0" class="table table-hover" style="border-bottom:none !important">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>快递运单号</th>
+              <th>美快单号</th>
+              <th>推送ERP状态</th>
+              <th>推送物流信息服务商状态</th>
+              <th>操作时间</th>
+            </tr>
+          </thead>
+          <tbody style="font-size:15px;">
+            <volist name="list" id="vo" mod="2">
+            <tr id="tr_{$vo.id}" <eq name="mod" value="1"> style="background-color:#ddd;"</eq>>
+              <td class="td1">
+                {$vo.id}
+                <!-- {$key+1} -->
+              </td>
+              <td class="td1">
+                {$vo.EMSNO}
+              </td>
+              <td class="td1">
+                {$vo.MKNO}
+              </td>
+              <td class="td1" style="vertical-align: middle;">
+                <if condition="$vo['erp_state'] eq '200'">
+                  <img src="__PUBLIC__/images/pass.png" width="20" height="20" alt="" >
+                <elseif condition="($vo['erp_state'] eq '0') || ($vo['kd100_state'] eq '')"/>
+                  <img src="__PUBLIC__/images/nopass.png" width="20" height="20" alt="" >
+                </if>
+              </td>
+              <td class="td1" style="vertical-align: middle;">
+                <if condition="$vo['kd100_state'] eq '200'">
+                  <img src="__PUBLIC__/images/pass.png" width="20" height="20" alt="" >
+                <elseif condition="($vo['kd100_state'] eq '0') || ($vo['kd100_state'] eq '')"/>
+                  <img src="__PUBLIC__/images/nopass.png" width="20" height="20" alt="" >
+                </if>
+              </td>
+              <td class="td1">
+                {$vo.ctime}
+              </td>
+            </tr>
+            </volist>
+          </tbody>
+<!--            <tr>
+              <td colspan="8" style="background:#f6f6f6"><input type="submit" value="删除"/></td>
+            </tr> -->
+        </table>
+
+        <div id="pages" class="page">{$page}</div>
+</div>
+<!-- 20170621 新增 -->
+<div class="log_list" style="display: none;">
+</div>
+
+          </div>
+        </div>
+    </div>    
+<div class="foot"></div>
+
+</block>
+
+
+</body>
+</html>

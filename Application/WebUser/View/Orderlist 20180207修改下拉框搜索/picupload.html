@@ -1,0 +1,128 @@
+<div class="ordhead"><h3>{:L('Cer_Upload')}</h3></div>
+<div class="ordbody" <if condition="(L('lng') eq 'zh-cn')"> style="height: 300px;"</if><if condition="(L('lng') eq 'en-us')"> style="height: 380px;"</if>>
+    <div class="obtit">
+        <p style="color:#000;font-size: 20px;font-weight: bold;">{:L('Cer_Explain')}</p>
+    </div>
+    <!-- 增加单项选择 -->
+    <div class="pic_radio">
+        <ul id="picrad">
+            <li><input type="radio" class="radio" name="pic_radio" id="0" value="0" checked onclick="showview();"><label class="radio" for="0">1.{:L('l_upload_by_shipper')}</label></li>
+            <li><input type="radio" class="radio" name="pic_radio" id="1" value="1" onclick="hideview();"><label class="radio" for="1">2.{:L('l_upload_by_receiver')}</label></li>
+            <li><input type="radio" class="radio" name="pic_radio" id="2" value="2" onclick="hideview();"><label class="radio" for="2">3.{:L('l_without_uploading')}</label></li>
+            <div class="clear"></div>
+        </ul>
+    </div>
+    <div class="obcont" id="obcontid1">
+        <p>{:L('Cer_Pho_Front')}</p>
+        <img src='<if condition="($html_name eq 'index')">{$front_id_img}<else/>{$front_id_img}</if>' id="fileimage1" style="width: 230px;height: 120px;margin-left: 15px;">
+        <input type="file" name="file_one" id="file" accept="image/jpeg,image/jpg,image/png" atd="1" onclick="fileOnchange(this)" />
+        <label>{:L('Cer_Btn')}</label>
+    </div>
+    <div class="obconts" id="obcontid2">
+        <p>{:L('Cer_Pho_Back')}</p>
+        <img src='<if condition="($html_name eq 'index')">{$back_id_img}<else/>{$back_id_img}</if>' id="fileimage2" style="width: 230px;height: 120px;margin-left: 15px;">
+        <input type="file" name="file_two" id="files" accept="image/jpeg,image/jpg,image/png" atd="2" onclick="fileOnchange(this)" />
+        <label>{:L('Cer_Btn')}</label>
+    </div>
+    <script type="text/javascript">
+        // 文件上传赋值到对应图片位置
+        function fileOnchange(pid){
+            var atd = pid.getAttribute("atd");
+            // alert(atd);
+            var input = pid;
+
+            var res = document.getElementById("fileimage"+atd);       
+            if(typeof FileReader==='undefined'){
+                res.innerHTML = "抱歉，你的浏览器不支持 FileReader"; 
+                input.setAttribute('disabled','disabled'); 
+            }else{
+                input.addEventListener('change',readFile,false);
+            }
+
+            //图片文件读取
+            function readFile(){ 
+                var file = this.files[0];
+                // console.log(file);
+                if(!/image\/\w+/.test(file.type)){ 
+                    layer.open({
+                      type: 0, 
+                      title: false,
+                      content: "{:L('Up_Documents')}"
+                    });
+                    return false; 
+                } 
+                var reader = new FileReader(); 
+                reader.readAsDataURL(file); 
+                reader.onload = function(e){ 
+                    res.src = this.result;  //赋值到src
+                    // console.log(res);
+                } 
+            }
+        }
+        // 显示上传域
+        function showview(){
+            $('#obcontid1').show();
+            $('#obcontid2').show();
+        }
+        // 隐藏上传域
+        function hideview(){
+            $('#obcontid1').hide();
+            $('#obcontid2').hide();
+        }
+    </script>
+    <if condition="($html_name eq 'newOrder') || ($html_name eq 'index')">
+    <script type="text/javascript">
+        // 再次下单修改姓名或证件号图片改变
+        $(function(){
+            var inthisval = $("input[name='IdNo']").val();
+            var rnthisval= $("input[name='RecName']").val();
+            var thisimg1 = $('#fileimage1').attr('src');
+            var thisimg2 = $('#fileimage2').attr('src');
+            $("input[name='IdNo']").bind('input propertychange',function(){
+                var myval = $(this).val();
+                if(inthisval == myval){
+                    $('#fileimage1').attr('src',thisimg1);
+                    $('#fileimage2').attr('src',thisimg2);
+                }else{
+                    $('#fileimage1').attr('src','__MEMBER__/images/pho_front.png');
+                    $('#fileimage2').attr('src','__MEMBER__/images/pho_back.png');
+                }
+            });
+            $("input[name='RecName']").bind('input propertychange',function(){
+                var myval = $(this).val();
+                if(rnthisval == myval){
+                    $('#fileimage1').attr('src',thisimg1);
+                    $('#fileimage2').attr('src',thisimg2);
+                }else{
+                    $('#fileimage1').attr('src','__MEMBER__/images/pho_front.png');
+                    $('#fileimage2').attr('src','__MEMBER__/images/pho_back.png');
+                }
+            });
+        });
+    </script>
+    </if>
+    <if condition="($html_name eq 'edit')">
+    <script type="text/javascript">
+        // alert(picro_id);
+        $(":radio[name='pic_radio']").removeAttr('checked');
+        $(":radio[name='pic_radio'][value='"+picro_id+"']").prop("checked","checked").click();
+        $(":radio[name='pic_radio']").addClass('disableds');
+        $(":radio[name='pic_radio']").next().addClass('disableds');
+        $(".disableds").click(function (event) {
+            event.preventDefault();
+            layer.open({
+                type: 0 ,
+                title: "{:L('LAY_SystemMessage')}" ,
+                content: "{:L('LAY_XDXGMsg')}" ,
+                skin: "layermsg",
+                btn: "{:L('LAY_BtnOK')}"
+            });   
+        });
+    </script>
+    <elseif condition="($html_name eq 'newOrder')"/>
+    <script type="text/javascript">
+        $(":radio[name='pic_radio']").removeAttr('checked');
+        $(":radio[name='pic_radio'][value='"+picro_id+"']").prop("checked","checked").click();
+    </script>
+    </if>
+</div>

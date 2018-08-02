@@ -1,0 +1,484 @@
+<!-- 搜索栏 -->
+<script type="text/javascript" src="__MEMBER__/js/datetime/DateTimePicker.js"></script>
+<link href="__MEMBER__/js/datetime/DateTimePicker.css" rel="stylesheet">
+<script src="__MEMBER__/js/JsBarcode/dist/JsBarcode.all.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#dtBox").DateTimePicker({
+      minuteInterval: 5
+    });
+  });
+</script>
+<div id="dtBox"></div>
+<div style="min-width: 1496px;">
+  <label>
+    &nbsp;{:L('OddNumbers')}：
+    <input type="search" name="mkno" value="{$mkno}" class="form-control" style="width:160px" />
+  </label>
+  <label>
+    &nbsp;&nbsp;{:L('Sender')}：
+    <input type="search" name="send" value="{$send}" class="form-control" style="width:160px" />
+  </label>
+  <label>
+    {:L('AddressRec')}：
+    <input type="search" name="rec" value="{$rec}" class="form-control" style="width:160px" />
+  </label>
+
+  <label>
+    &nbsp;&nbsp;{:L('AddressRecPhone')}：
+    <input type="search" name="phone" value="{$phone}" class="form-control" style="width:160px" />
+  </label>
+
+  <label>
+    &nbsp;&nbsp;{:L('l_order_time')}：
+    <input type="text" class="form-control one" data-field="datetime" size="25" id="createStarttime" style="width:166" value=""> --
+    <input type="text" class="form-control two" data-field="datetime" size="25" id="createEndtime" style="width:166" value="">
+    <!-- <input type="text" class="form-control one" data-field="datetime" size="25" id="createStarttime" value='<eq name="starttime" value=""> <else />{$starttime|date='
+      Y-m-d H:i:s ',###}</eq>' style="width:166"> --
+    <input type="text" class="form-control two" data-field="datetime" size="25" id="createEndtime" value='<eq name="endtime" value=""><else />{$endtime|date="Y-m-d H:i:s",###}</eq>'
+      style="width:166"> -->
+  </label>
+  <input type="hidden" id="starttime" name="starttime">
+  <input type="hidden" id="endtime" name="endtime">
+</div>
+<br>
+<div style="min-width: 1496px;">
+  <label>
+    &nbsp;&nbsp;{:L('l_seach_orderid')}：
+    <input type="search" name="package_id" value="{$package_id}" class="form-control" style="width:160px" />
+  </label>
+
+  <label>
+    &nbsp;&nbsp;{:L('l_select_line')}：
+    <select name="line" class="form-control" style="padding:6px 5px !important;">
+      <option value="">{:L('Cr_Select')}</option>
+      <volist name="tranline" id="vl">
+        <option value="{$vl['id']}" <?php if ($vl[ 'id']==$_GET[ 'line']): ?>
+          selected
+          <?php endif; ?> >
+          <php>$l = L('MKLINES');echo $l[$vl['lngname']];</php>
+        </option>
+      </volist>
+    </select>
+  </label>
+
+  <label>
+    &nbsp;&nbsp;{:L('l_id_ns')}：
+    <select name="idno" class="form-control" style="padding:6px 5px !important;">
+      <option value="0" <eq name="idno" value="0">selected</eq>>{:L('All')}</option>
+      <option value="1" <eq name="idno" value="1">selected</eq>>{:L('l_yes')}</option>
+      <option value="2" <eq name="idno" value="2">selected</eq>>{:L('l_no')}</option>
+    </select>
+  </label>
+
+  <label>
+    &nbsp;&nbsp;{:L('l_id_ps')}：
+    <select name="idno_stat" class="form-control" style="padding:6px 5px !important;">
+      <option value="0" <eq name="idno_stat" value="0">selected</eq>>{:L('All')}</option>
+      <option value="1" <eq name="idno_stat" value="1">selected</eq>>{:L('l_yes')}</option>
+      <option value="2" <eq name="idno_stat" value="2">selected</eq>>{:L('l_no')}</option>
+    </select>
+  </label>
+
+  <if condition="(I('get.type','index') eq 'index')">
+    <label>
+      &nbsp;{:L('OrderStatus')}：
+      <select name="status" id="" class="form-control" style="padding:6px 5px !important;">
+        <option value="0" <eq name="status" value="0">selected</eq>>{:L('All')}</option>
+        <option value="1" <eq name="status" value="1">selected</eq>>{:L('UnFinished')}</option>
+        <option value="2" <eq name="status" value="2">selected</eq>>{:L('Accepted')}</option>
+      </select>
+    </label>
+  </if>
+  <!-- 行数 -->
+  <label>
+    &nbsp;&nbsp;{:L('RowsNum')}：
+    <select name="ePage" id="" class="form-control" style="padding:6px 10px !important;">
+      <option value="10" <eq name="ePage" value="10">selected</eq>>10</option>
+      <option value="20" <eq name="ePage" value="20">selected</eq>>20</option>
+      <option value="30" <eq name="ePage" value="30">selected</eq>>30</option>
+      <option value="50" <eq name="ePage" value="50">selected</eq>>50</option>
+      <option value="100" <eq name="ePage" value="100">selected</eq>>100</option>
+    </select>
+  </label>
+  <!-- 打印状态 -->
+  <!-- <label>
+    &nbsp;&nbsp;{:L('l_print_status')}：
+    <select name="print_status" class="form-control" style="padding:6px 5px !important;">
+      <option value="0" <eq name="print_status" value="0">selected</eq>>{:L('All')}</option>
+      <option value="1" <eq name="print_status" value="1">selected</eq>>{:L('l_unprinted')}</option>
+      <option value="2" <eq name="print_status" value="2">selected</eq>>{:L('l_printed')}</option>
+    </select>
+  </label> -->
+  <label>
+    <button type="button" class="btn" onclick="ccc(this)">{:L('Query')}</button>
+    <!-- <button type="submit" class="btn btn-primary btn-lg" onclick="ccc()">{:L('Query')}</button> 20170310修改之前 -->
+  </label>
+  <br>
+  <div style="margin-top: 10px;">
+    <ul class="printrotype">
+      <li>
+        <input type="radio" name="print_type" id="1" value="1" checked>
+        <label for="1" style="font-size: 15px;font-weight: 500">1.{:L('l_a4print')}</label>
+      </li>
+      <li>
+        <input type="radio" name="print_type" id="2" value="2">
+        <label for="2" style="font-size: 15px;font-weight: 500">2.{:L('l_rmprint')}</label>
+      </li>
+    </ul>
+    <button type="button" onclick="batch_print(0);" class="btn" style="float: left;">{:L('l_bpdv')}</button>
+    <button type="button" class="btn" style="margin-left: 10px;" onclick="exportSearch()">{:L('l_exportReult')} </button>
+    <a href="" id="downloadSearchResult" style="display: none;"></a>
+    <button style="display:none;" onclick="del_all();"></button>
+    <div style="clear: both;"></div>
+  </div>
+</div>
+{/* 以post方式查询时分页失效的解决方法 */ }
+<!-- <script type="text/javascript">
+    $(function(){
+        //查询
+        $("#selecting").click(function(){
+            $("#form").attr("action", "__URL__/listDept/p/1");
+            $("#form").submit();
+        });
+    });
+    $(function(){
+          // 分页（修改链接方法）
+        $('#pages a').click(function(){ 
+                    
+            var tmpHref = $(this).attr('href');
+            //alert(tmpHref);
+            tmpHref = tmpHref.replace(/\/selCon\//,"");
+            $("#form").attr("action", tmpHref);
+            $("#form").submit();
+                    
+            return false; 
+        });
+    });
+</script> -->
+<script type="text/javascript">
+  /**
+   * 批量打印
+   * @method 有ID传入则打印单个
+   * @param  (string)	id
+   * @return (obj)
+   */
+  function batch_print($id) {
+    //	var page_print_count = "{:C('page_print_count')}";
+    var code_url = "{:C('qrcode_url')}";
+    var print_type = $('input[name="print_type"]:checked').val();
+    if (print_type == undefined) {
+      alert("{:L('l_print_type')}");
+    } else {
+      var chk_value = [];
+      // console.log($id);
+      if ($id == 0) {
+        $('input[name="checkbox_print"]:checked').each(function () {
+          chk_value.push($(this).val());
+        });
+      } else {
+        chk_value.push($id);
+      }
+      var brand_code = [];
+      var code_orderno = [];
+      $.ajax({
+        url: "{:U('order/batch_print')}",
+        data: {
+          'ids': chk_value.join(',')
+        },
+        dataType: 'json',
+        type: "GET",
+        success: function (data) {
+          if (!data.status) {
+            alert("{:L('l_pcndv')}");
+          } else {
+            var str = '';
+            $.each(data.data, function (k, v) {
+              // A4打印
+              if (print_type == 1) {
+                // if((k+1)%page_print_count == 0){
+                // 	str+= '<div style="page-break-after: always;border-bottom:2px solid #000;margin-bottom:10px;width:387px;"><ul>';
+                // }else{
+                // 	str+= '<div id="printbox" style="border-bottom:2px solid #000;margin-bottom:10px;width:387px;"><ul>';
+                // }
+                str +=
+                  '<div style="page-break-inside: avoid;border-bottom:2px solid #000;margin-bottom:10px;width:387px;font-size:24px"><ul>';
+                // 热敏打印
+              } else if (print_type == 2) {
+                str +=
+                  '<div style="page-break-after: always;border-bottom:2px solid #000;margin-bottom:10px;width:387px;font-size:24px"><ul>';
+              }
+
+              str += '<li style="margin-left:11px;margin-bottom:10px;">';
+              str += "<h3>{:L('InternationalLogistics')}</h3>";
+              str += '</li>';
+
+              str += '<li style="margin-left:11px;">';
+              str += v.sender + v.receiver;
+              str += '</li>';
+
+              str += '<li>';
+              str += '<img id="bcode_' + v.id + '" />';
+              debugger
+              // id保存起来
+              brand_code.push("#bcode_" + v.id);
+              code_orderno.push(v.order_no);
+              str += '</li>';
+              if (v.pro_list != null) {
+                $.each(v.pro_list, function (item, index) {
+                  str += '<li style="margin-left:12px;">';
+                  if (!index.remark == '') {
+                    str += index.remark;
+                  } else {
+                    str += index.detail;
+                  }
+                  // str+= index.detail;
+                  str += ' * ' + index.number;
+                  str += '</li>';
+                });
+              }
+
+              str += '</ul></div>';
+            });
+            $('#print123').empty();
+            $('#print123').append(str);
+
+            $('#print123').removeClass();
+            // 生成条形码
+            $.each(brand_code, function (k, v) {
+              create_qcode(v, code_orderno[k]);
+            });
+
+
+
+
+            function remove_ie_header_and_footer() {
+              var hkey_root, hkey_path, hkey_key;
+              hkey_path = "HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\PageSetup\\";
+              try {
+                console.log(1);
+
+                var RegWsh = new ActiveXObject("WScript.Shell");
+                // RegWsh.RegWrite(hkey_path + "header", "");
+                RegWsh.RegWrite(hkey_path + "footer", "");
+              } catch (e) {
+                console.log(e);
+
+              }
+            }
+            if (!!window.ActiveXObject || "ActiveXObject" in window) {
+              remove_ie_header_and_footer();
+            } else {
+              remove_ie_header_and_footer();
+            }
+            $("#print123").printArea();
+            $('#print123').addClass('printpot');
+
+
+            // 记录批量打印状态
+            $.get("{:U('order/set_print')}", {
+              id: chk_value.join(',')
+            }, function (data) {
+              // if(chk_value.length == data){
+              // 自动更新状态标识
+              $.each(chk_value, function (k, v) {
+                $('#tr_' + v).find('.print_type').children().remove();
+                $('#tr_' + v).find('.print_type').append('<img src="__MEMBER__/image/iconr1.png">');
+              });
+              // }
+            });
+          }
+        }
+      });
+    }
+  }
+
+  function create_qcode(id, text) {
+    JsBarcode(id, text, {
+      format: "CODE128",
+      displayValue: true,
+      width: 4,
+      height: 120,
+      fontSize: 34,
+      textAlign: "left"
+    });
+  }
+
+  function ccc(obj) {
+    debugger
+    var startTime = document.getElementById("createStarttime").value;
+    var endTime = document.getElementById("createEndtime").value;
+    console.log(startTime);
+    console.log(endTime);
+
+    if (startTime > endTime) {
+      layer.msg("{:L('l_time_start_eq_end')}");
+      return false;
+    } else {
+      if (startTime != '') {
+        // var startback = transdate(startTime);
+        var startback = transTime(startTime);
+        document.getElementById("starttime").value = startback;
+        // document.getElementById("starttime").value = startTime;
+      }
+      if (endTime != '') {
+        // var endback = transdate(endTime);
+        var endback = transTime(endTime);
+        document.getElementById("endtime").value = endback;
+        // document.getElementById("endtime").value = endTime;
+        console.log(endback);
+
+      }
+      debugger
+      $(obj).attr('type', 'submit');
+    }
+  }
+
+  function transTime(time) {
+    let newTime = time.replace(/\s|\-|:/g, '');
+
+    return newTime;
+  }
+
+  function transdate(startTime) {
+    var date = new Date();
+    date.setFullYear(startTime.substring(0, 4));
+    date.setMonth(startTime.substring(5, 7) - 1);
+    date.setDate(startTime.substring(8, 10));
+    date.setHours(startTime.substring(11, 13));
+    date.setMinutes(startTime.substring(14, 16));
+    date.setSeconds(startTime.substring(17, 19));
+    console.log(Date.parse(date) / 1000);
+
+    return Date.parse(date) / 1000;
+  }
+
+  function transdate(endTime) {
+    var date = new Date();
+    date.setFullYear(endTime.substring(0, 4));
+    date.setMonth(endTime.substring(5, 7) - 1);
+    date.setDate(endTime.substring(8, 10));
+    date.setHours(endTime.substring(11, 13));
+    date.setMinutes(endTime.substring(14, 16));
+    date.setSeconds(endTime.substring(17, 19));
+    console.log(Date.parse(date) / 1000);
+
+    return Date.parse(date) / 1000;
+  }
+
+  function del_all() {
+    layer.confirm(laylang_md, {
+      icon: 3,
+      offset: '400px',
+      title: laylang_if,
+      btn: [laylang_btnok, laylang_btncan],
+      skin: 'demo-class'
+    }, function () {
+      $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+          "ids": arrbox.join(',')
+        },
+        dataType: "json",
+        beforeSend: function () {
+          var index = layer.load(1, {
+            shade: [0.1, '#000'], //0.1透明度的白色背景
+          });
+        },
+        success: function (data) {
+          if (data.success) {
+            layer.msg(data.msg, {
+              icon: 6,
+              offset: '400px'
+            });
+
+            $.ajax({
+              url: order_excel_ajax,
+              type: "POST",
+              data: {
+                "p": pageid,
+                "where": where
+              },
+              dataType: "json",
+              success: function (data) {
+                $('#joinres').children().remove();
+                $('#pages').children().remove();
+                $('#pages').append(data.show);
+                var res = get_tabel(data.list.order_data);
+                if (data.list.order_data.length == 0) {
+                  $('.content').append('<span class="empty"></span>');
+                }
+                $('#joinres').append(res);
+                // 删除后，更新ajaxpage同时也更新可选状态
+                update_optional_status();
+                // 设置关闭层
+                setInterval(function () {
+                  layer.closeAll('loading'); //关闭加载层.
+                }, 1000);
+                $('#check_all').attr('checked', false);
+              }
+            });
+          } else {
+            layer.msg(data.msg, {
+              icon: 5,
+              offset: '400px'
+            });
+            setInterval(function () {
+              layer.closeAll('loading'); //关闭加载层.
+            }, 1000);
+          }
+        }
+      });
+    });
+  }
+</script>
+<script>
+  // 导出查询结果
+  function exportSearch() {
+    if (_searchArr.length > 0) {
+      let ids = _searchArr.join(',')
+      let _searchURL = '{$Think.server.HTTP_HOST}';
+      let _openURL = "http://" + _searchURL + "/Order/export?ids=" + ids;
+      document.getElementById('downloadSearchResult').setAttribute('href', _openURL);
+      document.getElementById('downloadSearchResult').click();
+    } else {
+      alert('请先选择');
+      console.log('未选择导出元素');
+    }
+  }
+</script>
+<script>
+  $(function () {
+
+    let url = window.location.search;
+    url = url.split("&");
+    let data = {};
+    for (let i = 0; i < url.length; i++) {
+      let e = url[i];
+      e = e.split("=");
+      data[e[0]] = e[1];
+    }
+
+    function _setTime(time) {
+      if (!!time) {
+        let _year = time.slice(0, 4);
+        let _month = time.slice(4, 6);
+        let _day = time.slice(6, 8);
+        let _hour = time.slice(8, 10);
+        let _min = time.slice(10, 12);
+        let newTime = _year + '-' + _month + '-' + _day + ' ' + _hour + ':' +
+          _min;
+        return newTime;
+      } else {
+        return ''
+      }
+    }
+    let startTime = data.starttime || '';
+    let endTime = data.endtime || '';
+    startTime = _setTime(startTime);
+    endTime = _setTime(endTime);
+    $('#createStarttime').val(startTime);
+    $('#createEndtime').val(endTime);
+  })
+</script>

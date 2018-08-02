@@ -1,0 +1,283 @@
+<?php
+
+namespace Lib11\addr_analysis;
+
+class addr_analysis{
+
+    private $dictionary;
+
+    public function __construct(){
+
+        $this->dictionary = \unserialize(\file_get_contents(dirname(__DIR__) . '/addr_analysis/addr.txt'));
+
+    }
+
+    /*
+        利用前缀树分词
+    */
+
+
+    // 智能地址解析
+    // "名字、电话号码、地址" 的顺序可以不同，但是名字和地址如果相邻，则必须使用分隔符
+    // 如 "刘先生12310001000湖北省武汉市"  "12310001000，刘先生，湖北省武汉市"  "12310001000刘先生-湖北省武汉市" 等都是可以的
+    // 而 "12310001000刘先生湖北省武汉市" 是错误的(无法识别名字，'刘先生湖北省武汉市'整个字符串会被当作地址或名字)
+    public function exec($info){
+
+        // return $this->dictionary;
+
+        if(empty($info) || !is_string($info)){
+            return array();
+        }
+
+
+        // $str = preg_replace('/(,)+|(，)+|(、)+|(\s)+|(-)+|(_)+|(\/)+/', ',', $info);
+
+        // "刘先生12310001000湖北省"  =>  "刘先生,12310001000,湖北省"
+        $str = preg_replace('/([0-9]{6,})/', ',${1},', $info);
+
+        // 将可能的分隔符变为英文逗号
+        $str = str_replace("、",",",$str);
+        $str = str_replace("，",",",$str);
+
+
+        // 整理数组
+        $res = explode(',', $str);
+        $res = array_filter($res);
+        $res = array_values($res);
+
+
+        $info = array();
+        $tmp = array();
+        foreach($res as $k=>$v){
+            if(is_numeric($v) && strlen($v)>=6){
+                // 当前项是电话号码
+                if(empty($info['tel'])){
+                    $info['tel'] = $v;
+                }else{
+                    // 多个电话号码，错误
+                    return array();
+                }
+            }else{
+
+                $tmp[] = $v;
+
+            }
+        }
+
+        if(count($res) == 3 && empty($info['tel'])){
+            //　三个元素，但是其中没有电话号码，错误
+            return array();
+        }
+
+        // dump($tmp);
+        // die;
+
+        // 拆分地址
+        $ad1 = $this->addr_split($tmp[0]);
+        $ad2 = $this->addr_split($tmp[1]);
+        if(count($ad1)>count($ad2)){
+            $info['addrinfo'] = $ad1;
+            $info['name'] = $tmp[1];
+        }else{
+            $info['addrinfo'] = $ad2;
+            $info['name'] = $tmp[0];
+        }
+
+        if(count($res) == 1 && empty($info['addrinfo']) && empty($info['tel'])){
+            // 如果只有一个，且这个不是地址或者电话号码，则报错
+            return array();
+        }
+
+
+        return $info;
+        if($ad1 !== array() || $ad2 !== array()){
+            return $info;
+        }
+
+        // 下面的是分词查询
+        // 暂时不使用
+
+
+        $addr = array();
+        foreach($tmp as $key=>$value){
+
+            $curr = array();            // 当前词典
+            $matching = array();        // 已匹配字符数组
+            // $no_matching = array();     // 未匹配字符数组
+            $result = array();          // 结果数组
+
+
+            $len = \mb_strlen($value);
+            $ch = '';
+            $curr = $this->dictionary;
+
+            $j = 0;
+            while(1){
+                for($i=$j; $i<$len; $i++){      // 循环字符串
+                    $ch = \mb_substr($value, $i, 1);       // 截取第i个字符
+                    if(empty($curr[$ch])){
+                        if($curr == $this->dictionary){
+                            // 如果第一个字符就不匹配，则将其放入未匹配数组中
+                            // 然后继续查询下一个字符，例如 '广州虎' 的 '虎' 字，先匹配 '广州' 成功（此时进入了下面的分支）
+                            // 然后下一轮匹配 '虎' 字，这个时候，就会进入此分支
+                            $j = $i+1;
+                            $no_matching[$key][] = $ch;
+                        }else{
+                            // 否则这个未匹配的字符需要在下一轮继续匹配
+                            // 例如 '广东深圳'，先匹配 '广东' 成功，但是 '深' 没有找到，因此下一轮还要继续匹配 '深'
+                            $j = $i;
+                        }
+
+                        break;
+
+                    }else{
+                        // 匹配成功，将其存入 matching 里，并且 $curr 向后遍历
+                        $matching[] = $ch;
+                        $curr = $curr[$ch];
+                    }
+                }
+
+                if($curr != $this->dictionary){
+                    // 如果已经有匹配成功的字符，则需要将其存储到 result 中去
+                    if(count($matching) > 1){
+                        // 匹配到大于一个字符才算数，像 "湖广北" 匹配到的 '湖' '广' '北'，就应该被算作未匹配到
+                        $result[] = $matching;
+                    }else{
+                        $no_matching[$key][] = $matching[0];
+                    }
+
+                    $matching = array();
+                }
+
+                if($i == $len){
+                    // 字符串已到末尾
+                    break;
+                }
+
+                if($j>=$len){
+                    // 字符串已到末尾
+                    break;
+                }
+
+                $curr = $this->dictionary;  // 重置 $curr
+            }
+
+            if(count($result)>0){
+                // 将结果数组中的单个字符转为字符串
+                foreach($result as $va){
+                    $addr[$key][] = \implode('', $va);
+                }
+            }
+
+        }
+
+
+        // 匹配成功多的那个为地址，少的为名字
+        if(!empty($addr[0]) && !empty($addr[1])){
+            if(count($addr[0]) > count($addr[1])){
+                $info['addr'] = $addr[0];
+                $info['addrinfo'] = \implode('', $no_matching[0]);
+                $info['name'] = $tmp[1];
+            }else{
+                $info['addr'] = $addr[1];
+                $info['addrinfo'] = \implode('', $no_matching[1]);
+                $info['name'] = $tmp[0];
+            }
+        }else if(!empty($addr[0])){
+            $info['addr'] = $addr[0];
+            $info['addrinfo'] = \implode('', $no_matching[0]);
+            $info['name'] = $tmp[1];
+        }else if(!empty($addr[1])){
+            $info['addr'] = $addr[1];
+            $info['addrinfo'] = \implode('', $no_matching[1]);
+            $info['name'] = $tmp[0];
+        }
+
+
+        return array($info);
+
+    }
+
+
+    public function addr_split($addr){
+
+        if(empty($addr) || !is_string($addr)){
+            return array();
+        }
+
+        $res = array(
+            'province' => '',
+            'city' => '',
+            'town' => '',
+            'addr' => '',
+        );
+        $allow = array('北京', '上海', '天津', '重庆');
+
+        $s = mb_strpos($addr, '省');
+        $str = \mb_substr($addr, 0, 2);
+
+        if($s === false){
+            if(!in_array($str, $allow)){
+                return array();
+            }else{
+                $res['province'] = $str . '市';
+                $res['city'] = $str . '市';
+            }
+            $ss = \mb_strpos($addr, '市');
+            if($ss === false){
+                return $res;
+            }else{
+                if(!\mb_strpos($addr, '市', $ss+1)){
+                    $ss = \mb_strpos($addr, '市');
+                }else{
+                    $ss = $ss + \mb_strpos($addr, '市', $ss) + 1;
+                }
+                $addr = \mb_substr($addr, $ss+1);
+            }
+        }else{
+            $res['province'] = \mb_substr($addr, 0, $s+1);
+            $addr = \mb_substr($addr, $s+1);
+
+            $ss = \mb_strpos($addr, '市');
+            if($ss === false){
+                return $res;
+            }else{
+                $res['city'] = \mb_substr($addr, 0, $ss+1);
+                $addr = \mb_substr($addr, $ss+1);
+            }
+        }
+
+
+
+        $sss = \mb_strpos($addr, '区');
+        if($sss === false){
+            $sss = \mb_strpos($addr, '县');
+            if($sss === false){
+                $sss = \mb_strpos($addr, '镇');
+                if($sss === false){
+                    $sss = \mb_strpos($addr, '市');
+                    if($sss === false){
+                        return $res;
+                    }else{
+                        $res['town'] = \mb_substr($addr, 0, $sss+1);
+                    }
+                }else{
+                    $res['town'] = \mb_substr($addr, 0, $sss+1);
+                }
+            }else{
+                $res['town'] = \mb_substr($addr, 0, $sss+1);
+            }
+        }else{
+            $res['town'] = \mb_substr($addr, 0, $sss+1);
+        }
+
+        $res['addr'] = \mb_substr($addr, $sss+1);
+
+
+        return $res;
+
+
+
+    }
+
+}

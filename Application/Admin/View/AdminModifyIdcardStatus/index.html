@@ -1,0 +1,116 @@
+<extend name="./base" />
+
+<block name="main">
+
+    <div class="container">
+        <div class="col-md-12">
+            <div class="rtop">
+                <ul class="list-inline">
+                    <li style="float:right">您当前所在位置：系统管理&nbsp;/&nbsp;<a href="javascript:void(0);" class="color">修改订单图片状态</a></li>
+                </ul>
+                <form class="form-horizontal" action="{:U('AdminAuth/authAddHandle')}" method='post'>
+
+                    <div class="form-group">
+                        <label for="modules" class="col-sm-2 control-label">请选择查询条件:</label>
+                        <div class="col-sm-3">
+                            <select class="form-control modules" name="modules">
+                                <option value="0" style="margin-left:10px;" >请选择条件</option>
+                                <option value="1" style="margin-left:10px;" >条件1</option>
+                                <option value="2" style="margin-left:10px;" >条件2</option>
+
+                            </select>
+
+                        </div>
+                        <label class="col-sm-2 control-label"></label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ruleName" class="col-sm-2 control-label">排序:</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" placeholder="排序" name="sort" id="sort" value="{$data['sort']}"/>
+                        </div>
+                        <label class="col-sm-2 control-label"></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-5">
+                            <button type="button" onclick="fromdata(this)" class="btn btn-success btn-add">确定</button>
+                            <button id="beClosed" class="btn btn-default" type="button" data-dismiss="modal">关闭</button>
+                            <input type="hidden" name="id" value="{$data['id']}" />
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="foot"></div>
+    <script type="text/javascript">
+        function ityzl_SHOW_LOAD_LAYER(){
+            return layer.msg('努力中...', {icon: 16,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: '200px', time:100000}) ;
+        }
+        function ityzl_CLOSE_LOAD_LAYER(index){
+            layer.close(index);
+        }
+        function ityzl_SHOW_TIP_LAYER(str, url = ''){
+            layer.msg(''+str+'',{time: 2000,offset: '200px'});
+            if(url){
+                window.location = url;
+            }else{
+                window.location.reload();
+            }
+        }
+
+        function auth(obj){
+            //var uid = $(obj).attr('uid');
+            //var url_a = "{:U('AdminCollectPoint/pointdelete')}";
+            //var url = url_a + '/pid/' + uid;
+            var del_sn = $(obj).attr('user_name');
+            var url = $(obj).attr('url_a');
+            if(confirm('是否删除员工名为：'+ del_sn + ' 的信息！')){
+                //window.location.href=url;
+
+                var request;
+                var i;
+                ityzl_SHOW_LOAD_LAYER();
+                if (window.XMLHttpRequest) {
+                    request = new XMLHttpRequest();
+                } else {
+                    request = new ActiveXObject('Microsoft.XMLHTTP');
+                }
+                request.onreadystatechange = function(){
+                    if(request.status == 200 && request.readyState == 4){
+                        if(request.responseText){
+                            var a = JSON.parse( request.responseText );
+                            var status = a.status;
+                            //alert(status);
+                            //alert(a.data.strstr);
+                            //window.location.reload();
+                            //alert(request.responseText);
+                            //alert('导入成功！');
+                            var str = a.data.strstr;
+                            ityzl_CLOSE_LOAD_LAYER(i);
+                            ityzl_SHOW_TIP_LAYER(str);
+                            document.getElementById("form1").reset();
+                        }else{
+                            ityzl_CLOSE_LOAD_LAYER(i);
+                        }
+                    }
+                }
+                request.open("get", url);
+                //request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                request.setRequestHeader("X-Requested-With","XMLHttpRequest");
+                request.send();
+
+
+            }
+        }
+
+    </script>
+
+</block>
+
+
+</body>
+</html>

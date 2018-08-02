@@ -1,0 +1,68 @@
+          <div class="bs-docs-sidebar hidden-print hidden-xs hidden-sm" role="complementary">
+            <ul class="nav bs-docs-sidenav">
+                <li><img src="__PUBLIC__/images/1.png"/><b style="font-size:18px">&nbsp;&nbsp;首页</b></li>
+			    <li <if condition="(CONTROLLER_NAME eq 'Index') && (ACTION_NAME eq 'authList')">class="licolor"</if>>
+                	<a href="{$nav['url']}">　　<img src="__PUBLIC__/images/2.png"/>&nbsp;通告</a>
+                </li>
+              	<li <if condition="(CONTROLLER_NAME eq 'Index') && (ACTION_NAME eq 'authList')">class="licolor"</if>>
+                	<a href="{$nav['url']}">　　<img src="__PUBLIC__/images/2.png"/>&nbsp;个人信息</a>
+                </li>
+              	<li <if condition="(CONTROLLER_NAME eq 'Index') && (ACTION_NAME eq 'authList')">class="licolor"</if>>
+                	<a href="{:U('Index/pwdedit')}" data-toggle="modal" data-target="#myModal">　　<img src="__PUBLIC__/images/2.png"/>&nbsp;修改密码</a>
+                </li>
+              	
+
+	            <!-- <div id="showline">
+	               
+	                <if condition="$power['add_category'] eq 'on'">
+	                    <if condition="I('line')">
+	                        <a href="{:U('AdminAuth/modules_add')}" data-toggle="modal" data-target="#myModal" class="addbtn">[+]新增类别</a>
+	                    </if>
+	                </if>
+	                <ul id="flic" class="flic">
+	                    <volist name="role_nav_two" id="vt">
+	                        <li style="width:300px;"><a class='a_one <if condition="I('id') eq $vt['id']">selected</if>' href="{:U('AdminAuth/index_authNav_authList', array('id' => $vt['id'], 'line' => I('line')))}">{$vt['ModulesName']}</a><a class="a_two" href="{:U('AdminAuth/modulesEdit',array('id'=>$vt['id'],'line'=>I('line')))}" data-toggle="modal" data-target="#myModal">修改</a></li>
+	                    </volist>
+	                </ul>
+	                <style>
+	                    #flic li a {float:left;}
+	                    .a_one{width:160px;}
+	                    .a_two{width:60px;padding-left:15px !important;}
+	                    .selected{border: 1px solid #e2f3fb;background-color: #f2fafd;}
+	                    .flic li a:hover{border: 1px solid #e2f3fb;background-color: #f2fafd;cursor: pointer;}
+	                </style> 
+	            </div>  -->
+	            
+
+           
+                </ul>
+          </div>
+          
+<style type="text/css">
+.licolor{
+    overflow:hidden;
+}
+.submenu{
+    max-height:400px;
+    overflow-y:auto;
+    margin-right: -18px;    
+}
+.submenu li:nth-child(even){
+    background:#afacac;
+}
+.submenu li:nth-child(odd){
+    background:#bbb;
+}
+.link:hover{
+    cursor:pointer;
+}
+#accordion li .link img{
+    transform: rotate(90deg);
+}
+#accordion li.open img{
+    transform: rotate(-90deg);
+}
+.submenu .selected{
+    background-color: #7895bc !important;
+}
+</style>

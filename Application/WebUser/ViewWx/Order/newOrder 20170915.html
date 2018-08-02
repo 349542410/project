@@ -1,0 +1,346 @@
+<!-- 再次下单 -->
+<extend name="Member/base" />
+
+
+<block name="main">
+<script type="text/javascript" src="__APPWX__/js/city/jquery.js"></script>
+<script type="text/javascript" src="__APPWX__/js/city/area.js"></script>
+<script type="text/javascript" src="__APPWX__/js/city/location.js"></script>
+<script type="text/javascript" src="__APPWX__/js/city/select2.js"></script>
+<script type="text/javascript" src="__APPWX__/js/city/select2_locale_zh-CN.js"></script>
+<script src="__APPWX__/js/cityselected.js"></script>
+<link href="__APPWX__/css/select2.css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="__APPWX__/css/order.css">
+	<div class="form form_index" >
+    <div class="form-signin" style="width:100%;min-height:500px;margin:0 auto;padding:0;">
+	    <form action="{:U('Order/step_two')}" method="post" class="form-inline" id="tempForm" name="add">
+	    	<div class="ordtop row">
+		    	<!-- **************************************************** -->
+	    		<!-- 寄件人信息 -->
+		    	<div class="ordsender col-xs-12 col-sm-6">
+		    		<h4>{:L('SenderInfo')}</h4>
+		    		<ul>
+		    			<li><label>{:L('FullName')}：</label><input type="text" id="postname" value="{$info['sender']}" name="PostName" placeholder="{:L('Placeholder_PostName')}" required="required" maxlength="40"></li>
+
+		    			<li><label>{:L('DetaileAddress')}：</label><input type="text" value="{$info['sendAddr']}" name="PostAddress" placeholder="{:L('Placeholder_PostAddress')}" required="required" id="daddress"></li>
+		    			<li><label>{:L('Phone')}：</label><input type="phone" value="{$info['sendTel']}" name="PostPhone" placeholder="{:L('Placeholder_PostPhone')}" required="required" id="pphone"></li>
+		    			<li><label>{:L('ZipCode')}：</label><input type="text" value="{$info['sendcode']}" name="PostCode" placeholder="{:L('Placeholder_PostCode')}" required="required" id="zipcode" maxlength="10"></li>
+		    		</ul>
+		    		<button type="button" class="clearSender" onclick="javascript:$('.ordsender input').val('');">{:L('EmptyInfo')}</button>
+		    	</div>
+		    	<!-- **************************************************** -->
+	    		<!-- 收件人信息 -->
+		    	<div class="ordrec col-xs-12 col-sm-6">
+		    		<h4>{:L('RecInfo')}</h4>
+		    		<ul>
+		    			<li><label>{:L('FullName')}：</label><input type="text" value="{$info['receiver']}" name="RecName" placeholder="{:L('Placeholder_RecName')}" required="required" id="fullname" maxlength="40">
+		    			</li>
+		    			<li class="addres">
+		    				<label>{:L('DocumentsType')}：</label>
+		    				<select name="Id_tpye" id="Id_tpye">
+		    					<volist name="ID_TYPE" id="ty">
+		    						<option value="{$key}" <if condition="($info['idkind'] eq $key)">selected</if>>{:L($ty)}</option>
+		    					</volist>
+		    				</select>
+		    				<input type="text" name="IdNo" placeholder="{:L('Placeholder_IdNo')}" value="{$info['idno']}" required="required" style="width:185px !important;" id="idno">
+		    			</li>
+		    			<li class="addres">
+		    				<label>{:L('Address')}：</label>
+		    				<select id="loc_province" style="width:100px;" >
+						    </select>
+						    <select id="loc_city" style="width:115px;margin-left: 5px" >
+						    </select>
+						    <select id="loc_town" style="width:115px;margin-left: 5px" >
+						    </select>
+						    <input id="province" name="Province" value="{$info['province']}" style="display:none" />
+						    <input id="city" name="City" value="{$info['city']}" style="display:none" />
+						    <input id="town" name="Town" value="{$info['town']}" style="display:none" />
+						    <input type="hidden" name="token" value="{:session('token')}">
+		    			</li>
+		    			<li><label>{:L('DetaileAddress')}：</label><input type="text" value="{$info['reAddr']}" name="RecAddress" placeholder="{:L('Placeholder_RecAddress')}" required="required" id="detaaddress"></li>
+		    			<li><label>{:L('Phone')}：</label><input type="text" value="{$info['reTel']}" name="RecPhone" placeholder="{:L('Placeholder_RecPhone')}" required="required" id="rphone"></li>
+		    			<li><label>{:L('ZipCode')}：</label><input type="text" value="{$info['postcode']}" name="RecCode" placeholder="{:L('Placeholder_RecCode')}" required="required" id="rzipcode" maxlength="10"></li>
+		    		</ul>
+		    	</div>
+		    	<div class="clear"></div>
+		    </div>
+<!-- **************************************************** -->
+	    	<!-- 选择线路 -->
+	    	<div class="ordhead"><h3>{:L('SelectLine')}</h3></div>
+	    	<div class="ordbody">
+		    	<table class="tab1" border="0" cellpadding="0" cellspacing="0">
+				    <tr>
+						<td class="tdleft"><label>{:L('TranLine')}：</label></td>
+						<td>
+						<label>
+		                <select name="TransferLine" id="TransferLine" class="form-control" required>
+							<option value="">{:L('PleaseSelectLine')}</option>
+							<volist name="tranline" id="vo">
+								<option value="{$vo['id']}" <if condition="($info['TranKd']) eq $vo['id']">selected</if>><php>$l = L('MKLINES');echo $l[$vo['lngname']];</php></option>
+							</volist>
+		<!-- 					<option value="1" <if condition="($info['TranKd']) eq '1'">selected</if>><php>$l = L('MKLINES');echo $l[1];</php></option>
+							<option value="2" <if condition="($info['TranKd']) eq '2'">selected</if>><php>$l = L('MKLINES');echo $l[2];</php></option> -->
+		                </select>
+						</label>
+						</td>
+		            </tr>
+	            	<table><p id="mimenu"></p></table>
+					<ul style="display:none;">
+						<volist name="tranline" id="vo">
+							<li class="m{$vo['id']}"><php>$l = L('MKRemarks');echo $l[$vo['lngremark']];</php></li>
+						</volist>
+					</ul>
+				</table>
+	    	</div>
+<!-- **************************************************** -->
+			<!-- 货品声明 -->
+			<div class="ordhead"><h3>{:L('GoodsList')}</h3></div>
+				<div class="goodshow">
+				<input type="hidden" id="num" value="{$numc}" autocomplete="off">
+					<for start="0" end="$count"> 
+						<ul id="table" class="goodsbox">
+							<li><label>{:L('BrandName')}：</label><input type="text" name="brand_{$i}" value="{$pro_list[$i]['brand']}" class="clchang"></li>
+							<li><label>{:L('ProductName')}：</label><input type="text" name="product_{$i}" value="{$pro_list[$i]['detail']}" class="clchang"></li>
+							<li><label>{:L('ProCate')}：</label><input type="text" name="catname_{$i}" value="{$pro_list[$i]['catname']}" class="clchang"></li>
+							<li class="flaotl ordsmli"><label>{:L('Amount')}：</label><input type="text" name="amount_{$i}" value="{$pro_list[$i]['number']}" class="clzhong"></li>
+							<li class="flaotl ordsmli"><label>{:L('UnitPrice')}：</label><input type="text" name="price_{$i}" value="{$pro_list[$i]['price']}" class="clzhong"></li>
+							<li class="flaotl ordsmli">
+								<label>{:L('Currency')}：</label>
+								<select name="coin_{$i}" id="" class="clduan">
+									<option value="CNY" selected="selected">￥</option>
+								</select>
+							</li>
+							<li class="flaotl ordsmli marbot"><label>{:L('Remarks')}：</label><input type="text" name="remark_{$i}" dd="{:L('Remarks')}" class="clzhong"></li>
+							<div style="clear: both;"></div>
+						</ul>
+					</for>
+				</div>
+				<span class="ordbtn"><a onclick="copy_row(this)" href="javascript:void(0)">+</a></span>
+	    	<!-- 按钮部分 -->
+	    	<table style="width: 100%;float: right;margin: 0 5%;">
+				<tr>
+					<td id="hide_boxs">
+						<input type="hidden" value="{$user_id}" name="uid">
+					</td>
+					<td style="text-align: right;">
+						<span id="loading" style="bottom:180px;left:650px !important"></span>
+						<button type="button" class="btn" id="BtnSave">{:L('BtnSave')}</button>
+						<!-- <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button> -->
+						<span id="messagebox" class="msgbox" style="bottom:180px;left:650px !important"></span>					
+					</td>
+				</tr>
+			</table>
+			<!-- END -->
+	    	<div style="clear:both;"></div>
+		</form>
+    </div>
+   	</div>
+<script type="text/javascript">
+	// 选择线路特效
+	$(document).ready(function(){
+		var p2 = $('#TransferLine').children('option:selected').val();//这就是selected的值
+		if(p2 != ''){
+			$("#mimenu").html('说明：'+$(".m"+p2).html());
+		}
+		
+		$('#TransferLine').change(function(){
+			var p = $(this).children('option:selected').val();//这就是selected的值
+
+			if(p != ''){
+				var h = $(".m"+p).html();
+				$("#mimenu").html('说明：'+h);
+			}else{
+				$("#mimenu").html('');
+			}
+		});
+		// 证件类型
+		$("#Id_tpye").change(function(){
+			var chid= $('#Id_tpye').val();
+			if(chid == 'PASPORT'){
+				$('#idno').attr("placeholder","{:L('Placeholder_IdPT')}")
+			}else if(chid == 'ID'){
+				$('#idno').attr("placeholder","{:L('Placeholder_IdNo')}")
+			}
+		});
+	});
+
+	// 这是后台返回的省市区，把它们都分别赋值到那三个select上面显示
+	$(function(){	
+		var p = "{$info['province']}";
+		var c = "{$info['city']}";
+		var t = "{$info['town']}";
+		var forp = "{$info['foreign_country']}";
+		var forc = "{$info['foreign_province']}";
+		var fort = "{$info['foreign_city']}";
+		$("#select2-chosen-1").html(p);
+		$("#select2-chosen-2").html(c);
+		$("#select2-chosen-3").html(t);
+		$("#select2-chosen-4").html(forp);
+		$("#s2id_loc_city1 a").html(forc).append("<span class='select2-arrow' role='presentation'><b role='presentation'></b></span>");
+		$("#s2id_loc_town1 a").html(fort).append("<span class='select2-arrow' role='presentation'><b role='presentation'></b></span>");
+	});
+
+	// 修改弹出框，使用layer 20170315 gan
+	$('#BtnSave').click(function(){
+		// 寄件人
+		var postname = document.getElementById('postname').value;
+		var daddress = document.getElementById('daddress').value;
+		// 收件人
+		var fullname = document.getElementById('fullname').value;
+		var idno = document.getElementById('idno').value;
+		var detaaddress = document.getElementById('detaaddress').value;
+		// 验证规则
+		var repn = /^([a-zA-Z ]+|[\u4e00-\u9fa5]+)$/;
+		var repzc = /^[1-9]\d{5}$/;
+		var repadd = /^[\w\u4e00-\u9fa5\-,][\s\w\u4e00-\u9fa5\-,]*[\w\u4e00-\u9fa5\-,]$/;
+		var repphone = /^1[2|3|4|5|6|7|8|9]{1}[0-9]{9}$/;
+		var repidno =/^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$/;
+		var repidPT =/^1[45][0-9]{7}|([P|p|S|s]\d{7})|([S|s|G|g]\d{8})|([Gg|Tt|Ss|Ll|Qq|Dd|Aa|Ff]\d{8})|([H|h|M|m]\d{8，10})$/;
+		var chid= $('#Id_tpye').val();
+		// 护照
+		if(chid == 'PASPORT'){
+			if(!repidPT.test(idno)){
+				layer.open({
+					type: 0,
+					offset: '300px',
+					shadeClose: true,
+					title: "{:L('LAY_SystemMessage')}",
+					content : "{:L('chekPattern_IdPT')}",
+					icon : 5,
+				});
+				return false;	
+			}
+		// 身份证
+		}else if(chid == 'ID'){
+			if(!repidno.test(idno)){
+				layer.open({
+					type: 0,
+					offset: '300px',
+					shadeClose: true,
+					title: "{:L('LAY_SystemMessage')}",
+					content : "{:L('chekPattern_IdNo')}",
+					icon : 5,
+				});
+				return false;	
+			}
+		}
+		// 用户名
+		if(!repn.test(postname) || !repn.test(fullname)){
+			layer.open({
+				type: 0,
+				offset: '300px',
+				shadeClose: true,
+				title: "{:L('LAY_SystemMessage')}",
+				content : "{:L('chekPattern_FullName')}",
+				icon : 5,
+			});
+			return false;
+		}
+		// 地址
+		if(!repadd.test(daddress) || !repadd.test(detaaddress)){
+			layer.open({
+				type: 0,
+				offset: '300px',
+				shadeClose: true,
+				title: "{:L('LAY_SystemMessage')}",
+				content : "{:L('chekPattern_Address')}",
+				icon : 5,
+			});
+			return false;
+		}
+	    $.ajax({
+	        cache: false,
+	        type: "post",
+	        url:"{:U('Order/checkForm')}",
+	        data:$('#tempForm').serialize(),// formid
+	        async: false,
+	        beforeSend:function(){
+	            $("#loading").html('<img style="width:28px;height:28px;" src="__MEMBER__/images/msg_loading_d.gif"/>');
+	        },
+	        error: function(request) {
+	            layer.alert("{:L('LAY_ErrorForm')}");
+	        },
+	        success: function(data) {
+	            if(data.state == 'no'){
+					layer.open({
+						type: 0,
+						offset: '300px',
+						shadeClose: true,
+						title : "{:L('LAY_SystemMessage')}",
+						content : data.msg,
+						area : ['150px' , '150px'],
+						icon : {icon:5},
+						btn: ["{:L('LAY_BtnOK')}"],
+					});
+	                $("#loading").html('');
+
+	            }else{
+	                var box_part='<input type="hidden" value="'+data.uucode+'" name="uucode"><input type="hidden" value="'+data.sn+'" name="sn"><input type="hidden" value="'+data.lid+'" name="lid">';
+	                $("#hide_boxs").append(box_part);
+	                $("#BtnSave").attr("disabled","true"); //设置变灰按钮  
+	                $('#tempForm').submit();
+	                setTimeout("$('#BtnSave').removeAttr('disabled');",3000); //设置三秒后提交按钮 显示 
+	                $(window).unbind('beforeunload');
+	            }
+	        }
+	    });
+	});
+
+	// 货品声明 删除行效果 
+	$(function(){
+		$("td.nows a").css('display','none');
+		$(".stta").hover(function(){
+			var ttc= $(this).find('.ttc').attr('value');
+			var src= $(this).find('img');
+			if(ttc!=''){
+				var d=$(this);
+				$(this).find('.nows').find('a').css('display','inline');
+				$(this).find('.nows').find('a').click(function(){
+					layer.open({
+						type: 0,
+						title : "{:L('LAY_SystemMessage')}",
+						content : "{:L('LAY_Empty')}",
+						btn: ["{:L('LAY_BtnOK')}","{:L('LAY_BtnCancel')}"],
+						yes:function(){
+							layer.msg("{:L('LAY_EmptyOK')}",{icon: 6,offset: '350px'});
+							d.find('input').attr('value','');
+							d.find('select').val('1');
+							src.remove();
+						},
+						icon : {icon:5},
+						offset: '300px',
+					});
+					
+				})
+			}		 
+		},function(){
+			$(this).find('.nows').find('a').css('display','none');	
+			$(this).find('.nows').find('a').unbind();
+		})
+	});
+
+	// 添加删除行 20170316 gan
+	function copy_row(obj)
+	{
+		var num=$("#num").val();
+		num++;
+		if(num>=9){
+			layer.open({
+				title:"{:L('LAY_SystemMessage')}",
+				offset: '300px',
+				icon : 0,
+				content: "{:L('LAY_AddRow')}",
+			});
+			$('.copy_r').find('a').remove();
+		}
+		var str='<li><label>{:L("BrandName")}：</label><input type="text" name="brand_'+num+'" value="{$pro_list['+num+']["brand"]}" class="clchang"></li><li><label>{:L("ProductName")}：</label><input type="text" name="product_'+num+'" value="{$pro_list['+num+']["detail"]}" class="clchang"></li><li><label>{:L("ProCate")}：</label><input type="text" name="catname_'+num+'" value="{$pro_list['+num+']["catname"]}" class="clchang"></li><li class="ordkpmid"><label>{:L("Customs")}</label><br><label>---</label></li><li class="flaotl ordsmli"><label>{:L("Amount")}</label><input type="text" name="amount_'+num+'" value="{$pro_list['+num+']["number"]}" class="clzhong"></li><li class="flaotl ordsmli"><label>{:L("UnitPrice")}</label><input type="text" name="price_'+num+'" value="{$pro_list['+num+']["price"]}" class="clzhong"></li><li class="flaotl ordsmli"><label>{:L("Currency")}</label><select name="coin_'+num+'" id="" class="clduan"><option value="CNY" selected="selected">￥</option></select></li><li class="flaotl ordsmli"><label>{:L("Remarks")}</label><input type="text" name="remark_'+num+'" dd="{:L("Remarks")}" class="clzhong"></li><div style="clear: both;"></div><li class="ordbtn"><a onclick="copy_row(this)" href="javascript:void(0)">+</a></li><span class="forspan">{:L("Notice")}</span>';
+		$("#table").append(str);
+		$("#num").val(num);
+	}
+</script>
+	<div class="foot"></div>
+
+</block>
+
+</body>
+</html>

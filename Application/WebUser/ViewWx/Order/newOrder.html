@@ -1,0 +1,316 @@
+<!-- 再次下单 -->
+<extend name="Member/base" />
+
+
+<block name="main">
+<script type="text/javascript" src="__APPWX__/js/city/jquery.js"></script>
+<script type="text/javascript" src="__APPWX__/js/city/area.js"></script>
+<script type="text/javascript" src="__APPWX__/js/city/location.js"></script>
+<script type="text/javascript" src="__APPWX__/js/city/select2.js"></script>
+<script type="text/javascript" src="__APPWX__/js/city/select2_locale_zh-CN.js"></script>
+<script src="__APPWX__/js/cityselected.js"></script>
+<link href="__APPWX__/css/select2.css" rel="stylesheet"/>
+<script src="__MEMBER__/js/jquery.validationEngine.js" type='text/javascript'></script>
+<script src="__MEMBER__/js/jquery.validationEngine-{:L('lng')}.js" type='text/javascript'></script>
+<script type="text/javascript" src="__MEMBER__/js/jquery.form.js"></script>
+<link rel="stylesheet" type="text/css" href="__APPWX__/css/order.css">
+<script type="text/javascript" src="__MEMBER__/js/feg_relevance.js"></script>
+<script type="text/javascript">
+    var Cr_Select = "{:L('Cr_Select')}";
+    var select_cr = "{:L('Cr_Select')}"; 
+</script>
+<script type="text/javascript">
+        $(function(){
+          $('#tempForm').validationEngine('attach', {
+            promptPosition: 'topRight',
+            scroll: false,
+            addPromptClass:'formError-white',
+            autoPositionUpdate:true,
+            'custom_error_messages':{
+                '#TransferLine':{
+                    'required': {
+                        'message': "{:L('valEng_Msg_fre')}",
+                    }
+                },
+                '#loc_province':{
+                    'required':{
+                        'message': "{:L('valEng_Msg_fre')}",
+                    }
+                },
+                '#loc_city':{
+                    'required':{
+                        'message': "{:L('valEng_Msg_fre')}",
+                    }
+                },
+                '#loc_town':{
+                    'required':{
+                        'message': "{:L('valEng_Msg_fre')}",
+                    }
+                },
+            }
+          });
+        });
+</script>
+	<div class="form form_index" >
+    <div class="form-signin" style="width:100%;min-height:500px;margin:0 auto;padding:0;">
+	    <form action="{:U('Order/checkForm')}" method="post" class="form-inline" id="tempForm" name="add" enctype="multipart/form-data" onsubmit="tempform(this)">
+	    	<div class="ordtop row">
+		    	<!-- **************************************************** -->
+	    		<!-- 寄件人信息 -->
+		    	<div class="ordsender col-xs-12 col-sm-6">
+		    		<h4>{:L('SenderInfo')}</h4>
+		    		<ul>
+		    			<li><label>{:L('FullName')}：</label><input type="text" id="postname" value="{$info['sender']}" name="PostName" placeholder="{:L('Placeholder_PostName')}" data-validation-engine="validate[required,custom[chinalett]]" maxlength="40"></li>
+		    			<li><label>{:L('SenderStreet')}：</label><input type="text" value="{$info['sendAddr']}" name="PostStreet" placeholder="{:L('Placeholder_PostAddress')}" data-validation-engine="validate[required,custom[repadd]]" id="daddress"></li>
+                        <li style="position: relative;">
+                            <label>{:L('SenderCountry')}：</label>
+                            <select class="selcountry" disabled="disabled" >
+                                <option selected="selected" value="">U.S.A</option>
+                            </select><br>
+                            <label>{:L('SenderCity')}：</label>
+                            <select id="MainContent_ddProvince" data-validation-engine="validate[required]">
+                                <option value="">{:L('Cr_Select')}</option>
+                            </select>
+<!--                             <select id="MainContent_ddCity">
+                                <option value="">{:L('Cr_Select')}</option>
+                            </select><br> -->
+                            <input id="Postcity" name="PostCity" value="{$info['sendCity']}" maxlength="40" style="width: 130px;display: inline-block;border: 1px solid rgb(169,169,169);border-radius: 5px;height: 29px;line-height: 29px;text-indent: 0.5em;position: absolute;bottom: 7px;" />
+                            <input id="Postcountry" name="PostCountry" value="U.S.A" style="display: none;" />
+                            <input id="Postprovince" name="PostState" value="{$info['sendState']}" style="display: none" />
+                            <!-- <input id="Postcity" name="PostCity" value="{$info['sendCity']}" style="display: none" /> -->
+                        </li>
+		    			<li><label>{:L('Phone')}：</label><input type="phone" value="{$info['sendTel']}" name="PostPhone" placeholder="{:L('Placeholder_PostPhone')}" data-validation-engine="validate[required,custom[phone]]" id="pphone"></li>
+		    			<li><label>{:L('ZipCode')}：</label><input type="text" value="{$info['sendcode']}" name="PostCode" placeholder="{:L('Placeholder_PostCode')}" data-validation-engine="validate[required,custom[chinaZip]]" id="zipcode" maxlength="10"></li>
+		    		</ul>
+		    		<button type="button" class="clearSender" onclick="empty_shipper()">{:L('EmptyInfo')}</button>
+		    	</div>
+		    	<!-- **************************************************** -->
+	    		<!-- 收件人信息 -->
+		    	<div class="ordrec col-xs-12 col-sm-6">
+		    		<h4>{:L('RecInfo')}</h4>
+		    		<ul>
+		    			<li><label>{:L('FullName')}：</label><input type="text" value="{$info['receiver']}" name="RecName" placeholder="{:L('Placeholder_RecName')}" data-validation-engine="validate[required,custom[chinalett]]" id="fullname" maxlength="40">
+		    			</li>
+		    			<li class="addres">
+		    				<label>{:L('DocumentsType')}：</label>
+		    				<select name="Id_tpye" id="Id_tpye">
+		    					<volist name="ID_TYPE" id="ty">
+		    						<option value="{$key}" <if condition="($info['idkind'] eq $key)">selected</if>>{:L($ty)}</option>
+		    					</volist>
+		    				</select>
+		    				<input type="text" name="IdNo" placeholder="{:L('Placeholder_IdNo')}" value="{$info['idno']}" style="width:185px !important;" id="idno">
+		    			</li>
+		    			<li class="addres">
+		    				<label>{:L('Address')}：</label>
+		    				<select id="loc_province" style="width:100px;" >
+						    </select>
+						    <select id="loc_city" style="width:115px;margin-left: 5px" >
+						    </select>
+						    <select id="loc_town" style="width:115px;margin-left: 45px" >
+						    </select>
+						    <input id="province" name="Province" value="{$info['province']}" data-validation-engin="validate[required]" style="display:none" />
+						    <input id="city" name="City" value="{$info['city']}" data-validation-engin="validate[required]" style="display:none" />
+						    <input id="town" name="Town" value="{$info['town']}" data-validation-engin="validate[required]" style="display:none" />
+						    <input type="hidden" name="token" value="{:session('token')}">
+		    			</li>
+		    			<li><label>{:L('DetaileAddress')}：</label><input type="text" value="{$info['reAddr']}" name="RecAddress" placeholder="{:L('Placeholder_RecAddress')}" data-validation-engine="validate[required,custom[repadd]]" id="detaaddress"></li>
+		    			<li><label>{:L('Phone')}：</label><input type="text" value="{$info['reTel']}" name="RecPhone" placeholder="{:L('Placeholder_RecPhone')}" data-validation-engine="validate[required,custom[rephone]]" id="rphone"></li>
+		    			<li><label>{:L('ZipCode')}：</label><input type="text" value="{$info['postcode']}" name="RecCode" placeholder="{:L('Placeholder_RecCode')}" data-validation-engine="validate[custom[chinaZip]]" id="rzipcode" maxlength="10"></li>
+		    		</ul>
+		    	</div>
+		    	<div class="clear"></div>
+		    </div>
+<!-- **************************************************** -->
+	    	<!-- 选择线路 -->
+	    	<div class="ordhead"><h3>{:L('SelectLine')}</h3></div>
+	    	<div class="ordbody">
+		    	<table class="tab1" border="0" cellpadding="0" cellspacing="0">
+				    <tr>
+						<td class="tdleft"><label>{:L('TranLine')}：</label></td>
+						<td>
+						<label>
+		                <select name="TransferLine" id="TransferLine" class="form-control" data-validation-engine="validate[required]">
+							<option value="">{:L('PleaseSelectLine')}</option>
+							<volist name="tranline" id="vo">
+								<option value="{$vo['id']}" <if condition="($info['TranKd']) eq $vo['id']">selected</if>><php>$l = L('MKLINES');echo $l[$vo['lngname']];</php></option>
+							</volist>
+		<!-- 					<option value="1" <if condition="($info['TranKd']) eq '1'">selected</if>><php>$l = L('MKLINES');echo $l[1];</php></option>
+							<option value="2" <if condition="($info['TranKd']) eq '2'">selected</if>><php>$l = L('MKLINES');echo $l[2];</php></option> -->
+		                </select>
+						</label>
+						</td>
+		            </tr>
+	            	<table><p id="mimenu"></p></table>
+					<ul style="display:none;">
+						<volist name="tranline" id="vo">
+							<li class="m{$vo['id']}"><php>$l = L('MKRemarks');echo $l[$vo['lngremark']];</php></li>
+						</volist>
+					</ul>
+				</table>
+	    	</div>
+<!-- **************************************************** -->
+            <!-- 异步加载相关线路信息 -->
+            <div class="disno" id="disno">
+            </div>              
+<!-- **************************************************** -->
+		</form>
+    </div>
+   	</div>
+<script type="text/javascript">
+	// 选择线路特效
+	$(document).ready(function(){
+        // 设置美国地址下拉框搜索 sata
+        // $("#MainContent_ddProvince").select2();
+        // end
+        var order_id = "{:I('id')}";		
+		var p2 = $('#TransferLine').children('option:selected').val();//这就是selected的值
+		var type = "{$type}";
+		$.ajax({
+            url:"{:U('Orderlist/console')}",
+            dataType:"html",
+            data:{"id":p2,"order_id":order_id,"type":type},
+            type:"POST",
+            cache: false,
+            beforeSend:function(){
+                var index = layer.load(1, {
+                    shade: [0.1,'#000'], //0.1透明度的白色背景
+                    offset: '450px',
+                });
+            },
+            success:function(html){
+                layer.closeAll('loading'); //关闭加载层
+                $('#disno').html(html);
+
+            }
+        });
+		if(p2 != ''){
+			$("#mimenu").html('说明：'+$(".m"+p2).html());
+		}
+		
+		$('#TransferLine').change(function(){
+			var p = $(this).children('option:selected').val();//这就是selected的值
+            $.ajax({
+                url:"{:U('Orderlist/console')}",
+                dataType:"html",
+                data:"id="+p,
+                type:"POST",
+                cache: false,
+                beforeSend:function(){
+                    var index = layer.load(1, {
+                        shade: [0.1,'#000'], //0.1透明度的白色背景
+                        offset: '450px',
+                    });
+                },
+                success:function(html){
+                    layer.closeAll('loading'); //关闭加载层
+                    $('#disno').html(html);
+
+                }
+            });
+			if(p != ''){
+				var h = $(".m"+p).html();
+				$("#mimenu").html('说明：'+h);
+			}else{
+				$("#mimenu").html('');
+			}
+		});
+        var chid= $('#Id_tpye').val();
+        if(chid == 'PASPORT'){
+            $('#idno').attr("placeholder","{:L('Placeholder_IdPT')}");
+            $('#idno').attr("maxlength","10");
+            $('#idno').attr("data-validation-engine","validate[required]");
+        }else if(chid == 'ID'){
+            $('#idno').attr("placeholder","{:L('Placeholder_IdNo')}");
+            $('#idno').attr("maxlength","18");
+            // $('#idno').attr("data-validation-engine","validate[custom[chinaId]]");
+        }       
+        // 证件类型
+        $("#Id_tpye").change(function(){
+            var chid= $('#Id_tpye').val();
+            if(chid == 'PASPORT'){
+                $('#idno').attr("placeholder","{:L('Placeholder_IdPT')}");
+                $('#idno').attr("maxlength","10");
+                $('#idno').attr("data-validation-engine","validate[required]");
+            }else if(chid == 'ID'){
+                $('#idno').attr("placeholder","{:L('Placeholder_IdNo')}");
+                $('#idno').attr("maxlength","18");
+                // $('#idno').attr("data-validation-engine","validate[custom[chinaId]]");
+            }
+        });
+	});
+
+    // 这是后台返回的省市区，把它们都分别赋值到那三个select上面显示
+    $(function(){   
+        var p = "{$info['province']}";
+        var c = "{$info['city']}";
+        var t = "{$info['town']}";
+        var sendstate = "{$info['sendState']}";
+        var sendcity = "{$info['sendCity']}";
+        $("#select2-chosen-1").html(p);
+        $("#select2-chosen-2").html(c);
+        $("#select2-chosen-3").html(t);
+          if(sendstate != ''){
+              $("#MainContent_ddProvince").find("option[value='"+sendstate+"']").prop("selected",true).trigger('change');
+          }else{
+              $("#MainContent_ddProvince").children('option:selected').html(sendstate);
+          }
+          if(sendcity != ''){
+              $("#MainContent_ddCity").find("option:contains('"+sendcity+"')").prop("selected",true);
+              $("#Postcity").attr("value",sendcity);
+          }else{
+              $("#MainContent_ddCity").children('option:selected').html(sendcity); 
+          }
+    });
+    function tempform(obj){
+        $(window).unbind('beforeunload');
+        if(!$("#tempForm").validationEngine("validate")) return ;
+        $(obj).ajaxForm({
+            dataType: 'json',
+            beforeSend:function(){
+                var index = layer.load(1, {
+                    shade: [0.1,'#000'], //0.1透明度的白色背景
+                    offset: '450px',
+                });
+            },
+            success: function(data){
+                if(data.state == 'no'){
+                    layer.closeAll('loading'); //关闭加载层
+                    layer.open({
+                        type: 0,
+                        offset: '300px',
+                        shadeClose: true,
+                        title: "{:L('LAY_SystemMessage')}",
+                        content : data.msg,
+                        icon : 5,
+                    });
+                    return false;
+                }else{
+                    layer.closeAll('loading'); //关闭加载层
+                    window.location.href=data.url;
+                }
+            },
+        });
+    }
+function empty_shipper(){
+  $('#postname').val("");
+  $('#poststreet').val("");
+  $('#postphone').val("");
+  $('#postcode').val("");
+  $("#MainContent_ddProvince").find("option:contains('"+Cr_Select+"')").prop("selected",true);
+  $("#MainContent_ddCity").find("option:contains('"+Cr_Select+"')").prop("selected",true);
+}
+window.picro_id = "{$info['id_img_status']}";
+if(picro_id == 0){
+    picro_id = 1;
+}else if(picro_id==100){
+    picro_id = 0;
+}else{
+    picro_id = 2;
+}    
+</script>
+	<div class="foot"></div>
+
+</block>
+
+</body>
+</html>

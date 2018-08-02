@@ -1,0 +1,138 @@
+<?php
+namespace Wap\Controller;
+use Think\Controller;
+class IndexController extends Controller {
+
+	//首页
+    public function index(){
+       	$this->display();
+    }
+
+    //搜索
+    public function search(){
+		$MKNO = I('MKNO');
+
+		if(!empty($MKNO)){
+			$match = "/^MK[a-zA-Z0-9]{10,12}$/";
+
+	    	if(!preg_match($match,$MKNO)){
+	    		die('请输入正确美快单号，例如：MK881000987US');
+	    	}
+
+			vendor('Hprose.HproseHttpClient');
+			$client = new \HproseHttpClient(C('RAPIURL').'/Server');
+			//$list = $client->query($MKNO);   // 放在erpsms下，方便不同环境显示不同
+
+			//$str = '[{"time":"2015-10-10 10:10:10","kd":"创建订单","by":"管理员"}]';
+			//echo $str .'<br/>';
+			//echo base64_encode($str);//exit;
+
+			/*
+				Man 20151201 当ERP打开时 传来 SMS(内容为与该单号相关联的ERP数据),但在官网是不显示的
+			*/
+			$this->esms = '';
+			$this->esmc = 0;
+			$erpsms 	= I('SMS','');
+			$erpsms 	= str_replace(" ","+",$erpsms);
+			//echo $erpsms;
+			if($erpsms<>''){
+				$list = $client->query($MKNO,2);
+				if($erpsms = base64_decode($erpsms)){
+					if($erpsms = json_decode($erpsms,true)){
+						$this->esms = $erpsms;
+						$this->esmc = count($this->esms);
+					}
+				}
+			}else{
+				$list = $client->query($MKNO,1);
+			}
+			//============
+			$this->assign('MKNO',$MKNO);
+			$this->assign('list',$list);
+
+			//exit;
+		}
+
+    	$this->display();
+    }
+
+    //补录资料及税费 视图
+    public function record(){
+		vendor('Hprose.HproseHttpClient');
+		$client = new \HproseHttpClient(C('RAPIURL').'/Certificates');
+    	//如传来 MKNO时
+    	// $mkno = 'MK81000053US';//测试
+    	$mkno = trim(I('MKNO'));
+    	
+    	//如果$mkno不为空
+    	if($mkno != ''){
+    		//检查MKNO是否存在
+    		$check = $client->check($mkno);
+	    	//存在
+	    	if($check && $check['IL_state'] < 20){
+
+	    		//检查对应的tran_list.TranKd对应的线路是否要求身份证
+	    		if($check['cid'] == '1'){
+
+	    			//if(empty($check['sfid']) || $check['sfid'] == '8'){
+	    				$this->assign('mkno',$mkno);
+	    			//}else{
+	    				//$this->assign('tips','无需补录资料');
+	    			//}
+	    			
+	    		}else{
+	    			//不要求上传身份证时显示：无需补录资料
+	    			$this->assign('tips','无需补录资料');
+	    		}
+	    	
+	    	}else if($check && $check['IL_state'] >= 20){
+	    		$this->assign('tips','无需补录资料');
+	    		$this->assign('url','http://u3.megao.hk/Wap/Index/search?MKNO='.$check['MKNO']);
+	    		$this->assign('swit',1);
+	    	}else if(!$check){
+	    		$this->assign('tips','美快单号['.$mkno.']不存在');
+	    		$this->assign('url','http://u3.megao.hk/Wap/Index/record');
+	    		$this->assign('swit',2);
+	    	}
+    	}
+
+    	$this->display();
+    }
+
+    //第一步 快件信息
+    public function step_one(){
+    	if(IS_AJAX){
+    		// sleep(1);
+	    	vendor('Hprose.HproseHttpClient');
+			$client = new \HproseHttpClient(C('RAPIURL').'/Certificates');
+
+			$arr = array(
+				'MKNO'     =>trim(I('mkno')),
+				'receiver' =>trim(I('rec')),
+				'reTel'    =>trim(I('phone')),
+			);
+
+			$backArr = $client->add_one($arr);
+
+			$this->ajaxReturn($backArr);
+    	}
+    }
+
+    //第二步 身份证信息
+    public function step_two(){
+    	if(IS_AJAX){
+    		// sleep(1);
+	    	vendor('Hprose.HproseHttpClient');
+			$client = new \HproseHttpClient(C('RAPIURL').'/Certificates');
+
+			$id = trim(I('sid'));
+			$arr = array(
+				'sfid' =>trim(I('cnumber')),
+			);
+			$backArr = $client->add_two($id,$arr);
+
+			$this->ajaxReturn($backArr);
+    	}
+    }
+
+}

@@ -1,0 +1,1 @@
+ALTER TABLE  `mk_manager_recharge_list` ADD  `ip` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT  'ip地址' AFTER  `user_balance_usa`

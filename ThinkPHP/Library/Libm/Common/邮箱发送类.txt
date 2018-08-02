@@ -1,0 +1,23 @@
+	/*邮件参数设置*/ 
+	'EMAIL_SET'=>array( 
+		'HOST'               =>"smtp.exmail.qq.com",    //SMTP服务器	请注意发送邮件的邮箱是否开启了SMTP功能，未开启则无法使用第三方发送功能
+		'PORT'               =>465,//25, 					    //邮件发送端口
+		'EMAIL_USER'         =>'m.all-purpose@megao.cn',//'guoweijie@megao.cn', 	      //发件人邮箱地址
+		'EMAIL_PWD'          =>'Purpose123',//'Mkil2016', 			//发件人邮箱密码
+	),
+
+
+//调用类
+        $mail  = new \Libm\Common\PHPMailer;
+        $mail->Host     = $EMAIL_SET['HOST']; //SMTP服务器
+        $mail->Port     = $EMAIL_SET['PORT'];  //邮件发送端口
+        $mail->Username = $EMAIL_SET['EMAIL_USER'];  //你的邮箱
+        $mail->Password = $EMAIL_SET['EMAIL_PWD'];  //你的密码
+        $mail->From     = $EMAIL_SET['EMAIL_USER'];     //发件人地址（也就是你的邮箱）
+        $mail->Subject  = $TITLE.$etitle;      //邮件标题
+        $mail->FromName = $FROMNAME;       //发件人姓名
+        
+        $mail->Body     = $content;
+        $mail->Address  = $address;//收件人（地址）
+        $mail->Receiver = $receiver;//收件人（昵称）
+	$mail->Send()

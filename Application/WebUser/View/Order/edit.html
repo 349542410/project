@@ -1,0 +1,587 @@
+<!-- 在线下单 -->
+<extend name="Member/base" />
+
+
+<block name="main">
+<!--<script type="text/javascript" src="__MEMBER__/js/city/search_area.js"></script>-->
+<script type="text/javascript" src="__MEMBER__/js/city/jquery.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/zh-cn/area.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/zh-cn/location.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/select2.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/zh-cn/select2_locale_zh-CN.js"></script>
+<script src="__MEMBER__/js/{:L('lng')}/cityselected.js"></script>
+<link rel="stylesheet" type="text/css" href="__MEMBER__/css/validationEngine.jquery.css">
+<script src="__MEMBER__/js/jquery.validationEngine.js" type='text/javascript'></script>
+<script src="__MEMBER__/js/jquery.validationEngine-{:L('lng')}.js" type='text/javascript'></script>
+<link href="__MEMBER__/css/select2.css" rel="stylesheet"/>
+<link href="__MEMBER__/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
+<script src="__MEMBER__/js/fileinput.js" type="text/javascript"></script>
+<script type="text/javascript" src="__MEMBER__/js/jquery.form.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/feg_relevance.js"></script>
+<script type="text/javascript">
+    var select_cr = "{:L('Cr_Select')}"; 
+    // var pieurl =  "{:U('Piecemeal/get_shopping_receipt')}";
+</script>
+<!-- <script type="text/javascript" src="__MEMBER__/js/receipt.js"></script> -->
+<script type="text/javascript">
+	    $(function(){
+	    // validationEngine验证方式
+          $('#tempForm').validationEngine('attach', {
+            promptPosition: 'topRight',
+            scroll: false,
+            addPromptClass:'formError-white',
+            autoPositionUpdate:true,
+            'custom_error_messages':{
+            	'#TransferLine':{
+            		'required': {
+          				'message': "{:L('valEng_Msg_fre')}",
+          			}
+            	},
+            	'#loc_province':{
+            		'required':{
+            			'message': "{:L('valEng_Msg_fre')}",
+            		}
+            	},
+            	'#loc_city':{
+            		'required':{
+            			'message': "{:L('valEng_Msg_fre')}",
+            		}
+            	},
+            	'#loc_town':{
+            		'required':{
+            			'message': "{:L('valEng_Msg_fre')}",
+            		}
+            	},
+            }
+          });
+        });
+</script>
+	<div class="form form_index" >
+<!--     <form action="" method="POST" id="formorder">
+        <input type="hidden" name="" id="savemyid" value="">
+    </form> -->
+     <div class="form-signin" style="width:100%;min-height:500px;margin:0 auto;padding:0;">
+	    <form action="{:U('Order/saveEdit',array('step'=>$step))}" method="post" class="form-inline" id="tempForm" onsubmit="tempform(this)" enctype="multipart/form-data">
+            <input type="hidden" name="lib_idcard" value="{$info['lib_idcard']}" id="card_id" />
+            <input type="hidden" name="addr_pro_img" value="" id="addr_pro_img" />
+            <input type="hidden" name="addr_bak_img" value="" id="addr_bak_img" />
+        <!-- **************************************************** -->
+            <!-- 选择线路 -->
+            <div class="ordhead"><h3>{:L('SelectLine')}</h3></div>
+            <div class="ordbody">
+                <ul <if condition="(L('lng') eq 'zh-cn')"> id="lineul" class="lineul"</if><if condition="(L('lng') eq 'en-us')">class="lineulus"  id="lineul"</if>>
+                    <volist name="tranline" id="vl">
+                        <li style="position: relative;"><input type="radio" name="TransferLine" id="{$vl['id']}" iupid="{$vl['input_idno']}" value="{$vl['id']}" class="radio disabled" <if condition="($info['TranKd']) eq $vl['id']">checked onclick="changeline_two(this)"<else/>onclick="changeline(this)"</if>><label class="radio disabled" for="{$vl['id']}"><php>$l = L('MKLINES');echo $l[$vl['lngname']];</php></label><span <if condition="(L('lng') eq 'zh-cn')"> style="position: absolute;top: 30px;left: 10px;font-size: 13px;width: 175px;color: #e90000;"<else/>style="position: absolute;top: 0px;right: 175px;font-size: 13px;color: #e90000;"</if> id="line_pice_{$vl['id']}"></span></li>
+                    </volist>
+                </ul>
+                <ul style="display:none;">
+                    <volist name="tranline" id="vl">
+                        <li class="m{$vl['id']}">
+                            <php>
+                                $l = L('MKRemarks');echo $l[$vl['lngremark']];
+                            </php>
+                        </li>
+                    </volist>
+                </ul>
+                <p id="mimenu"></p>
+            </div>
+            <!-- **************************************************** -->
+	    	<div class="ordtop">
+		    	<!-- **************************************************** -->
+	    		<!-- 寄件人信息 -->
+		    	<div class="ordsender">
+		    		<h4>{:L('SenderInfo')}</h4>
+		    		<ul>
+		    			<li><label>{:L('FullName')}：</label><input type="text" value="{$info['sender']}" class="inputstyle comheight"  name="PostName" placeholder="{:L('Placeholder_PostName')}" data-validation-engine="validate[required,custom[chinalett]]" maxlength="30"></li>
+		    			<li><label>{:L('Phone')}：</label><input type="phone" value="{$info['sendTel']}" class="inputstyle comheight" name="PostPhone" placeholder="{:L('Placeholder_PostPhone')}" data-validation-engine="validate[required,custom[phone]]" maxlength="14"></li>
+		    			<li><label>{:L('ZipCode')}：</label><input type="text" class="inputstyle comheight" value="{$info['sendcode']}" name="PostCode" placeholder="{:L('Placeholder_PostCode')}" data-validation-engine="validate[required,custom[chinaZip]]" maxlength="10"></li>
+                        <li>
+                            <label>{:L('l_Detailed_Address')}：</label>
+                            <textarea type="text" style="text-indent: 0px;width: 345px;" class="inputstyle" id="poststreet" name="PostStreet" placeholder="{:L('l_shipper_address')}" data-validation-engine="validate[required,custom[repadd]]" maxlength="50">{$info['sendStreet']}</textarea>
+                            <!-- <input type="text" value="{$info['sendStreet']}" name="PostStreet" placeholder="{:L('Placeholder_PostAddress')}" data-validation-engine="validate[required,custom[repadd]]" maxlength="50">  -->
+                        </li>
+                        <li style="position: relative;">
+                            <label>{:L('l_Area')}：</label>
+                            <select class="selcountry" disabled="disabled" >
+                                <option selected="selected" value="">U.S.A</option>
+                            </select><br>
+                            <select id="MainContent_ddProvince" <if condition="(L('lng') eq 'zh-cn')"> style="margin-left: 78px;height: 49px;width: 105px;"<else/> style="margin-left: 138px;height: 49px;width: 105px;"</if> data-validation-engine="validate[required]">
+                                <option value="">{:L('Cr_Select')}</option>
+                            </select>
+                            <input id="Postcity" name="PostCity" class="comheight" value="{$info['sendCity']}" placeholder="请填写城市" maxlength="40" style="width: 235px;display: inline-block;border: 1px solid #ccc;height: 42px;text-indent: 0.5em;position: absolute;bottom: 7px;margin-left: 10px;" />
+<!--                             <select id="MainContent_ddCity" data-validation-engine="validate[required]">
+                                <option value="">{:L('Cr_Select')}</option>
+                            </select><br> -->
+                            <input id="Postcountry" name="PostCountry" value="U.S.A" style="display: none;" />
+                            <input id="Postprovince" name="PostState" value="{$info['sendState']}" style="display: none" />
+<!--                             <input id="Postcity" name="PostCity" value="{$info['sendCity']}" style="display: none" /> -->
+                        </li>
+		    		</ul>
+		    	</div>
+		    	<!-- **************************************************** -->
+	    		<!-- 收件人信息 -->
+		    	<div class="ordrec">
+		    		<h4>{:L('RecInfo')}</h4>
+		    		<ul>
+		    			<li><label>{:L('FullName')}：</label><input type="text" class="inputstyle comheight" value="{$info['receiver']}" data-validation-engine="validate[required,custom[chinese]]" name="RecName" placeholder="{:L('Placeholder_RecName')}" maxlength="40">
+		    			</li>
+		    			<li><label>{:L('Phone')}：</label><input type="text" class="inputstyle comheight" value="{$info['reTel']}" name="RecPhone" data-validation-engine="validate[required,custom[rephone]]" placeholder="{:L('Placeholder_RecPhone')}"  maxlength="14"></li>
+                        <li>
+                            <label style="float: left">{:L('l__cre_num')}：</label>
+                            <select name="Id_tpye" id="Id_tpye" class="selcountry" style="float: left">
+                                <volist name="ID_TYPE" id="ty">
+                                    <option value="{$key}" <if condition="($info['idkind'] eq $key)">selected</if>>{:L($ty)}</option>
+                                </volist>
+                            </select>
+                            <!--<input type="text" name="IdNo" class="inputstyle comheight" value="{$info['idno']}" placeholder="{:L('l_receiver_ID_number')}" id="idno" style="width:235px !important;" maxlength="18">                     -->
+                            <div id="idno" style="float: left;margin-left: 10px;">
+                                <el-row class="demo-autocomplete">
+                                    <el-col :span="50">
+                                        <el-autocomplete class="inline-input" clearable v-model="state1" :fetch-suggestions="querySearch" placeholder="{:L('l_receiver_ID_number')}" name="IdNo" @select="handleSelect"></el-autocomplete>
+                                    </el-col>
+                                </el-row>
+                            </div>
+                            <div style="clear: both"></div>
+                        </li>
+		    			<li><label>{:L('ZipCode')}：</label><input type="text" class="inputstyle comheight" value="{$info['postcode']}" data-validation-engine="validate[required,custom[chinaZip]]" name="RecCode" placeholder="{:L('Placeholder_RecCode')}"  maxlength="10" id="zipcode"></li>
+                        <li style="position: relative;">
+                            <div id="re_area">
+                                <div class="block">
+                                    <label>{:L('l_Area')}：</label>
+                                    <el-cascader clearable v-model="selectedOptions" placeholder="{:L('l_Search_pcd')}" :options="options" filterable @change="handleChange"></el-cascader>
+                                </div>
+                            </div>
+<!--                            <label>{:L('Address')}：</label>
+                            <select id="loc_province" style="width:100px;">
+                            </select>
+                            <select id="loc_city" style="width:115px; margin-left: 5px">
+                            </select>
+                            <select id="loc_town" style="width:115px;margin-left: 5px">
+                            </select> -->
+                            <input <if condition="(L('lng') eq 'zh-cn')"> id="province"</if><if condition="(L('lng') eq 'en-us')"> id="provinces"</if> name="Province" value="{$info['province']}" data-validation-engine="validate[required]"/>
+                            <input <if condition="(L('lng') eq 'zh-cn')"> id="city"</if><if condition="(L('lng') eq 'en-us')"> id="citys"</if> name="City" value="{$info['city']}" data-validation-engine="validate[required]"/>
+                            <input <if condition="(L('lng') eq 'zh-cn')"> id="town"</if><if condition="(L('lng') eq 'en-us')"> id="towns"</if> name="Town" value="{$info['town']}" data-validation-engine="validate[required]"/>
+                        </li>
+                        <span class="re_area_tips">{:L('l_re_area_tips')}</span>
+                        <li>
+                            <label style="position: relative;">{:L('DetaileAddress')}：<br><a href="javascript:;" onclick="add_desc()" style="color:#0099ff;position: absolute;font-size: 12px;width: 58px;left: 5px;text-align: left;line-height: 14px;top: 34px;">{:L('l_Smart_Address')}<i class="glyphicon glyphicon-question-sign"></i></a></label>
+                            <!-- <input type="text" value="" data-validation-engine="validate[required,custom[repadd]]"  name="RecAddress" placeholder="{:L('Placeholder_RecAddress')}" maxlength="80" id="detaileaddress"> -->
+                            <div class="text_bg"></div>
+                            <textarea type="text" value="" class="inputstyle" style="text-indent: 0px;width: 320px;" data-validation-engine="validate[required,custom[repadd]]"  name="RecAddress" placeholder="粘贴整段地址，自动识别姓名、电话、地址例：张三,158737386688,广东省广州市天河区某某街道某某大厦001号" maxlength="80" id="detaileaddress">{$info['reAddr']}</textarea>
+                        </li>
+                        <button type="button" class="clearSender" onclick="intelAddResolution();" <if condition="(L('lng') eq 'zh-cn')"> style="margin: 10px 0 0 75px;"<else/> style="margin: 10px 0 0 140px;"</if>>{:L('l_Smart_Address_Submit')}</button>
+                        <!-- <li><label>{:L('DetaileAddress')}：</label><input type="text" value="{$info['reAddr']}" data-validation-engine="validate[required,custom[repadd]]" name="RecAddress" placeholder="{:L('Placeholder_RecAddress')}"  maxlength="80"></li> -->
+		    		</ul>
+		    	</div>
+		    	<div class="clear"></div>
+		    </div>
+            <!-- 异步加载相关线路信息 -->
+            <div class="disno" id="disno">
+            </div>
+            <input type="hidden" name="id" value="{:I('id')}"/>   	
+<!-- **************************************************** -->
+		</form>
+    </div>
+   	</div>
+<script type="text/javascript">
+    // 提供加载语言包
+    var unit_lng = "{:L('l_Unit')}";
+    var Total_Tax = "{:L('Total_Tax')}";
+    var Duty_Free = "{:L('Duty_Free')}";
+    var find_indo_data = "{:U('Order/find_indo_data')}";
+    var member_url = "__MEMBER__";
+</script>
+<script type="text/javascript" src="__MEMBER__/js/element_cascader.js?t=201806211107"></script>
+<script type="text/javascript" src="__MEMBER__/js/idcard/check_idcard.js?t=2018006271632"></script>
+<script type="text/javascript">
+// 智能地址说明
+function add_desc(){
+    layer.open({
+        type: 1,
+        title: "{:L('l_Smart_Address_Illustration')}",
+        skin: 'demo-class',//自定义样式demo-class
+        area : ['800px' , '500px'],
+        // offset: '20%',
+        scrollbar: false,
+        closeBtn: 1,
+        content: '<img src="__MEMBER__/image/intadd.jpg">',
+    });
+}
+// 获取货品声明货品分类数据
+window.category_list = {$category_list};
+
+    // 智能地址分析
+    function intelAddResolution(){
+
+        var addrval = $("#detaileaddress").val();
+        $.ajax({
+           type: "GET",
+           url: "{:U('Order/address_analysis')}",
+           dataType:'json',
+           data: {
+                "addr" : addrval
+           },
+           success: function(data){      
+               console.log("edit");
+                        
+                // 如果不是只有详细地址 则
+                if(data.length != 0){
+                    if(data.addrinfo == ''){
+                        // 地址返回结果为空时
+                        layer.msg("{:L('l_set_address_manually')}", {icon: 5});
+                    }else{
+                        // 地址返回结果有值时
+
+                        // 省
+                        var pro  = data.addrinfo.province;
+                        if(!_empty__(pro)){
+                            set_aere_def([pro]);
+                            $('#province').val(pro);
+                        }
+                        // 市
+                        var city = data.addrinfo.city;
+                        if(!_empty__(city)){
+                            set_aere_def([pro,city]);
+                            $('#province').val(pro);
+                            $('#city').val(city);
+                        }
+                        // 区
+                        var town = data.addrinfo.town;
+                        let zipCode='';
+                        if(!_empty__(town)){
+                            set_aere_def([pro,city,town]);
+                            // 查出邮政
+                            $.each(window.re_area.options,function(k,v){
+                                if(v.value == pro){
+                                    $.each(v.children,function(k1,v1){
+                                        if(v1.value == city){
+                                            zipCode=v1.zipcode;
+                                            $('#zipcode').val(v1.zipcode);
+                                            $.each(v1.children,function(k2,v2){
+                                                // 把级联选择器中第三个分类赋值到 邮编地址
+                                                $('#zipcode').val(v2.zipcode);
+                                                zipCode=v2.zipcode;
+                                                stop = true;
+                                                return false;
+                                            });
+                                            if(stop){
+                                                return false;
+                                            }
+                                        }
+                                    });
+                                    if(stop){
+                                        return false;
+                                    }
+                                }
+                            });
+                            console.log(zipCode);
+                            
+                            $('#province').val(pro);
+                            $('#city').val(city);
+                            $('#town').val(town);
+                            $('#zipcode').val(zipCode);
+                        }
+                        // 详细地址
+                        var addr = data.addrinfo.addr;
+                        if(!_empty__(addr)){
+                            $('#detaileaddress').val('');
+                            // console.log($('#detaileaddress'));
+                            $('#detaileaddress').val(addr);
+                        }
+                        // console.log(search_area);
+                    }
+                    // 收件人姓名
+                    var inputRec = data.name;
+                    if(inputRec != null){
+                        $('input[name="RecName"]').val("");
+                        $('input[name="RecName"]').val(inputRec);
+                    }
+                    // 收件人电话号码
+                    var inputTel = data.tel;
+                    if(inputTel != null){
+                        $('input[name="RecPhone"]').val("");
+                        $('input[name="RecPhone"]').val(inputTel);
+                    }
+                }
+           }
+        });
+    }
+
+var id = "{:I('id')}";
+$(document).ready(function(){
+    $("#MainContent_ddProvince").select2();
+	// $(window).bind('beforeunload',function(){
+	// 	return '您输入的内容尚未保存，确定离开此页面吗？';
+	// });
+    // 线路锁定
+    $(".disabled").click(function (event) {
+        event.preventDefault();
+        layer.open({
+            type: 0 ,
+            title: "{:L('LAY_SystemMessage')}" ,
+            content: "{:L('LAY_XDXGMsg')}" ,
+            skin: "layermsg",
+            btn: "{:L('LAY_BtnOK')}"
+        });   
+    });
+});
+</script>
+<script type="text/javascript">
+    // 获取货品声明货品分类数据
+    window.category_list = {$category_list};
+	// 这是后台返回的省市区，把它们都分别赋值到那三个select上面显示
+	$(function(){
+        // 调用显示身份证的element 样式
+        set_element_idcard();
+        objctor.restaurants = [];
+        // 修改页面时要获取后台数据到前台
+        objctor.state1 = "{$info['idno']}";
+        // element-ui 级联选择器默认选中
+        var lib_id = $('#card_id').val();
+        check_idcard("{$info['idno']}",lib_id);
+        var sendstate = "{$info['sendState']}";
+        var sendcity = "{$info['sendCity']}";
+        // $("#select2-chosen-1").html(p);
+        // $("#select2-chosen-2").html(c);
+        // $("#select2-chosen-3").html(t);
+        // 把英文地址选择框的内容发送到后台
+        $('#MainContent_ddProvince').change(function(){
+            var sit = $(this).children('option:selected').html();
+            if(sit==="{:L('Cr_Select')}"){             
+              $("#Postprovince").attr("value","");
+              $("#PostCity").attr("value","");
+            }else{
+              $("#Postprovince").attr("value",sit);
+            } 
+        });
+        if(sendstate != ''){
+            $("#MainContent_ddProvince").find("option[value='"+sendstate+"']").attr("selected",true).change();
+        }else{
+//            $("#MainContent_ddProvince").children('option:selected').html("{:L('Cr_Select')}");
+        }
+
+	});
+	var order_id = "{:I('id')}";
+	var type = "{$type}";
+    var get_addr_url = "{:U('Order/get_addr_cache')}";
+	$(document).ready(function(){
+        main_addr();
+		// 预加载选择线路
+		var p2 = $('#lineul').children().find('input:radio[name="TransferLine"]:checked').val();
+        // 默认是否上传身份证图片状态
+        var id_card_type = $('#lineul').children().find('input:radio[name="TransferLine"]:checked').attr('iupid');
+        if(id_card_type == 0){
+            $('#id_card').hide();
+            $('.text_bg').css('bottom','120px');
+        }else if(id_card_type == 1){
+            $('#id_card').show();
+            $('.text_bg').css('bottom','54px');
+        }
+        get_aere(p2);
+        // 获取地址
+        var p = "{$info['province']}";
+        var c = "{$info['city']}";
+        var t = "{$info['town']}";
+        set_aere_def([p,c,t]);
+        // 预加载是需要调用有默认值函数
+        $('#ordbody [id^="line_pice"]').text('');
+        $.ajax({
+            url: "{:U('order/getLinePriceAjax')}",
+            dataType:'json',
+            type:"POST",
+            data:{"line_id":p2},
+            success:function(data){
+                var info = '';
+                if(data.status){
+                    info = "{:L('l_first_weight')}"+ parseInt(data.data.weight_first) + 'lb:$'+data.data.fee_first+'；'+"{:L('l_addi_weight')}"+'$'+data.data.fee_next;
+                    $('#line_pice_'+p2).text(info);
+                }else{}
+            }
+        });
+        $.ajax({
+            url:"{:U('Orderlist/console')}",
+            dataType:"html",
+            data:{"id":p2,"order_id":order_id,"type":type},
+            type:"POST",
+            cache: false,
+            beforeSend:function(){
+                var index = layer.load(1, {
+                    shade: [0.1,'#000'], //0.1透明度的白色背景
+                    offset: '450px',
+                });
+            },
+            success:function(html){
+                layer.closeAll('loading'); //关闭加载层
+                $('#disno').html(html);
+
+            }
+        });		
+		if(p2 != ''){
+			$("#mimenu").html("{:L('ShowSelect')}："+$(".m"+p2).html());
+		}
+//		// 预加载证件类型
+//		var chid= $('#Id_tpye').val();
+//		if(chid == 'PASPORT'){
+//			$('#idno').attr("placeholder","{:L('Placeholder_IdPT')}");
+//			$('#idno').attr("maxlength","10");
+//			// $('#idno').attr("data-validation-engine","validate[required]");
+//		}else if(chid == 'ID'){
+//			$('#idno').attr("placeholder","{:L('Placeholder_IdNo')}");
+//			$('#idno').attr("maxlength","18");
+//			// $('#idno').attr("data-validation-engine","validate[required,custom[chinaId]]");
+//		}
+//		// 证件类型
+//		$("#Id_tpye").change(function(){
+//			var chid= $('#Id_tpye').val();
+//			if(chid == 'PASPORT'){
+//				$('#idno').attr("placeholder","{:L('Placeholder_IdPT')}");
+//				$('#idno').attr("maxlength","10");
+//				// $('#idno').attr("data-validation-engine","validate[required]");
+//			}else if(chid == 'ID'){
+//				$('#idno').attr("placeholder","{:L('Placeholder_IdNo')}");
+//				$('#idno').attr("maxlength","18");
+//				// $('#idno').attr("data-validation-engine","validate[required,custom[chinaId]]");
+//			}
+//		});
+	});
+	// 当编辑继续选择线路调用此函数
+    function changeline_two(obj){
+        var p = $(obj).val();
+        get_aere(p);
+        $.ajax({
+            url:"{:U('Orderlist/console')}",
+            dataType:"html",
+            data:{"id":p,"order_id":order_id,"type":type},
+            type:"POST",
+            cache: false,
+            beforeSend:function(){
+                var index = layer.load(1, {
+                    shade: [0.1,'#000'], //0.1透明度的白色背景
+                    offset: '450px',
+                });
+            },
+            success:function(html){
+                layer.closeAll('loading'); //关闭加载层
+                $('#disno').html(html);
+
+            }
+        });
+        if(p != ''){
+            var h = $(".m"+p).html();
+            $("#mimenu").html("{:L('ShowSelect')}："+h);
+        }else{
+            $("#mimenu").html('');
+        }
+        var iupid = $(obj).attr('iupid');
+        if(iupid == 0){
+            $('#id_card').hide();
+        }else if(iupid == 1){
+            $('#id_card').show();
+        }
+    }
+	// 选择线路特效
+    function changeline(obj){
+        var p = $(obj).val();
+        get_aere(p);
+        $('#ordbody [id^="line_pice"]').text('');
+        $.ajax({
+            url: "{:U('order/getLinePriceAjax')}",
+            dataType:'json',
+            type:"POST",
+            data:{"line_id":p},
+            success:function(data){
+                var info = '';
+                if(data.status){
+                    info = "{:L('l_first_weight')}"+ parseInt(data.data.weight_first) + 'lb:$'+data.data.fee_first+'；'+"{:L('l_addi_weight')}"+'$'+data.data.fee_next;
+                    $('#line_pice_'+p).text(info);
+                }else{}
+            }
+        });
+        $.ajax({
+            url:"{:U('Orderlist/console')}",
+            dataType:"html",
+            data:"id="+p,
+            type:"POST",
+            cache: false,
+            beforeSend:function(){
+                var index = layer.load(1, {
+                    shade: [0.1,'#000'], //0.1透明度的白色背景
+                    offset: '450px',
+                });
+            },
+            success:function(html){
+                layer.closeAll('loading'); //关闭加载层
+                $('#disno').html(html);
+
+            }
+        });
+        if(p != ''){
+            var h = $(".m"+p).html();
+            $("#mimenu").html("{:L('ShowSelect')}："+h);
+        }else{
+            $("#mimenu").html('');
+        }
+        var iupid = $(obj).attr('iupid');
+        if(iupid == 0){
+            $('#id_card').hide();
+        }else if(iupid == 1){
+            $('#id_card').show();
+        }
+    }
+    // 通过JQform提交
+    function tempform(obj){
+        $(window).unbind('beforeunload');
+        if(!$("#tempForm").validationEngine("validate")) return ;
+        $(obj).ajaxForm({
+            dataType: 'json',
+            beforeSend:function(){
+                var index = layer.load(1, {
+                    shade: [0.1,'#000'], //0.1透明度的白色背景
+                    offset: '450px',
+                });
+            },
+            success: function(data){
+                //console.log(data);
+                if(data.state == 'no'){
+                    var msg;
+                    if(!_empty__(data.no)){
+                        msg = '<font color="red">['+"{:L('l_the_err')}"+data.no+"{:L('l_line_err')}"+']</font>'+data.msg;
+                    }else{
+                        msg = data.msg;
+                    }
+                    layer.closeAll('loading'); //关闭加载层
+                    layer.open({
+                        type: 0,
+                        offset: '300px',
+                        skin: 'demo-class',//自定义样式demo-class
+                        shadeClose: true,
+                        title: "{:L('LAY_SystemMessage')}",
+                        content : msg,
+                        icon : 5,
+                    });
+                    return false;
+                }else{
+                    layer.alert(data.msg, {icon: 1,offset: '400px'});
+                    layer.closeAll('loading'); //关闭加载层
+                    window.location.href=data.url;
+                }
+            },
+        });
+    }
+    // 身份证图片选择状态
+    window.picro_id = "{$info['certify_upload_type']}";
+//    if(picro_id == 0){
+//        picro_id = 1;
+//    }else if(picro_id==100){
+//        picro_id = 0;
+//    }else{
+//        picro_id = 2;
+//    }
+</script>
+<!-- END -->
+	<div class="foot"></div>
+
+</block>
+
+</body>
+</html>

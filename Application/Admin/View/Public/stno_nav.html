@@ -1,0 +1,14 @@
+          <div class="bs-docs-sidebar hidden-print hidden-xs hidden-sm" role="complementary">
+            <ul class="nav bs-docs-sidenav">
+                <li><img src="__PUBLIC__/images/1.png"/><b style="font-size:18px">&nbsp;&nbsp;申通物流</b></li>
+                <li <if condition="(CONTROLLER_NAME eq 'Express') && (ACTION_NAME eq 'index')">class="licolor"</if>>
+                	<a href="{:U('Express/index')}">　　<img src="__PUBLIC__/images/2.png"/>&nbsp;申通号管理</a>
+                </li>
+                <li <if condition="(CONTROLLER_NAME eq 'St2Ems') && (ACTION_NAME eq 'nos')">class="licolor"</if>>
+                	<a href="{:U('St2Ems/nos')}">　　<img src="__PUBLIC__/images/2.png"/>&nbsp;申通转EMS</a>
+                </li>
+                <li <if condition="(ACTION_NAME eq 'tran_track') || (ACTION_NAME eq 'kd_track')">class="licolor"</if>>
+                    <a href="{:U('St2Ems/tran_track')}">　　<img src="__PUBLIC__/images/2.png"/>&nbsp;批号对数</a>
+                </li>
+            </ul>
+          </div>

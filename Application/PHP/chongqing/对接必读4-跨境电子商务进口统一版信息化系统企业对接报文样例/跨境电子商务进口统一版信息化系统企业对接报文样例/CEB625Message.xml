@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ceb:CEB625Message guid="GT23DGGB-9940-415B-B666-C09BOO7F40B2" version="1.0"  xmlns:ceb="http://www.chinaport.gov.cn/ceb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ceb:InvtRefund>
+		<ceb:InvtRefundHead>
+			<ceb:guid>TUI7DGGB-9940-415B-B666-C09BOO7F40R2</ceb:guid>
+			<ceb:appType>1</ceb:appType>
+			<ceb:appTime>20160310112703</ceb:appTime>
+			<ceb:appStatus>1</ceb:appStatus>
+			<ceb:customsCode>8030</ceb:customsCode>
+		    <ceb:orderNo>order20160317119400055</ceb:orderNo>
+			<ceb:ebpCode>1105910159</ceb:ebpCode>
+			<ceb:ebpName>测试企业</ceb:ebpName>
+			<ceb:ebcCode>1105910158</ceb:ebcCode>
+			<ceb:ebcName>测试企业</ceb:ebcName>
+			<ceb:logisticsNo>L2016031000001</ceb:logisticsNo>
+			<ceb:logisticsCode>1101081122</ceb:logisticsCode>
+			<ceb:logisticsName>测试物流企业</ceb:logisticsName>
+			<ceb:copNo>cop201604210001</ceb:copNo>
+			<ceb:invtNo>15003213300400111</ceb:invtNo>
+			<ceb:buyerIdType>1</ceb:buyerIdType>
+			<ceb:buyerIdNumber>130681196203023331</ceb:buyerIdNumber>
+			<ceb:buyerName>王方</ceb:buyerName>
+			<ceb:buyerTelephone>13936921298</ceb:buyerTelephone>
+			<ceb:agentCode>1105910158</ceb:agentCode>
+			<ceb:agentName>测试企业</ceb:agentName>
+			<ceb:reason>1105910158</ceb:reason>
+		</ceb:InvtRefundHead>
+		<ceb:InvtRefundList>
+			<ceb:gnum>1</ceb:gnum>
+			<ceb:gcode>2412342134</ceb:gcode>
+			<ceb:gname>可乐</ceb:gname>
+			<ceb:qty>12</ceb:qty>
+			<ceb:unit>007</ceb:unit>
+		</ceb:InvtRefundList>
+	</ceb:InvtRefund>
+	<ceb:BaseTransfer>
+		<ceb:copCode>JDGW20160310001</ceb:copCode>
+		<ceb:copName>京东购物</ceb:copName>
+		<ceb:dxpMode>DXP</ceb:dxpMode>
+		<ceb:dxpId>EXP2016031000000001</ceb:dxpId>
+		<ceb:note></ceb:note>
+	</ceb:BaseTransfer>
+</ceb:CEB625Message>

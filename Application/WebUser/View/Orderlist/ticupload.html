@@ -1,0 +1,19 @@
+
+<section>
+    <div class="ordhead"><h3>{:L('l_sr_upload')}</h3></div>
+    <div class="ordbody" <if condition="(L('lng') eq 'zh-cn')"> style="height: 300px;"</if><if condition="(L('lng') eq 'en-us')"> style="height: 380px;"</if>>
+    <div class="obtit">
+        <p style="color:#000;font-size: 20px;font-weight: bold;">{:L('l_upload_requirements')}</p>
+    </div>
+    <div class="obcont" id="obcontid3">
+        <p>{:L('l_sr')}</p>
+        <if condition="($receipt_img neq 'none') AND ($receipt_img neq '')">
+            <img src='<if condition="($html_name eq 'index')">__MEMBER__/images/tip.png<else/>{$Think.const.WU_FILE}{$receipt_img}</if>' id="fileimage3" style="width: 230px;height: 120px;margin-left: 15px;">
+        <else />
+        <img src="__MEMBER__/images/tip.png" id="fileimage3" style="width: 230px;height: 120px;margin-left: 15px;">
+        </if>
+        <input type="file" name="receipt_img" id="file" accept="image/jpeg,image/jpg,image/png" atd="3" onclick="fileOnchange(this,'#fileimage3')" />
+        <label>{:L('l_upload')}</label>
+    </div>
+    </div>
+</section>

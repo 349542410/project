@@ -1,0 +1,3 @@
+<?php
+	$bstr = 'bb';
+	return;

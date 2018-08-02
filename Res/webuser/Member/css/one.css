@@ -1,0 +1,6 @@
+@charset "utf-8";
+.msgbox{border:none;background:#edffe0 none repeat scroll 0 0;border:0 solid #8fc469;border-image:none;border-radius:3px 3px 3px 3px;box-shadow:0 1px 8px #ccc;color:#333;right:25pc;line-height:29px;max-width:250px;overflow:visible;padding:0 20px;position:absolute;visibility:visible;white-space:normal;text-align:center;word-wrap:break-word;z-index:65535}
+.msgbox a{color:#eb7d00;font-weight:400;text-decoration:underline}
+.msgbox.warning{background:#ffc none repeat scroll 0 0;border-color:#f96}
+.msgbox.exception{background:#fcc none repeat scroll 0 0;border-color:red}
+.msgbox.default,.msgbox.exception,.msgbox.warning{display:block!important;visibility:visible!important}

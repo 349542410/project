@@ -1,0 +1,310 @@
+<extend name="./base" />
+
+<block name="main">
+<script type="text/javascript" src="__PUBLIC__/js/datetime/DateTimePicker.js"></script>
+<link href="__PUBLIC__/js/datetime/DateTimePicker.css" rel="stylesheet">
+<script type="text/javascript">
+	$(document).ready(function()
+			{
+				$("#dtBox").DateTimePicker({
+
+					minuteInterval: 5
+
+				});
+			});
+</script>
+    <div class="container">
+        <div class="col-md-2">
+			<include file="Public:authNav" />
+        </div>
+        <div class="col-md-10">
+        	<div class="rtop">
+        		<ul class="list-inline">
+ 				 <li class="blue"><a href="javascript:void">流水账本</a></li>
+ 				 <li style="float:right">您当前所在位置：流水账本&nbsp;/&nbsp;<a href="javascript:void(0);" class="color">消费记录</a></li>
+				</ul>
+				<table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px">
+						<tr>
+							<td>
+				<form action="{:U('Finance/index')}" method="get" class="form-inline" id="exportse">
+						<!-- 中文搜索时必须的 -->
+						<input type="hidden" name="m" value="{$Think.MODULE_NAME}" />
+						<input type="hidden" name="c" value="{$Think.CONTROLLER_NAME}" />
+						<input type="hidden" name="a" value="{$Think.ACTION_NAME}" />
+						<!-- End -->	
+				<label>筛选：<input type="search" name="keyword" class="form-control" value="{:trim($keyword)}" style="width:150" /></label>
+				<label>
+				<select name="searchtype" class="form-control" >
+					<option value="auto_Indent2" <eq name="searchtype" value="auto_Indent2">selected</eq>>美快运单号</option>
+					<option value="STNO" <eq name="searchtype" value="STNO">selected</eq>>运单号</option>
+					<option value="username" <eq name="searchtype" value="username">selected</eq>>会员账号</option>
+				</select>
+				</label>
+				<label>物流状态
+					<select name="mkkd" class="form-control">
+					<option value="0">全部</option>
+					<volist name="ilstarr" id="vo">
+						<option value="{:$vo[0]}" <if condition="$ilst eq $vo[0]">selected</if>>{:$vo[1]}</option>
+					</volist>
+				</select>
+				</label>
+				<label>
+					<select name="line" class="form-control" >
+					<option value="">所属线路</option>
+					<volist name="line_list" id="lod">
+						<option value="{$lod['id']}" <eq name="line" value="$lod['id']">selected</eq>>{$lod['name']}</option>
+					</volist>
+					</select>
+				</label>
+				<div id="dtBox"></div>
+				<label>
+				&nbsp;&nbsp;发货时间：<input type="text" class="form-control one" data-field="datetime" size="25" id="createStarttime" value="<eq name="starttime" value=""><else />{$starttime|date='Y-m-d H:i:s',###}</eq>" style="width:150" > -- <input type="text" class="form-control two" data-field="datetime" size="25" id="createEndtime" value="<eq name="endtime" value=""><else />{$endtime|date='Y-m-d H:i:s',###}</eq>" style="width:150" >
+				</label>
+				<input type="hidden" id="starttime" name="starttime">
+				<input type="hidden" id="endtime" name="endtime">
+				<label>
+				&nbsp;&nbsp;行数：
+				<select name="ePage" id="" class="form-control" >
+					<option value="10" <eq name="ePage" value="10">selected</eq>>10</option>
+					<option value="20" <eq name="ePage" value="20">selected</eq>>20</option>
+					<option value="30" <eq name="ePage" value="30">selected</eq>>30</option>
+					<option value="50" <eq name="ePage" value="50">selected</eq>>50</option>
+					<option value="100" <eq name="ePage" value="100">selected</eq>>100</option>
+				</select>
+				</label>
+				<label>
+						<button type="submit" class="btn btn-primary btn-lg" onclick="ccc()" >查询</button>
+				</label>
+				<label>
+
+					<button type="submit" class="btn btn-primary btn-lg"   name="download" value="1" onclick="exports()" >导出</button>
+				</label>
+				<label>
+					<span style="color:red">注:最大只能导出前31天的记录</span>
+				</label>
+				</form>
+							</td>
+						</tr>
+			</table>
+<script type="text/javascript">
+function ccc(){
+	var startTime=document.getElementById("createStarttime").value;
+	if(startTime != ''){
+		var startback = transdate(startTime);
+		document.getElementById("starttime").value=startback;
+	}
+
+	var endTime=document.getElementById("createEndtime").value;
+	if(endTime != ''){
+		var endback = transdate(endTime);
+		document.getElementById("endtime").value=endback;
+	}
+}
+
+
+function exports(){
+    var startTime=document.getElementById("createStarttime").value;
+    if(startTime != ''){
+        var startback = transdate(startTime);
+        document.getElementById("starttime").value=startback;
+    }else{
+        var startback = Date.parse(new Date());	//毫秒时间戳
+        startback = startback / 1000;  //以秒的时间戳
+        //获取31天时间戳
+		var seven_time = 60 * 60 * 24 * 31;
+        startback = startback - seven_time;
+        document.getElementById("starttime").value=startback;
+	}
+
+    var endTime=document.getElementById("createEndtime").value;
+    if(endTime != ''){
+        var endback = transdate(endTime);
+        document.getElementById("endtime").value=endback;
+    }
+}
+
+
+
+
+
+
+function transdate(startTime){
+	var date=new Date();
+	date.setFullYear(startTime.substring(0,4));
+	date.setMonth(startTime.substring(5,7)-1);
+	date.setDate(startTime.substring(8,10));
+	date.setHours(startTime.substring(11,13));
+	date.setMinutes(startTime.substring(14,16));
+	date.setSeconds(startTime.substring(17,19));
+	return Date.parse(date)/1000;
+}
+function transdate(endTime){
+	var date=new Date();
+	date.setFullYear(endTime.substring(0,4));
+	date.setMonth(endTime.substring(5,7)-1);
+	date.setDate(endTime.substring(8,10));
+	date.setHours(endTime.substring(11,13));
+	date.setMinutes(endTime.substring(14,16));
+	date.setSeconds(endTime.substring(17,19));
+	return Date.parse(date)/1000;
+}
+
+</script>
+				<!--<div  style="width:1372px;overflow-x:scroll" id="wind_one">-->
+				<table border="0" cellpadding="0" cellspacing="0" class="table table-hover">
+					<thead>
+						<tr>
+							<!-- <th ><input  type="checkbox"></th> -->
+							<th width="300px;">序号</th>
+							<th width="350px;">会员</th>
+							<th width="500px;">美快运单号</th>
+							<th width="500px;">运单号</th>
+
+							<th width="500px;">发货时间</th>
+							<th width="500px;">支付类型</th>
+
+							<th width="500px;">运费<span>($)</span></th>
+							<th width="500px;">税费<span>($)</span></th>
+
+							<th width="560px;">优惠金额<span>($)</span></th>
+							<th width="560px;">附加费<span>($)</span></th>
+
+							<th width="600px;">物流状态</th>
+							<th width="600px;">物流信息</th>
+
+							<th width="300px;">揽收点</th>
+							<th width="300px;">揽收人</th>
+
+							<th width="300px;">自助终端编号</th>
+
+							<th width="500px;">重量</th>
+							<th width="500px;">物品名称</th>
+
+
+							<th width="300px;">操作</th>
+						</tr>
+					</thead>
+					<tbody style="font-size:15px;">
+						<volist name="list" id="vo" mod="2">
+						<tr  <eq name="mod" value="1"> style="background-color:#ddd;"</eq>>
+							<td class="td1" >
+									{$vo.id}
+							</td>
+							<td  class="td1" >
+									{$vo.username}
+									<br/>
+									<if condition="$vo['id_img_status'] eq 0">
+										<font color="red" title="客人的身份证照片">待上传</font>
+									</if>
+							</td>
+							<td  class="td1">
+									<a href="{:U('PostManagement/info',array('MKNO'=>$vo['MKNO']))}" data-toggle="modal" data-target="#myModal">{$vo.auto_Indent2}</a>
+
+							</td>
+							<td  class="td1">
+								{$vo.STNO}
+							</td>
+
+							<td  class="td1" >
+								{/*支付时间用作发货时间显示*/}
+									{$vo.paytime}
+							</td>
+							<td  class="td1" >
+								<switch name="vo['cost_type']">
+									<case value="0">消费</case>
+									<case value="1">补扣</case>
+									<case value="2">退款</case>
+								</switch>
+							</td>
+							<td  class="td1" >
+									{$vo.freight}
+
+							</td>
+							<td  class="td1" >
+								{$vo.tax}
+							</td>
+							<td  class="td1" >
+									{$vo.discount_amount|default="0.00"}
+
+							</td>
+							<td  class="td1" >
+								{$vo.extra_fee|default="0"}
+							</td>
+							<td  class="td1" style="text-align:left !important;width:400px;">
+									<neq name="vo['optime']" value="">{$vo.optime}：</neq>
+									<neq name="vo['IL_state']" value="">{$ilstarr[$ilstarri[$vo['IL_state']]][1]|default='状况不明'}</neq>
+									<neq name="vo['mode']" value="">【{$vo.mode}】</neq>
+
+							</td>
+							<td>
+								<span style="line-height: 23px;font-size: 15px;">
+										<neq name="vo['ex_time']" value="">{$vo.ex_time}：</neq>
+										<neq name="vo['ex_context']" value="">{$vo.ex_context}</neq>
+								</span>
+							</td>
+							<td  class="td1" >
+									{$vo.point_name}
+							</td>
+							<td  class="td1" >
+								{$vo.operator}
+							</td>
+							<td  class="td1" >
+									{$vo.terminal_name}
+							</td>
+
+
+
+							<td  class="td1" style="text-align:center !important;width:400px;  ">
+								{$vo.weight}
+							</td>
+							<td>
+								<span style="line-height: 23px;font-size: 15px; text-align:center; ">
+										{$vo.goods_name}
+								</span>
+							</td>
+
+
+							<td class="td1">
+
+									<a href="{:U('PostManagement/info',array('MKNO'=>$vo['MKNO']))}" data-toggle="modal" data-target="#myModal">查看</a>
+							</td>
+						</tr>
+						</volist>
+					</tbody>
+				</table>
+
+				<div id="pages" class="page">{$page}</div>
+				<!--</div>-->
+        	</div>
+        </div>
+		</div>
+
+	<script type='application/javascript'>
+        var outDiv = document.getElementById('wind_one');
+        outDiv.onwheel = function(event){
+            //禁止事件默认行为（此处禁止鼠标滚轮行为关联到"屏幕滚动条上下移动"行为）
+            event.preventDefault();
+            //设置鼠标滚轮滚动时屏幕滚动条的移动步长
+            var step = 50;
+            if(event.deltaY < 0){
+                //向上滚动鼠标滚轮，屏幕滚动条左移
+                this.scrollLeft -= step;
+            } else {
+                //向下滚动鼠标滚轮，屏幕滚动条右移
+                this.scrollLeft += step;
+            }
+        }
+        /**
+         // 如果要手动设置滚动条在Y轴方向的位置可以直接设置scrollTop,例如：
+         outDiv.scrollTop = 500;
+         // 如果要手动设置滚动条在X、Y轴方向的位置可以使用函数scrollTo,例如设置X轴滚动100，Y轴滚动400：
+         outDiv.scrollTo(100,400);
+         **/
+	</script>
+	<div class="foot"></div>
+
+</block>
+
+
+</body>
+</html>

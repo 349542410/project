@@ -1,0 +1,50 @@
+<extend name="./base" />
+
+<block name="main">
+<div class="container">
+	<div class="rtop">
+		<ul class="list-inline">
+			 <li class="blue"><h4><a href="javascript:void">批次号：{$mstr}</a></h4></li>
+		</ul>
+	</div>
+</div>
+<div id="pages" class="page">{$page}</div>
+
+<include file="Public:show_list_base" />
+
+<if condition="I('get.noid') && I('get.stype') neq 'lost'">
+    <div style="padding-left:100px;padding-right:100px;">
+    <div>
+        <div style="font-size:14px;">
+            <h4>备注:</h4>
+            <p>
+				<volist name="record_list" id="v" mod="2">
+					<strong>{$v.op_time}&nbsp;&nbsp;{$v.op_user}：</strong><br>
+					&nbsp;&nbsp;&nbsp;&nbsp;{$v.content}<br>
+				</volist>
+            </p>
+			<p>
+				<form action="{:U('PostManagement/addNew')}" id="tempForm" method="post" name="addNew">
+					<textarea name="content" style="width:450px;height:100px;resize:none;" placeholder="添加新备注..."></textarea>
+					<input type="hidden" name="mstr" value="{$mstr}">
+					<button class="btn btn-default">添加备注</button>
+				</form>
+			</p>
+        </div>
+    </div>	
+	<script src="__PUBLIC__/js/my.js"></script>
+	<link href="__PUBLIC__/css/one.css" rel="stylesheet">  
+    </div>
+</if>
+
+<div id="pages" class="page">{$page}</div>
+
+			<div class="foot"></div>
+  {/*根据条件判断是否加载此外部js文件*/}
+    <if condition="count($list) gt 0">
+      <include file="outside_file"/>
+    </if>
+</block>
+
+</body>
+</html>

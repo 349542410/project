@@ -1,0 +1,218 @@
+<!-- 公共内容 --> 
+<form action="" style="min-height:600px;">
+	<div class="container" style="margin-bottom:0;margin-top:0;">
+				<table width="100%" border="0" cellpadding="10" cellspacing="10"  class="table table-hover">
+					<thead>
+						<tr class="hiddenf">
+							<!-- 序号 -->
+							<th class="width90">{:L('OrderNum')}</th>
+							<if condition="(I('get.type','index') neq 'index')">
+								<!-- 运单号 -->
+								<!-- <th>{:L('OddNumbers')}</th> -->
+								<th>{:L('Pr_Meikuai_Number')}</th>
+							</if>
+							<th>{:L('l_delivered')}</th>
+							<!-- 收件人 -->
+							<th class="hiddenf width90">{:L('AddressRec')}</th>
+							<!-- 收件人省市 -->
+							<th>{:L('ProvinceCity')}</th>
+							<!-- 创建时间 -->
+							<th>{:L('Createtime')}</th>
+							<if condition="(I('get.type','index') eq 'index')">
+								<!-- 中转线路 -->
+								<th>{:L('TranLine')}</th>
+								<!-- 订单流水号 -->
+								<th>{:L('OrderSNumber')}</th>
+								<!-- 流水号创建时间 -->
+								<th>{:L('SerialNumberTime')}</th>
+							</if>
+							<if condition="(I('get.type','index') neq 'index')">
+								<!-- 发货时间 -->
+								<th>{:L('DeliverTime')}</th>
+							</if>
+							<if condition="(I('get.type','index') eq 'transport')">
+								<!-- 最新物流信息 -->
+								<th class="hiddenf width340">{:L('LogisticsNewInfo')}</th>
+							</if>
+							<if condition="(I('get.type','index') neq 'index')">
+								<!-- 最新物流信息时间 -->
+								<th>{:L('LogisticsNewInfoTime')}</th>
+							</if>
+							<!-- 操作 -->
+							<th>{:L('Operation')}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<volist name="list" id="vo" mod="2">
+							<tr id="tr_{$vo.id}" <eq name="mod" value="0"> style="background-color:#f4f4f4;"</eq> >
+								<td class="width90">
+									{$key+1}
+								</td>
+							<if condition="(I('get.type','index') neq 'index')">
+								<td>
+									<!-- 运单号 -->
+									{$vo['MKNO']}
+								</td>
+							</if>	
+								<td style="text-align: center;">
+									<p>{$vo['transit']}</p>
+									<?php if($vo['MKNO'] == $vo['STNO'] || empty($vo['STNO'])): ?>  
+										{:L('l_undelivered')}
+									<?php else: ?>
+										{$vo['STNO']}
+									<?php endif; ?>  
+								</td>				
+								<td class="hiddenf width90">
+									<!-- 收件人 -->
+									{$vo['receiver']}
+								</td>
+								<td>
+									<!-- 收件人省市 -->
+									{$vo['province']}&nbsp;{$vo['city']}
+								</td>
+								<td>
+									<!-- 创建时间 -->
+									{$vo['ctime']} 
+								</td>
+							<if condition="(I('get.type','index') eq 'index')">
+								<td>
+									<!-- 中转路线 -->
+			                        <php>$l = L('MKLINES');echo $l[$alist[$vo['TranKd']]];</php>
+								</td>
+								<td>
+									<!-- 流水号 -->
+			                        {$vo['order_no']} 
+								</td>
+								<td>
+									<!-- 流水号创建时间 -->
+			                        {$vo['ordertime']} 
+								</td>
+							</if>
+							<if condition="(I('get.type','index') neq 'index')">
+								<td>
+									<!-- 发货时间 -->
+									{$vo['printTime']}
+								</td>
+							</if>
+							<if condition="(I('get.type','index') eq 'transport')">
+								<td class="hiddenf width340">
+									<!-- 最新物流信息 -->
+									{$vo['content']}
+								</td>
+							</if>
+							<if condition="(I('get.type','index') neq 'index')">
+								<td>
+									<!-- 物流信息最新时间 -->
+									{$vo['create_time']}
+								</td>
+							</if>
+								<td style="text-align:center; position: relative;">
+									<!-- 查看 -->
+									<a href="javascript:void(0);" onclick="showinfo(this);" id="{$vo['id']}">{:L('CheckOut')}</a>  <!-- 使用layer方法 -->
+								
+									<if condition="(I('get.type','index') eq 'index')">
+
+										<if condition="$vo['auto_Indent1'] && $vo['auto_Indent1'] != ''">
+
+											 <span style="vertical-align:text-middle;">|</span> 
+											<a href="{:U('Order/newOrder',array('id'=>$vo['id']))}">{:L('OrderAgain')}</a>
+
+										<else />
+
+										<if condition="$vo['pay_state'] neq '1'">
+										 <span style="vertical-align:text-middle;">|</span> 
+										<!-- 修改 -->
+											<a href="javascript:void(0);" onclick="javascript:window.location.href='{:U('Order/edit',array('id'=>$vo['id'],'step'=>''))}';">{:L('Modify')}</a>
+										 <span style="vertical-align:text-middle;">|</span> 
+										<!-- 删除 -->
+										 	<a href="javascript:void(0);" onclick="del('{$vo.id}','{:U('Member/delete')}')">{:L('Delete')}</a>
+										</if>
+										
+										<!-- 打印随机码 -->
+										 <span style="vertical-align:text-middle;">|</span> 
+											<a href="javascript:void(0);" onclick="javascript:window.location.href='{:U('Order/step_three',array('cid'=>$vo['id'],'cname'=>CONTROLLER_NAME))}';">{:L('PrintRandomCode')}</a>
+
+										<span id="loaded" style="position: absolute; top:12px;right: 80px;"></span>
+										</if>
+
+									<elseif condition="(I('get.type','index') neq 'index')"/>
+
+									 <span style="vertical-align:text-middle;">|</span> 
+									<!-- 再次下单 -->
+										<a href="{:U('Order/newOrder',array('id'=>$vo['id']))}">{:L('OrderAgain')}</a>
+										
+									</if>
+
+									<!-- End -->
+								</td>
+							</tr>
+						</volist>
+					</tbody>						
+				</table>
+	</div>
+</form>
+
+<!-- 20170314 修改弹出框，使用layer 甘-->
+<script type="text/javascript">
+	// 查看单
+	function showinfo(obj){
+		var id = obj.id;
+		layer.open({
+			  type: 2,
+			  shadeClose: true,
+			  title: false,
+			  area : ['800px' , '800px'],
+			  scrollbar: false,
+			  resize: false,
+			  btn: ["{:L('ToClose')}"],
+			  closeBtn: 0,
+			  skin: 'demo-class',//自定义样式demo-class
+			  // offset: '55px',
+			  content: "{:U( 'Member/info',array( 'type'=>I('get.type','index') ) )}?id="+id,
+				success: function(layero, index){
+					this.enterEsc = function(event){
+						if(event.keyCode === 13){
+							layer.closeAll();
+							return false; //阻止系统默认回车事件
+						}
+					};
+					$(document).on('keydown', this.enterEsc);
+					//监听键盘事件，关闭层
+				}
+		});
+	}
+	// 删除前的确认框
+	function del(id,url)
+	{
+		layer.confirm("{:L('LAY_MesDel')}", 
+			{
+				icon:3,
+				offset: '400px',
+				skin: "layermsg",
+				title: "{:L('LAY_Information')}",
+				btn: ["{:L('LAY_BtnOK')}", "{:L('LAY_BtnCancel')}"]
+			}, function(){
+			$.ajax({
+				url: "{:U('Order/del_shopping_receipt')}",
+				type: "GET",
+				data:{"order_id":id},
+				success: function(data){
+				}
+			});
+			$.ajax({
+				url: url,
+				type: "POST",
+				data:{"id":id},
+				dataType: "json",
+				success: function(data){
+					if(data.state=='yes'){
+						layer.msg(data.msg, {icon: 6});
+						location.href = location.href;
+					}else{
+						layer.msg(data.msg, {icon: 5});
+					}
+				}
+			});
+		});
+	}
+</script>

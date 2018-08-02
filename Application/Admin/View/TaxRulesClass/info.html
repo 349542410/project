@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <style type="text/css">
+      body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+
+      }
+
+      .container{margin:0 auto;}
+      .form-signin {
+        max-width: 900px;
+        margin-top:60px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+    .form-signin table th{height:36px;font-size:16px;line-height:36px;background:#F7F7F9;}
+    .form-signin table td{height:36px;line-height:36px;font-size:14px;text-indent:2em;background:#F7F7F9;}
+    .form-signin table td a{text-decoration:ninfo;color:#000;}
+    .form-signin table td a:hover{color:blue;}
+    .form-signin .form-control{width:400px !important;}
+    </style>
+    <link href="__PUBLIC__/css/info.css" rel="stylesheet">  
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+    <![endif]-->
+     </head>
+  <body>
+
+    <div class="container" >
+      <div class="form-signin" style="padding-top:40px;background:#F7F7F9 !important;margin-bottom:40px">
+
+      <form>
+          <table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px;padding:0px">
+        <tr>
+            <td style="text-align:right" width="200"><h3>查看税则</h3></td>
+            <td width="740"></td>
+        </tr>
+        <tr>
+            <th>行邮税号：</th>
+            <td>
+                {$info['hs_code']}
+            </td>
+        </tr>
+        <tr>
+            <th>品名及规格：</th>
+            <td>
+               {$info['name_and_spec']}
+            </td>
+        </tr>
+        <tr>
+            <th>一级类别：</th>
+            <td>
+               {$info['cname1']}
+            </td>
+        </tr>
+
+        <tr>
+            <th>二级类别：</th>
+            <td>
+                {$info['cname2']}
+            </td>
+        </tr>
+
+        <tr>
+            <th>三级类别：</th>
+            <td>
+                {$info['cname3']}
+            </td>
+        </tr>
+
+        <tr>
+            <th>四级类别：</th>
+            <td>
+                {$info['cname4']}
+            </td>
+        </tr>
+
+        <tr>
+            <th>五级类别：</th>
+            <td>
+                {$info['cname5']}
+            </td>
+        </tr>
+
+        <tr>
+            <th>规格单位：</th>
+            <td>
+                {$info['specifications']}
+            </td>
+        </tr>
+        <tr>
+            <th>数量单位：</th>
+            <td>
+                {$info['number']}
+            </td>
+        </tr>
+
+        <tr>
+            <th>完税价格：</th>
+            <td>
+                {$info['price']} 元
+                
+            </td>
+        </tr>
+
+        <tr>
+            <th>税率：</th>
+            <td>          
+                {$info['rate']} %
+            </td>
+        </tr>
+
+        <tr>
+            <th>排序：</th>
+            <td>
+                {$info['sort']}
+            </td>
+        </tr>
+
+        <tr>
+            <th>状态：</th>
+            <td>
+                <if condition="$info['status'] eq '1'">
+                  <font color="green">启用</font>
+                <elseif condition="$info['status'] eq '0'"/>
+                  <font color="red">禁用</font>
+                </if>
+            </td>
+        </tr>
+        
+
+        <tr>
+              <th  colspan="3" style="text-align:left !important;padding-left:180px">
+        
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button>
+                <span id="messagebox" class="msgbox" style="right:200px;!important"></span>
+              </th>
+            </tr>
+          
+          </table>
+      </form>
+
+      </div>
+    </div> 
+ 
+  </body>
+</html>

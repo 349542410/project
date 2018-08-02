@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CEB300Message version="1.0" xmlns="http://www.chinaport.gov.cn/ceb" guid="4CDE1CFD-EDED-46B1-946C-B8022E42FC94">
+  <SkuReturn>
+    <guid>YUTR1CFD-EDED-46B1-946C-B8022E42FC94</guid>
+    <ebpCode>1105910159</ebpCode>
+    <ebcCode>1105910159</ebcCode>
+    <sku>2016032211000</sku>
+    <ieFlag>B20160512000001882</ieFlag>
+    <returnStatus>1</returnStatus>
+    <returnTime>20160512102646001</returnTime>
+    <returnInfo>暂存</returnInfo>
+  </SkuReturn>
+</CEB300Message>

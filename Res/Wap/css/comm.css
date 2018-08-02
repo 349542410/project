@@ -1,0 +1,14 @@
+*{margin:0px;padding:0;text-decoration:none;list-style-type:none;border:none;color:#333333}
+body{background:#F5F5F5;font-family:微软雅黑;}
+.header{height:110px;background:#000;/* position:fixed;top:0; */z-index:10000;width:100%}
+nav{margin-top:20px}
+nav li{float:left;width:80px;text-align:center;color:#FFFFFF;}
+nav li a{color:#FFFFFF;font-weight:bold;display:inline-block;}
+.header img{max-height:50px;max-width:100%;vertical-align:middle;margin-top:10px}
+.title img{width:100%;/* padding-top:112px */}
+.search{height:110px;background:#ffffff;text-align:center;line-height:60px;}
+.search p{font-size:12px;line-height:20px;color:#999999;}
+.text{height:30px;min-width:180px;padding-left:4px;border:none;}
+.submit{height:30px;min-width:50px;background:#000;color:#ffffff;font-weight:bold;cursor: pointer; 
+border-radius:0px;border:none;-webkit-appearance: listbox;}
+.search input{outline-style:solid;outline-width:3px;outline-color:#000;}

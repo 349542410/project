@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="__MEMBER__/js/jquery-1.9.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="__MEMBER__/css/validationEngine.jquery.css">
+<script src="__MEMBER__/js/jquery.validationEngine.js" type='text/javascript'></script>
+<script src="__MEMBER__/js/jquery.validationEngine-{:L('lng')}.js" type='text/javascript'></script>
+<link href="__MEMBER__/css/select2.css" rel="stylesheet"/>
+<link href="__MEMBER__/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="__MEMBER__/css/add_res.css">
+<script type="text/javascript" src="__MEMBER__/js/jquery.form.js"></script>
+<script src="__MEMBER__/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="__MEMBER__/layer/layer.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/feg_relevance.js"></script>
+</head>
+<body>
+<form action="{:U('Sender/updateAction')}" method="POST" enctype="multipart/form-data" id="tempForm" onsubmit="Senderform(this)">
+  <div class="warp">
+    <div class="line">
+      <label><span style="color:red">* </span>{:L('FullName')}：</label>
+      <input type="text" value="{$data['s_name']}" data-validation-engine="validate[required,custom[chinalett]]" name="name" placeholder="{:L('Placeholder_RecName')}" maxlength="40" class="value">
+    </div>
+    <div class="line">
+      <label><span style="color:red">* </span>{:L('Phone')}：</label>
+      <input type="text" value="{$data['s_tel']}" data-validation-engine="validate[required,custom[phone]]" name="tel" placeholder="{:L('Placeholder_RecPhone')}" class="value" maxlength="14">
+    </div>
+    <div class="line">
+      <label><span style="color:red">* </span>{:L('l_country')}：</label>
+      <select class="selcountry" disabled="disabled" >
+          <option selected="selected" value="">U.S.A</option>
+      </select>
+      <select id="MainContent_ddProvince" data-validation-engine="validate[required]">
+          <option value="">{:L('Cr_Select')}</option>
+      </select>
+      <select id="MainContent_ddCity" data-validation-engine="validate[required]">
+          <option value="">{:L('Cr_Select')}</option>
+      </select><br>
+      <input id="Postcountry" name="country" value="{$data['s_country']}" style="display: none;" />
+      <input id="Postprovince" name="state" value="{$data['s_state']}" style="display: none" />
+      <input id="Postcity" name="city" value="{$data['s_city']}" style="display: none" />
+    </div> 
+    <div class="line">
+      <label><span style="color:red">* </span>{:L('l_street')}：</label>
+      <input type="text" value="{$data['s_street']}" data-validation-engine="validate[required,custom[repadd]]"  name="street" placeholder="{:L('Placeholder_RecAddress')}" maxlength="80" class="detail-add">
+    </div>
+    <div class="line">
+      <label><span style="color:red">* </span>{:L('ZipCode')}：</label>
+      <input type="text" value="{$data['s_code']}" data-validation-engine="validate[required,custom[chinaZip]]" name="code" placeholder="{:L('Placeholder_RecCode')}" maxlength="10" class="value">
+    </div> 
+    <div style="clear:both;"></div>
+    <div class="savebtn">
+      <input type="hidden" name="id" value="{$data['id']}">
+      <input type="submit" value="{:L('BtnSave')}" class="sa_sub_btn">
+    </div>     
+  </div>
+</form>
+<script type="text/javascript">
+    var select_cr = "{:L('Cr_Select')}"; 
+    var Cr_Select = "{:L('Cr_Select')}";
+    var LAY_SystemMessage = "{:L('LAY_SystemMessage')}";
+    var sendstate = "{$data['s_state']}";
+    var sendcity = "{$data['s_city']}";
+    var valvalEng_Msg_frelng = "{:L('valEng_Msg_fre')}";
+    var valEng_Msg_frelng = "{:L('valEng_Msg_fre')}";
+</script>
+<script type="text/javascript" src="__MEMBER__/js/sender.js"></script>
+<script type="text/javascript">
+$(function(){
+  s_send_addr(sendstate,sendcity);
+  validatione_init('#tempForm');
+});
+</script>
+</body>
+</html>

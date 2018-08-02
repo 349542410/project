@@ -1,0 +1,44 @@
+<div class="header" style="z-index:999999999; opacity: 1;    background: none;" cid="0">
+	<div class="logo_vz"><a href="{:U('Index/index')}"><img src="__IMG__/{:L('lng')}/login.png" ></a></div>
+	<div class="main">
+			<div class="logo_vzc"></div>
+			<div class="nav">
+				<a href="{:U('Index/index')}" <if condition=" $names eq 'Index'">style="color:#ffde00"</if>>{:L('HOME_VZ')}<p></p></a><span></span>
+				<a href="{:U('Function/index')}" <if condition=" $names eq 'Function'">style="color:#ffde00"</if>>{:L('FUNCTION_VZ')}<p></p></a><span></span>
+				<a href="{:U('Solution/index')}" <if condition=" $names eq 'Solution'">style="color:#ffde00"</if>>{:L('SOLUTIONS_VZ')}<p></p></a><span></span>
+				<a href="{:U('Present/index')}" <if condition=" $names eq 'Present'">style="color:#ffde00"</if>>{:L('ABOUT_US_VZ')}<p></p></a>
+			</div>
+			
+		</div>		
+		<php>
+			$ccd = cookie('think_language');
+        	$mkuser = session('mkuser');
+			$l =  trim(I("GET.l")) != "" ? "?l=".trim(I("GET.l")) : "" ;
+		</php>
+		
+		<div class="login login_vz">		
+			<if condition="$mkuser neq ''"><a href="{:C('__MKUSER__')}{:U('/Member/index')}">{:L('MyCenter_VZ')}</a><else/><a href="{:C('__MKUSER__')}{$l}">{:L('LOGIN_VZ')}</a></if>/<if condition="$mkuser neq ''"><a href="{:C('__MKUSER__')}{:U('/Login/Login_out')}">{:L('EXIT_VZ')}</a><else/><a href="{:C('__MKUSER__')}{$l}">{:L('SIGN_UP_VZ')}</a></if>
+
+                <a href="__ACTION__?l=zh-cn" <if condition=" $ccd eq 'zh-cn'">style=" color:#ffde00;"</if>>中文</a>/<a href="__ACTION__?l=en-us" <if condition=" $ccd eq 'en-us'">style=" color:#ffde00;"</if>>English</a>
+			<span class="an_span" <if condition="(L('lng') eq 'zh-cn')">style="color:#fff;position: absolute;top: 0px;left: -38%;cursor: pointer;font-size: 16px;display:inlien-block;"<else/> style="color:#fff;position: absolute;top: 0px;left: -30%;cursor: pointer;font-size: 16px;display:inlien-block;"</if>>
+			<a onclick="show_announcement()" >
+			  <img src="__IMG__/laba.gif" class="an_ment_i">{:L('l_notice')}
+			  <span class="an_show_i" id="an_show_i"></span>
+			</a>
+			</span>
+		</div>
+		<!-- 通告模块 stat-->
+		<!-- 通告模块 end-->
+	<script type="text/javascript" src="__JS__/commen.js"></script>
+	<script type="text/javascript">
+		var check_new_ann_url = "{:U('Announcement/check_new_ann')}";
+		load_success(check_new_ann_url);
+		// 公告
+		function show_announcement(){
+		  window.location.href = "{:U('Announcement/index')}";
+		}
+	</script>		
+</div>
+<div class="header">
+	
+</div>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <style type="text/css">
+        body {
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+
+        }
+
+        .container{margin:0 auto;}
+        .form-signin {
+            max-width: 900px;
+            margin-top:60px;
+            background-color: #fff;
+            border: 1px solid #e5e5e5;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            box-shadow: 0 1px 2px rgba(0,0,0,.05);
+        }
+        .form-signin table th{height:36px;font-size:16px;line-height:36px;background:#F7F7F9;}
+        .form-signin table td{height:36px;line-height:36px;font-size:14px;text-indent:2em;background:#F7F7F9;}
+        .form-signin table td a{text-decoration:none;color:#000;}
+        .form-signin table td a:hover{color:blue;}
+        .form-signin .form-control{width:400px !important;}
+    </style>
+    <link href="__PUBLIC__/css/one.css" rel="stylesheet">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<div class="container" >
+    <div class="form-signin" style="padding-top:40px;background:#F7F7F9 !important;margin-bottom:40px">
+
+        <form action="{:U('Logistics/formCreate')}" method="post" class="form-inline" id="tempForm" name="addNew">
+            <table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px;padding:0px">
+                <tr>
+
+                    <td style="text-align:right" width="200"><h3>新增号段</h3></td>
+                    <td width="740"></td>
+                </tr>
+                <tr>
+                    <th>号段：</th>
+                    <td>
+                        <input type="search" style="width:180 !important" id="fixed" name="no" class="form-control" required="required" />
+                    </td>
+                </tr>
+                <tr>
+                    <th width="200" style="padding-left:8px"><label>选择线路：</label></th>
+                    <td>
+                        <select style="width:180 !important" name="line" class="form-control">
+
+                            <foreach name="center" item="v">
+                                <option value="{$v['id']}" {$v['id']==$line?'selected':''}>{$v['name']}</option>
+                            </foreach>
+
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th  colspan="3" style="text-align:left !important;padding-left:180px">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="submit" class="btn btn-primary" id="BtnSave">提交</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button>
+                        <span id="messagebox" class="msgbox" style="right:200px;!important"></span>
+                    </th>
+                </tr>
+
+            </table>
+        </form>
+
+    </div>
+</div>
+
+</body>
+<script src="__PUBLIC__/js/my.js"></script>
+</html>

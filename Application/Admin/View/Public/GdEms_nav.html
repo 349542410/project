@@ -1,0 +1,25 @@
+          <div class="bs-docs-sidebar hidden-print hidden-xs hidden-sm" role="complementary">
+            <ul class="nav bs-docs-sidenav">
+                <li><img src="__PUBLIC__/images/1.png"/><b style="font-size:18px">&nbsp;&nbsp;广东邮政</b></li>
+
+                <li <if condition="(ACTION_NAME eq 'index')">class="licolor"</if>>
+                    <a href="{:U('GdEms/index')}">　　<img src="__PUBLIC__/images/2.png"/>&nbsp;发货通知</a>
+                </li>
+                <li <if condition="(ACTION_NAME eq 'apply_goods')">class="licolor"</if>>
+                    <a href="{:U('GdEms/apply_goods')}">　　<img src="__PUBLIC__/images/2.png"/>&nbsp;商品报备</a>
+                </li>
+                <li <if condition="(ACTION_NAME eq 'send_payment')">class="licolor"</if>>
+                	<a href="{:U('GdEmsPtwo/send_payment')}">　　<img src="__PUBLIC__/images/2.png"/>&nbsp;支付通知</a>
+                </li>
+                <li <if condition="(ACTION_NAME eq 'apply_customs')">class="licolor"</if>>
+                    <a href="{:U('GdEmsPtwo/apply_customs')}">　　<img src="__PUBLIC__/images/2.png"/>&nbsp;报关</a>
+                </li>
+                <li <if condition="(ACTION_NAME eq 'customs_status')">class="licolor"</if>>
+                    <a href="{:U('GdEmsPtwo/customs_status')}">　　<img src="__PUBLIC__/images/2.png"/>&nbsp;报关状态</a>
+                </li>
+                <li <if condition="(ACTION_NAME eq 'tran_track') || (ACTION_NAME eq 'kd_track')">class="licolor"</if>>
+                    <a href="{:U('GdEms/tran_track')}">　　<img src="__PUBLIC__/images/2.png"/>&nbsp;批号对数</a>
+                </li>
+
+                </ul>
+          </div>

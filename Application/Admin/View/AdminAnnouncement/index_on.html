@@ -1,0 +1,258 @@
+<extend name="./base" />
+
+<block name="main">
+
+    <div class="container">
+        
+        <div class="col-md-12">
+        	<div class="rtop">
+        		<ul class="list-inline">
+ 				 <!-- <if condition="ACTION_NAME eq 'index_authNav'">
+ 				 		<li class="blue"><a href="#">员工列表</a></li>
+ 				 	<else />
+ 				 		<li class="blue"><a href="#">赋用户角色</a></li>
+ 				 		
+ 				 	</if> -->
+ 				 	<!-- <li class="blue"><a href="{:U('AdminAnnouncement/add')}" data-toggle="modal" data-target="#myModal">通告添加</a></li> -->
+ 				 	<li class="blue"><a href="#" onclick="addto(this)">通告添加</a></li>
+ 				 <li style="float:right">您当前所在位置：通告管理&nbsp;/&nbsp;<a href="javascript:void(0);" class="color">通告列表</a></li>
+				</ul>
+<script type="text/javascript" src="__PUBLIC__/js/datetime/DateTimePicker.js"></script>
+<link href="__PUBLIC__/js/datetime/DateTimePicker.css" rel="stylesheet">
+<script type="text/javascript">
+	$(document).ready(function()
+			{
+				$("#dtBox").DateTimePicker({
+
+					minuteInterval: 5
+
+				});
+			});
+	function addto(obj){
+	    layer.open({
+	        type: 2,
+	        title: '通告添加',
+	        offset:['25%', '25%'],
+	        maxmin: true,
+	        shadeClose: true, //点击遮罩关闭层
+	        area : ['900px' , '520px'],
+	        content: "{:U('AdminAnnouncement/add')}"
+	      });
+
+	}
+
+
+	function infoto(obj){
+		var url  = $(obj).attr('url_a');
+	    layer.open({
+	        type: 2,
+	        title: '通告修改',
+	        offset:['25%', '25%'],
+	        maxmin: true,
+	        shadeClose: true, //点击遮罩关闭层
+	        area : ['900px' , '520px'],
+	        content: url
+	      });
+		
+	}
+	
+</script>
+<div id="dtBox"></div>
+				<table border="0" cellpadding="0" cellspacing="0" class="table table-hover" style="border-bottom:none !important">
+					<thead>
+						<tr>
+							<td colspan="7">
+								<form class="form-inline" action="{:U('AdminAnnouncement/index')}" method="get">
+									<label>
+										<span style="float:left;">搜索:</span> 
+										<input class="form-control" name="keyword"  placeholder="请输查询关键字"  value="" style="width:160; float:left;" type="search">
+									</label>
+									<!-- <label>
+										<span style="float:left;">开始时间:</span> 
+										<input type="text" id="form-field-1" name="start_date" placeholder="请输入促销开始日期"  value="" class="span1 col-xs-5 col-sm-6 form-control" />
+									</label>
+									<label>
+										<span style="float:left;">结束时间: </span>
+										<input type="text" id="form-field-1" name="end_date" placeholder="请输入促销结束日期"  value="" class="span3 col-xs-5 col-sm-6 form-control" />
+									</label> -->
+									<label>
+										<div style="float:left;">
+										&nbsp;&nbsp;<span style="float:left;">通告时间：</span> 
+										<input type="text" class="form-control one" data-field="datetime" name="start_date" size="25"  value="" style="width:166;  float:left; "> <span style="float:left;">--</span> <input type="text" class="form-control two" name="end_date" data-field="datetime" size="25"  value="" style="width:166;  float:left;" >
+										</div>
+									</label>
+									<label>
+										<span style="float:left;">是否允许评论: </span>
+										<select class="form-control" style="float:left" name="feeback">
+											<option value="">请选择是否允许评论</option>
+											<option value="0">不允许</option>
+											<option value="1">允许</option>
+										</select>
+									</label>
+									<label>
+										<span style="float:left;">语言: </span>
+										<select class="form-control" style="float:left"  name="lang" id="lang">
+											<option style="margin:5px 3px; padding-left:5px; "  value="0">请选择多语言类别</option>
+											<volist name="lang" id="pk">
+												<option  style="margin:5px 3px; padding-left:5px; " value="{$key}" <if condition="$res['lang'] eq $key">selected=""</if> >{$pk}</option>
+											</volist>
+										</select>
+									</label>									
+									<label>
+										<button class="btn btn-primary btn-lg" type="submit"  style="float:left">查询</button>
+									</label>															
+					<script type="text/javascript">
+					$('.span1').datetimepicker({
+					//一堆参数
+					        language: 'en',
+					        pickTime: true,
+							pickDate: true, 
+					        todayBtn: true,
+					        autoclose: true,
+					        minView: '2',
+					        forceParse: false,
+					        format:"yyyy-mm-dd"
+							
+					});
+					$('.span3').datetimepicker({
+						//一堆参数
+						        language: 'en',
+						        pickTime: true,
+								pickDate: true, 
+						        todayBtn: true,
+						        autoclose: true,
+						        minView: '2',
+						        forceParse: false,
+						        format:"yyyy-mm-dd"
+								
+						});
+					</script>									
+								</form>
+							</td>
+						</tr>
+						<tr>
+							<th>序号</th>
+							<th>通告标题</th>
+							<th>开始时间</th>
+							<th>结束时间</th>
+							<th>是否允许评论</th>
+							<th>语言</th>
+							<th>操作</th>
+							<!-- <th>操作</th> -->
+						</tr>
+
+					</thead>
+					<tbody style="font-size:15px;">
+						<volist name="data" id="vo" key="key" mod="2">
+							<tr  <eq name="mod" value="1"> style="background-color:#ddd;"</eq>>
+								<td class="td1">
+										{$vo.id}
+								</td>
+								<td class="td1">
+										{$vo.bulletin_title}
+								</td>
+								<td class="td1">
+										{$vo.start_time}
+								</td>
+								<td class="td1">
+										{$vo.end_time}
+								</td>
+								<td class="td1">
+									<if condition="$vo['feeback'] eq 1">
+										<span style="color:green;">允许</span>
+									<else />
+										<span style="color:red;">不允许</span>
+									</if>	
+								</td>
+								<td class="td1">
+										{$vo.lang_name}
+								</td>
+								
+								<td align="center" class="td3">
+										<a href="#"  url_a="{:U('AdminAnnouncement/info',array('id' => $vo['id']))}" onclick="infoto(this)" class="" >查看</a>&nbsp;|
+										<!--  <a href="{:U('Auth/userdelete',array('uid'=>$vo['user_id']))}" class="btn btn-danger">{:L('Delete')}</a>-->
+										<a onclick="auth(this)"  url_a="{:U('AdminAnnouncement/delete', array('id' => $vo['id']))}" href="#" class="">删除</a>	
+									
+								</td>
+							</tr>
+						</volist>
+					</tbody>
+
+				</table>
+
+				<div id="pages" class="page">{$page}</div>
+        	</div>
+        </div>
+		</div>		
+<div class="foot"></div>
+<script type="text/javascript">
+
+function ityzl_SHOW_LOAD_LAYER(){  
+    return layer.msg('努力中...', {icon: 16,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: '200px', time:100000}) ;  
+}  
+function ityzl_CLOSE_LOAD_LAYER(index){  
+    layer.close(index);  
+}  
+function ityzl_SHOW_TIP_LAYER(str, url = ''){  
+    layer.msg(''+str+'',{time: 2000,offset: '200px'}); 
+    if(url){
+    	window.location = url;
+    }else{
+    	window.location.reload(); 
+    }
+} 	
+
+
+
+function auth(obj){
+	//var uid = $(obj).attr('uid');
+	var url_a = $(obj).attr('url_a');
+	var url = url_a;
+	var del_sn = $(obj).attr('user_name');
+	if(confirm('是否删除该通告信息？')){
+		var request;
+		var i;
+		ityzl_SHOW_LOAD_LAYER();
+		if (window.XMLHttpRequest) {
+			request = new XMLHttpRequest();
+		} else {
+		    request = new ActiveXObject('Microsoft.XMLHTTP');
+		}
+		request.onreadystatechange = function(){
+			if(request.status == 200 && request.readyState == 4){
+				if(request.responseText){
+					var a = JSON.parse( request.responseText );
+					//var status = a.status;
+					//alert(status);
+					//alert(a.data.strstr);
+					//window.location.reload();
+					//alert(request.responseText);
+					//alert('导入成功！');
+					var str = a.data.strstr;
+					var url = a.data.url;
+					ityzl_CLOSE_LOAD_LAYER(i); 
+	                ityzl_SHOW_TIP_LAYER(str, url); 
+	                document.getElementById("form2").reset();
+				}else{
+					
+					ityzl_CLOSE_LOAD_LAYER(i);
+				}
+			}
+		}
+		request.open("get", url);
+		//request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		request.setRequestHeader("X-Requested-With","XMLHttpRequest");
+		request.send();
+
+		
+		
+		//window.location.href=url;
+	} 
+}
+</script>		
+		
+</block>
+
+
+</body>
+</html>

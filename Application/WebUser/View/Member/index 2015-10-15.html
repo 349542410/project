@@ -1,0 +1,24 @@
+<extend name="Public:base" />
+<block name="title">个人中心</block>
+<block name="css">
+	<link rel="stylesheet" type="text/css" href="__CSS__/password.css">
+</block>
+<block name="content">
+<div class="content">
+	<div class="dologin pay">	
+		<form method="post" action="{:U('Member/newPay')}">
+			<p class="title">订单支付</p>
+		    <p><label>账户余额:</label><span>{$amount} 元(￥)</span></p>
+		    <p class="nee">
+		    	<label>单号:</label><input type="text" id="dotext" name="oddNumbers" placeholder="请输入单号"/>
+		    	<span id="hint"><img src="__IMG__/pic9.png">单号必须以MK开头，且必须是13位！</span>
+		    </p>		    
+		    <p class="nee">
+		    	<label>支付金额:</label><input  type="text" id="money2" moneys="{$amount}" name="payMoney" placeholder="请输入支付金额" />
+		    	<span id="hint2"><img src="__IMG__/pic9.png"><samp></samp></span>
+		    </p> 	    
+		    <p><input class="btns" type="submit" id="dobtns2" value="提交" /><span id="result"></span></p>		
+		</form>
+	</div>	
+</div>
+</block>

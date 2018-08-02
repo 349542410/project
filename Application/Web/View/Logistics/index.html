@@ -1,0 +1,57 @@
+<extend name="Public:base" />
+<block name="title">{:L('Lr_WAYBILL_QUERY')}</block>
+<block name="css">		
+		<link rel="stylesheet" type="text/css" href="__CSS__/solution.css">
+</block>
+<block name="content">
+		<div class="content">
+			<div class="table">
+				<div class="title">
+					<p></p><span></span>
+				</div>
+				<div class="now">
+					<div class="tab" style=" position: relative;">
+					<form id="msg" action="{:U('Logistics/index')}" method="post">
+						<input class="text" name="order_no" value="{:I('order_no')}" id="dotext" type="text" placeholder="{:L('IYTN_VZ')}">
+						<input class="btn" id="dobtns" type="submit" value="{:L('SEARCH_VZ')}" />
+						<span id="hint" style="display:none"><p><img src="__IMG__/pic9.png"></p><label>{:L('Lr_Single_number')}</label></span>
+					</form>
+					</div>
+				</div>
+			</div>
+			<div class="order" id="order_list">
+			<if condition="$errorstr eq 'true'">
+				<div class="title">
+					<label>{:L('tracking_number')}：</label><p>{$MKNO}</p>
+				</div> 
+				<div class="orlist">
+				<ul>
+					<volist name="list" id="vo">
+						<li>
+							<img class="t" src="__IMG__/li.png">
+							<img class="s" src="__IMG__/li2.png">
+							<p class="dates">{$vo.create_time}</p>
+							<p class="texts">{$vo.content}</p>
+						</li>
+					</volist>
+				</ul>
+				</div>
+			<elseif condition="$errorstr eq 'false'"/>
+				<br/>
+				<div style="font-size:16px;">
+					<p>{:L('l_pupwp')}...</p><br/>
+				</div>
+			</if>
+			<p style="color:red;line-height: 24px;">*{:L('Lr_Reminder')}</p>
+			<p style="color:red;line-height: 24px;">*{:L('Lr_Note')}</p>
+			</div>
+		</div>
+
+<script type="text/javascript">
+
+	var MK_no_alert1 = "{:L('MK_no_alert1')}";
+	var MK_no_alert2 = "{:L('MK_no_alert2')}";
+
+
+</script>
+</block>

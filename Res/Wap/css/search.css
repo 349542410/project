@@ -1,0 +1,12 @@
+
+.content{min-height:300px;background:#ffffff;margin-top:10px;padding:15px;}
+.con{min-height:300px;}
+.con table{margin-left:15px}
+.con table th{height:24px;line-height:24px;margin-left:20px;text-align:left;border-left:3px solid #ddd;color:#ccc;padding-left:30px;margin-top:12px;}
+.first{opacity:1 !important;}
+.con table th img{width:15px;position:relative;left:-39px; opacity: 0.5;}
+.con table td{min-height:30px;line-height:24px;font-size:16px;border-left:3px solid #ddd;color:#000;padding-left:45px;padding-bottom:15px}
+.topimg{position:relative;top:25px;left:35px;border-radius:10px;}
+.foot{min-height:80px;margin-top:10px;background:#ffffff;padding:15px;}
+.foot h4{margin-bottom:10px;}
+.foot p{font-size:12px;line-height:24px;}

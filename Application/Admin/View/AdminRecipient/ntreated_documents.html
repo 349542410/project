@@ -1,0 +1,500 @@
+<extend name="./base" />
+
+<block name="main">
+
+	<div class="container">
+		<div class="col-md-2">
+			<include file="Public:authNav" />
+		</div>
+		<div class="col-md-10">
+			<div class="rtop">
+				<ul class="list-inline">
+					<if condition="ACTION_NAME eq 'info'">
+
+						<li style="float:right">您当前所在位置：收件人身份证管理&nbsp;/&nbsp;
+							<a href="javascript:void(0);" class="color">未处理证件</a>
+						</li>
+					</if>
+				</ul>
+
+				<table border="0" cellpadding="0" cellspacing="0" class="table table-hover" style="border-bottom:none !important">
+					<thead>
+
+						<tr>
+							<td colspan="7">
+
+								<form class="form-inline" method="get" action="{:U('/AdminRecipient/ntreated_documents')}">
+
+									<label>
+										<span style="float:left;">搜索:</span>
+										<input class="form-control" name="name" placeholder="请输入查询姓名" value="" style="width:160px; float:left;" type="search">
+									</label>
+									<!-- <label>
+										<span style="float:left;">开始时间:</span> 
+										<input type="text" id="form-field-1" name="start_date" placeholder="请输入促销开始日期"  value="" class="span1 col-xs-5 col-sm-6 form-control" />
+									</label>
+									<label>
+										<span style="float:left;">结束时间: </span>
+										<input type="text" id="form-field-1" name="end_date" placeholder="请输入促销结束日期"  value="" class="span3 col-xs-5 col-sm-6 form-control" />
+									</label> -->
+									<label>
+										<div style="float:left;">
+											&nbsp;&nbsp;
+											<span style="float:left;">身份证号码：</span>
+											<input type="text" class="form-control one" placeholder="请输入查询身份证号码" data-field="datetime" name="idcard" size="25" value=""
+											  style="width:166px;  float:left; ">
+										</div>
+									</label>
+
+									<label>
+										<button class="btn btn-primary btn-lg" type="submit" style="float:left">查询</button>
+									</label>
+								</form>
+
+							</td>
+						</tr>
+
+						<tr>
+							<th>序号</th>
+							<th>姓名</th>
+							<th>身份证号/时间</th>
+							<th>身份证正面缩略图</th>
+							<th>身份证反面缩略图</th>
+							<th>身份证合成图</th>
+							<th>审核状态</th>
+							<th>失效状态</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody style="font-size:15px;">
+						<volist name="list" id="vo" key="key" mod="2">
+							<tr <eq name="mod" value="1"> style="background-color:#ddd;"</eq>>
+								<td class="td1">
+									{$vo.id}
+								</td>
+								<td class="td1">
+									{$vo.true_name}
+								</td>
+								<td class="td1">
+									{$vo.idno}
+									<br /> {$vo.sys_time}
+								</td>
+								<td class="td1">
+									<!-- <a href="{:U('/AdminRecipient/download', array('id' => $vo['id'], 'file_type' => 'id_card_front' ))}" style="display:inline;"> -->
+									<!-- <if condition="$vo['id_card_front_small'] neq 'none' OR $vo['front_id_img'] neq ''"> -->
+									<if condition="$vo['front_id_img'] neq ' ' ">
+										<a href="{$wu_file}{$vo.front_id_img}" target="_blank" style="display:inline;">
+											<notempty name="vo['small_front_img']">
+												<img alt="" src="{$wu_file}{$vo.small_front_img}" width="100" height="80" />
+												<else />
+												<img alt="" src="{$wu_file}{$vo.front_id_img}" width="100" height="80" />
+											</notempty>
+										</a>
+										<a href="{:U('/AdminRecipient/download', array('id' => $vo['id'], 'file_type' => 'front_id_img' ))}" style="display:inline; color:green;">下载</a>
+										<else />
+										<!-- <a href="{$wu_file}{$vo.id_card_front_small}" target="_blank" style="display:inline;">
+													<img alt="" src="{$wu_file}{$vo.id_card_front_small}"  width="100" height="80" />	
+												</a>
+												<a href="{:U('/AdminRecipient/download', array('id' => $vo['id'], 'file_type' => 'id_card_front' ))}" style="display:inline; color:green;" >下载</a> -->
+										<a href="__PUBLIC__/images/pho_front.png" target="_blank" style="display:inline;">
+											<img src="__PUBLIC__/images/pho_front.png" width="100" height="80" />
+										</a>
+										<a href="#" style="display:inline; color:red;">下载</a>
+
+									</if>
+
+									<!-- <else />
+											<a href="__PUBLIC__/images/pho_front.png" target="_blank" style="display:inline;" >
+												<img src="__PUBLIC__/images/pho_front.png"  width="100" height="80" /> 
+											</a>
+											<a href="#" style="display:inline; color:red;">下载</a>
+										</if> -->
+									<!-- </a> -->
+
+								</td>
+								<td class="td1">
+									<!-- <if condition="$vo['id_card_back_small'] neq 'none' OR $vo['back_id_img'] neq ''" > -->
+									<if condition="$vo['back_id_img'] neq ''">
+										<a href="{$wu_file}{$vo.back_id_img}" target="_blank" style="display:inline;">
+											<notempty name="vo['small_back_img']">
+												<img alt="" src="{$wu_file}{$vo.small_back_img}" width="100" height="80" />
+												<else />
+												<img alt="" src="{$wu_file}{$vo.back_id_img}" width="100" height="80" />
+											</notempty>
+
+										</a>
+										<a href="{:U('/AdminRecipient/download', array('id' => $vo['id'], 'file_type' => 'back_id_img' ))}" style="display:inline;  color:green;">下载</a>
+										<else />
+										<!-- <a href="{$wu_file}{$vo.id_card_back_small}" target="_blank" style="display:inline;">
+												<img alt="" src="{$wu_file}{$vo.id_card_back_small}" width="100" height="80" />
+											</a>
+											<a href="{:U('/AdminRecipient/download', array('id' => $vo['id'], 'file_type' => 'id_card_back' ))}" style="display:inline;  color:green;">下载</a>
+											 -->
+										<a href="__PUBLIC__/images/pho_back.png" target="_blank" style="display:inline;">
+											<img alt="" src="__PUBLIC__/images/pho_back.png" width="100" height="80" />
+										</a>
+										<a href="#" style="display:inline;  color:red;">下载</a>
+
+									</if>
+									<!-- <else />
+										<a href="__PUBLIC__/images/pho_back.png" target="_blank" style="display:inline;">
+											<img alt="" src="__PUBLIC__/images/pho_back.png" width="100" height="80" />
+										</a>
+										<a href="#" style="display:inline;  color:red;">下载</a>
+									</if> -->
+
+
+								</td>
+								<td class="td1">
+									<notempty name="vo['id_img']">
+										<if condition="!$idcard_cos">
+											<a href="{$admin_file}{$vo.id_img}" target="_blank" style="display:inline;">
+												<img alt="" src="{$admin_file}{$vo.id_img}" width="100" height="80" />
+											</a>
+											<a href="{:U('/AdminRecipient/download', array('id' => $vo['id'], 'file_type' => 'id_img' ))}" style="display:inline;  color:green;">下载</a>
+
+											<else />
+											<img alt="" src="{$bucket_url}{$vo.id_img}" width="100" height="80" />
+											<a href="{$bucket_url}{$vo.id_img}" style="display:inline;  color:green;">下载</a>
+										</if>
+										<!-- <a href="{$admin_file}{$vo.id_img}" target="_blank" style="display:inline;"> -->
+										<!--<img alt="" src="{$bucket_url}{$vo.id_img}" width="100" height="80" />-->
+										<!--  </a>-->
+										<!-- <a href="{:U('/AdminRecipient/download', array('id' => $vo['id'], 'file_type' => 'id_img' ))}" style="display:inline;  color:green;">下载</a> -->
+										<!--<a href="{$bucket_url}{$vo.id_img}" style="display:inline;  color:green;">下载</a>-->
+									</notempty>
+
+								</td>
+
+								<td class="td1">
+									{$vo.status_name}
+								</td>
+								<td class="td1">
+									<a href="javascript:;" style="padding-top:15px !important;">
+										<if condition="$vo['idcard_status'] eq 1">
+											<img src="__PUBLIC__/images/nopass.png" width="20" height="20" alt="">
+											<else />
+											<img src="__PUBLIC__/images/pass.png" width="20" height="20" alt="">
+										</if>
+									</a>
+								</td>
+								<td align="center" class="td3">
+									<a href="{:U('AdminRecipient/info',array('id' => $vo['id']))}" class="" data-toggle="modal" data-target="#myModal">查看</a>&nbsp;&nbsp;|
+									<!--<a href="{:U('AdminRecipient/more',array('id' => $vo['id'], 'idno' => $vo['idno']))}" class=""   data-toggle="modal" data-target="#myModal">更多</a>&nbsp;&nbsp;|-->
+									<a class="b_modify" data-toggle="modal" data-target="#myModals" card_status="{$vo.status}" card_tel="{$vo.tel}" card_sex="{$vo.sex}"
+									  card_birth="{$vo.birth}" card_address="{$vo.address}" card_valid_date_start="{$vo.valid_date_start}" card_valid_date_end="{$vo.valid_date_end}"
+									  card_authority="{$vo.authority}" card_nation="{$vo.nation}" card_name="{$vo.true_name}" idno="{$vo.idno}" card_id="{$vo.id}"
+									  front="<if condition=" $vo[ 'front_id_img'] neq ''
+									  ">{$wu_file}{$vo.front_id_img}<else/> __PUBLIC__/images/pho_front.png</if> " backs=" <if condition=" $vo[ 'back_id_img'] neq ''
+									  ">{$wu_file}{$vo.back_id_img}<else/> __PUBLIC__/images/pho_back.png</if>  ">上传合成图片</a>
+								</td>
+							</tr>
+						</volist>
+					</tbody>
+
+				</table>
+
+				<div id="pages" class="page">{$page}</div>
+			</div>
+		</div>
+		<!-- 截图，上传图片引入文件 -->
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.4.0/cropper.min.css">
+		<link rel="stylesheet" href="__PUBLIC__/css/cutOutIdCardImg.css">
+		<script src="__PUBLIC__/js/canvas-to-blob.min.js"></script>
+		<script src="__PUBLIC__/js/cropper.js"></script>
+		<script src="__PUBLIC__/js/cutOutIdCardImg.js"></script>
+		<!-- Modal -->
+		<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document" style="width: 950px;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">上传合成身份证</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" role="form" method="post" enctype="multipart/form-data" action="{:U('AdminRecipient/cardpic')}">
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">姓名:</label>
+								<div class="col-sm-9" id="card_name">
+
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">身份证号码:</label>
+								<div class="col-sm-9" id="idno">
+
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">电话:</label>
+								<div class="col-sm-9" id="tel">
+
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">性别:</label>
+								<div class="col-sm-9" id="sex">
+
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">民族:</label>
+								<div class="col-sm-9" id="nation">
+
+								</div>
+							</div>
+
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">出生日期:</label>
+								<div class="col-sm-9" id="birth">
+
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">身份证地址:</label>
+								<div class="col-sm-9" id="address">
+
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">证件开始时间:</label>
+								<div class="col-sm-9" id="valid_date_start">
+
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">证件结束时间:</label>
+								<div class="col-sm-9" id="valid_date_end">
+
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">身份证发证机关:</label>
+								<div class="col-sm-9" id="authority">
+
+								</div>
+							</div>
+
+
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">身份证正面:</label>
+								<div class="col-sm-9 front">
+									<img src="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">身份证反面:</label>
+								<div class="col-sm-9 back">
+									<img src="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right label-upload-img-btn" for="form-field-1">上传图片:</label>
+								<div class="col-sm-9" id="card_img">
+									<input type="file" accept="image/png, image/jpeg, image/gif, image/jpg" class="label-upload-img-input" name="card_pic" id="pic"
+									  onChange='cutOutIdCardImg()' />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="username" class="col-sm-3 control-label">是否审核通过:</label>
+								<div class="col-sm-9">
+									<input name="status" class="status0" value="0" type="radio"> 未审核
+									<input name="status" class="status2" value="2" type="radio"> 未通过审核
+									<input name="status" class="status10" value="10" type="radio"> 已通过审核
+								</div>
+								<label class="col-sm-2 control-label"></label>
+							</div>
+							<input type="hidden" name="id" value="" id="card_id">
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+						<button type="button" class="btn btn-primary card">确认</button>
+					</div>
+				</div>
+				<div id="cutOutIdCardWrap" class="cut-out-idcard-wrap">
+					<div class="cut-out-idcard-content">
+						<div id="cutOutIdCardMain" class="cut-out-idcard-main">
+						</div>
+						<div class="cut-out-idcard-aside">
+							<button onClick='cutIdcardPic()'>裁剪图片</button>
+							<button onClick='createNewImg()'>生成新图片</button>
+							<button onClick='finishEditImg()'>完成编辑</button>
+							<button onClick='finishEditImg()'>退出编辑</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="foot"></div>
+	<script type="text/javascript">
+		function auth(obj) {
+			var uid = $(obj).attr('uid');
+			var url_a = "{:U('AdminCollectPoint/pointdelete')}";
+			var url = url_a + '/pid/' + uid;
+			var del_sn = $(obj).attr('user_name');
+			if (confirm('是否删除揽收点为：' + del_sn + ' 的信息！')) {
+				window.location.href = url;
+			}
+		}
+
+
+		$('.b_modify').click(function () {
+			var card_id = $(this).attr('card_id');
+			var idno = $(this).attr('idno');
+			var card_name = $(this).attr('card_name');
+			var front = $(this).attr('front');
+			var back = $(this).attr('backs');
+			var tel = $(this).attr('card_tel');
+
+			var sex = $(this).attr('card_sex');
+			var birth = $(this).attr('card_birth');
+			var address = $(this).attr('card_address');
+			var valid_date_start = $(this).attr('card_valid_date_start');
+			var valid_date_end = $(this).attr('card_valid_date_end');
+			var authority = $(this).attr('card_authority');
+			var nation = $(this).attr('card_nation');
+			var status_nmb = $(this).attr('card_status');
+			var status = 'status' + status_nmb;
+
+			$('#tel').html(tel);
+			$('#birth').html(birth);
+			$('#sex').html(sex);
+			$('#address').html(address);
+			$('#valid_date_start').html(valid_date_start);
+			$('#valid_date_end').html(valid_date_end);
+			$('#authority').html(authority);
+			$('#nation').html(nation);
+			$('.' + status + '').attr('checked', 'checked');
+
+			var html = '<input type="file" name="card_pic"  />';
+			var frond_html = '<img src="' + front + '" width="120" height="100"  >';
+			var back_html = '<img src="' + back + '" width="120" height="100" >';
+			$('#idno').html(idno);
+			$('.card_img').html(html);
+			$('.front').html(frond_html);
+			$('.back').html(back_html);
+			$('.card_img').remove();
+
+			$('#card_name').html(card_name);
+			$('#card_id').attr('value', card_id);
+
+		});
+
+		///////////////////////////////////////////////////////////////
+		function ityzl_SHOW_LOAD_LAYER() {
+			return layer.msg('努力中...', {
+				icon: 16,
+				shade: [0.5, '#f5f5f5'],
+				scrollbar: false,
+				offset: '200px',
+				time: 100000
+			});
+		}
+
+		function ityzl_CLOSE_LOAD_LAYER(index) {
+			layer.close(index);
+		}
+
+		function ityzl_SHOW_TIP_LAYER(str, url = '') {
+			layer.msg('' + str + '', {
+				time: 2000,
+				offset: '200px'
+			});
+			if (url) {
+				window.location = url;
+			} else {
+				window.location.reload();
+			}
+		}
+
+
+		$('.card').click(function () {
+
+
+			//var status = $(':input[name="status"]:checked').val();
+			var id = $(':input[name="id"]').val();
+			var status = $(':input[name="status"]:checked').val();
+			var pic = document.getElementById('pic');
+			var card_pic = pic.files['0'];
+			console.log(card_pic);
+
+			//alert(status);
+			if (typeof (status) == 'undefined') {
+				alert('请选择审核状态！');
+				return;
+			}
+			var formData = new FormData();
+			formData.append("id", id);
+			if (typeof (card_pic) == 'undefined') {
+				alert('请上传合成图片!');
+				return;
+			}
+			formData.append("card_pic", card_pic);
+			formData.append("status", status);
+			var request;
+			if (window.XMLHttpRequest) {
+				request = new XMLHttpRequest();
+			} else {
+				request = new ActiveXObject('Microsoft.XMLHTTP');
+			}
+			var i;
+			ityzl_SHOW_LOAD_LAYER();
+			request.onreadystatechange = function () {
+				if (request.status == 200 && request.readyState == 4) {
+					if (request.responseText) {
+						//成功返回
+						var a = JSON.parse(request.responseText);
+						var status = a.status;
+						var str = a.data.strstr;
+						var url = a.data.url;
+						ityzl_CLOSE_LOAD_LAYER(i);
+						ityzl_SHOW_TIP_LAYER(str, url);
+						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+						//var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+						parent.layer.msg(str);
+						parent.location.reload();
+						parent.layer.close(index);
+
+						//parent.layer.close(str); //再执行关闭
+						ityzl_SHOW_TIP_LAYER(str, url);
+						document.getElementById("form2").reset();
+					} else {
+						ityzl_CLOSE_LOAD_LAYER(i);
+					}
+				}
+			}
+			request.open("post", "{:U('AdminRecipient/cardpic')}");
+			//request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+			request.send(formData);
+			// 上传代码返回结果之后，将图片插入到编辑器中
+			//$('form').submit();
+		});
+	</script>
+
+</block>
+
+
+</body>
+
+</html>

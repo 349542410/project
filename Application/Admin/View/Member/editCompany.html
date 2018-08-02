@@ -1,0 +1,164 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <style type="text/css">
+      body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+
+      }
+      .container{margin:0 auto;}
+      .form-signin {
+        max-width: 1000px;
+        margin-top:60px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+    .form-signin table th{text-align:center;height:36px;font-size:16px;line-height:36px;background:#F7F7F9;}
+    .form-signin table td{height:36px;line-height:36px;font-size:14px;background:#F7F7F9;}
+    .form-signin table td a{text-decoration:none;color:#000;}
+    .form-signin table td a:hover{color:blue;}
+     .tdleft{text-align:right;width:180px;}
+    </style>
+    <link href="__PUBLIC__/css/one.css" rel="stylesheet">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+    <![endif]-->
+     </head>
+<body>
+      <div class="form" >
+      <div class="form-signin" style="background:#F7F7F9 !important;width:850px;min-height:500px;margin:60 auto;">
+      <form action="{:U('updateCompany')}" method="post" class="form-inline" id="tempForm">
+            <table border="0" cellpadding="0" cellspacing="0" >
+          <tr>
+              <td style="text-align:right" width="240"><h3>修改企业信息</h3></td>
+              <td width="750"></td>
+          </tr>
+           <tr>
+            <td class="tdleft"><label>用户名：</label></td>
+            <td><label>{$user.username}</label></td>
+    </tr>
+    <tr>
+      <td class="tdleft"><label>电子邮箱：</label></td>
+      <td><label><input type="email" value="{$user.email}" name="email" required class="form-control tdinput"></label></td>
+    </tr>
+    <tr>
+      <td class="tdleft"><label>密码：</label></td>
+      <td><label><input type="password" name="pwd" class="form-control tdinput"></label><font color="red">*不填写即不修改原密码</font></td>
+    </tr>
+    <tr>
+      <td class="tdleft"><label>公司名称：</label></td>
+      <td><label><input type="text" value="{$user.CompanyName}" name="companyname" required class="form-control tdinput"></label></td>
+    </tr>
+    
+    <tr >
+      <td class="tdleft" colspan="2" style="text-align:center"><font color="grey">---以下为公司信息---</font></td>
+    </tr>
+   
+    <tr>
+      <td class="tdleft"><label>国家：</label></td>
+      <td><label><input type="text" value="{$user.country}" name="country" readonly class="form-control tdinput"></label></td>
+    </tr>
+    <tr>
+      <td class="tdleft"><label>省/州：</label></td>
+      <td>
+        <input type="text" value="{$user.province}" name="province" readonly class="form-control tdinput">
+<!--         <label>
+        <select name="province" id="MainContent_ddProvince" class="form-control">
+          <if condition="$user['province'] != ''">
+            <option value="{$user['province']}" <eq name="province" value="$user['province']">selected</eq>>{$user['province']}</option>
+          <else />
+            <option selected="selected" value="">请选择</option>
+          </if>
+        </select>
+        </label> -->
+      </td>
+    </tr>
+    <tr>
+      <td class="tdleft"><label>市：</label></td>
+      <td>
+        <input type="text" value="{$user.city}" name="city" readonly class="form-control tdinput">
+<!--         <label>
+        <select name="city" id="MainContent_ddCity" class="form-control">
+          <if condition="$user['city'] != ''">
+            <option value="{$user['city']}" <eq name="city" value="">selected</eq>>{$user['city']}</option>
+          <else />
+            <option selected="selected" value="">请选择</option>
+          </if>
+          
+        </select>
+        </label> -->
+      </td>
+    </tr>
+    <tr>
+      <td class="tdleft"><label>公司注册地址：</label></td>
+      <td><label><input type="text" value="{$user.company_address}" name="CompanyAddress" required class="form-control tdinput"></label></td>
+    </tr>
+    <tr>
+      <td class="tdleft"><label>公司代表人：</label></td>
+      <td><label><input type="text" value="{$user.company_representative}" name="CompanyRepresentative" required class="form-control tdinput"></label></td>
+    </tr>
+    <tr>
+      <td class="tdleft"><label>营业执照编号：</label></td>
+      <td><label><input type="text" value="{$user.business_license}" name="BusinessLicense" required class="form-control tdinput"></label></td>
+    </tr>
+    <tr>
+      <td class="tdleft"><label>税号：</label></td>
+      <td><label><input type="text" value="{$user.vat_number}" name="VATNumber" required class="form-control tdinput"></label></td>
+    </tr>
+    <tr>
+      <td class="tdleft"><label>发件国退件地址：</label></td>
+      <td><label><input type="text" value="{$user.sender_address}" name="Address" required class="form-control tdinput"></label></td>
+    </tr>
+    <tr>
+      <td class="tdleft"><label>退件邮编：</label></td>
+      <td><label><input type="text" value="{$user.sender_zipcode}" name="PostCode" required class="form-control tdinput"></label></td>
+    </tr>
+    <tr >
+      <td class="tdleft" colspan="2" style="text-align:center"><font color="grey">---以下为业务联系人信息---</font></td>
+    </tr>
+    <tr>
+      <td class="tdleft"><label>联系人：</label></td>
+      <td><label><input type="text" value="{$user.self_name}" name="CompanyContact" required class="form-control tdinput"></label></td>
+    </tr>
+    <tr>
+      <td class="tdleft"><label>手机(手机,固话必填一个)：</label></td>
+      <td><label><input type="text" value="{$user.self_phone}" name="Phone" class="form-control tdinput"></label></td>
+    </tr>
+    <tr>
+      <td class="tdleft"><label>固话：</label></td>
+      <td><label><input type="text" value="{$user.self_telephone}" name="FixedTelephone" class="form-control tdinput"></label></td>
+    </tr> 
+    <tr>
+      <td class="tdleft"><label>QQ/微信：</label></td>
+      <td><label><input type="text" value="{$user.contactsQQ}" name="ContactsQQ" required class="form-control tdinput"></label></td>
+    </tr>
+    <tr>
+     <td>
+    	<input type="hidden" value="{$user.id}" name="id">
+    </td>
+    <td>
+    	<button type="submit" class="btn btn-primary" id="BtnSave">提交</button>
+    	<button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button>
+      <span id="messagebox" class="msgbox" style="right:350px;!important"></span>
+    </td>
+    </tr>
+                  
+                  </table>
+        </form>
+      </div>
+      </div>
+      <div class="foot"></div>
+
+<script src="__PUBLIC__/js/my.js"></script>
+</body>
+</html>

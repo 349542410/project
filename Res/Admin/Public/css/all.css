@@ -1,0 +1,113 @@
+/*公共样式*/
+.modal-open{padding:0px !important;}
+.modal fade{width:900px !important;}
+body{padding:0px !important;background:#FFFFFF !important;}
+.container{width:90%;margin-top:0px auto;}
+body{font-family:"ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","WenQuanYi Micro Hei",sans-serif;}
+td,p,li,a,th{line-height:30px;font-family:"ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;}
+th{text-align:center !important;padding-top:16px !important;}
+
+th a{color:#9d9d9d;}
+table .td1{padding:0 !important;line-height:47px !important;}
+table .td1 a,table .td1 a font{display:inline-block;width:100%;height:47px;line-height:47px;}
+
+.td1{text-align:center !important;cursor:pointer;height:47px;}
+nav li{padding:0 !important;}
+body{padding:0px !important;background:#FFFFFF !important;margin:0px;}
+.modal-open {
+  overflow: initial !important;
+}
+.btn{height:26px;line-height:5px;}
+.nav{
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+.li1,.td3{cursor:pointer;}
+/*input{height:24px;}*/
+select{height:24px;}
+#content{padding-top:90px;padding-bottom:50px;}
+span{font-size:16px;}
+.color{color:#428BCA;}
+a{text-decoration:none !important;color:#000;}
+/*.navbar-nav .active{border-bottom:3px solid #674D90;}*/
+/*.navbar-nav{margin-bottom:3px;}*/
+.bs-docs-sidebar .nav>li>a{font-size:16px;color:black;}
+.licolor{background:#bbb;}
+.bs-docs-sidenav a{padding-left:0px !important;}
+.col-md-2{background:#ddd;height:600px;overflow-y: auto;}
+/*.rtop{font-size:16px;}*/
+.rtop{padding:10px 10px 0 10px;}
+.blue{background:#598dd6;}
+.blue a{color:#FFFFFF;}
+.rtop li{list-style-type:none;margin-top:10px;}
+.rtop li input{margin-top:8px;line-height:16px;}
+.fontcolor{color:blue;}
+textarea{width:350px;height:150px;}
+table th,table td{line-height:16px;}
+.formleft{width:190px;float:left;padding-right:15px;}
+.formright{float:left;}
+.bs-docs-sidenav li{list-style-type:none;line-height:40px;margin:0;padding:0px;}
+.bs-docs-sidenav li a{font-size:16px;}
+.list-inline{padding-bottom:5px;}
+.list-inline li{margin-top:0px !important;}
+.login_user{margin-top:10px;font-size: 16px;}
+/*公共 end*/
+
+/*会员资料*/
+.tdleft{width:240px;text-align:right;font-size:14px;padding-right:14px;line-height:24px;}
+.form table td{padding-top:2px !important;padding-left:10px;}
+/*.form table td input,select{margin-top:4px;}*/
+/*.form table td input{line-height:14px;width:500px !important}*/
+.form .tdinput{line-height:14px;width:500px !important}
+.form table td #lt{width:25px !important;}
+.form button{width:59px;height:28px !important;font-size:16px !important;}
+.foot{height:50px;}
+/* End */
+.select{background: #ccc !important;}
+
+/* messagebox */
+.msgbox {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: #edffe0 none repeat scroll 0 0;
+    border-color: #8fc469;
+    border-image: none;
+    border-radius: 0 0 3px 3px;
+    border-style: solid;
+    border-width: 0 1px 1px;
+    box-shadow: 0 1px 8px #cccccc;
+    color: #333333;
+    right: 450px;
+    line-height: 29px;
+    max-width: 250px;
+    overflow: visible;
+    padding: 0 20px;
+    position: absolute;
+    visibility: hidden;
+    white-space: normal;
+    word-wrap: break-word;
+    z-index: 65535;
+}
+.msgbox a {
+    color: #eb7d00;
+    font-weight: normal;
+    text-decoration: underline;
+}
+.msgbox.warning {
+    background: #ffffcc none repeat scroll 0 0;
+    border-color: #ff9966;
+}
+.msgbox.exception {
+    background: #ffcccc none repeat scroll 0 0;
+    border-color: #ff0000;
+}
+.msgbox.default, .msgbox.warning, .msgbox.exception {
+    display: block !important;
+    visibility: visible !important;
+}
+.wrong{background: #e08c8c !important;}
+.container .active{background-color: #cccddd !important;}
+table .alileft{text-align: left!important;padding-left: 25px !important;}
+table .whitesp{word-break:keep-all; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}

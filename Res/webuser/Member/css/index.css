@@ -1,0 +1,205 @@
+@charset "utf-8";
+*{margin:0;padding:0}
+img{border:0}
+html{color:#333}
+body{font-size:12px/1.5 Arial,Helvetica,sans-serif,"微软雅黑"}
+table{font-size:12px;color:#333;border-collapse:collapse}
+.fo-fa{font-family:Tahoma,\5FAE\8F6F\96C5\9ED1}
+ol,ul{list-style:none}
+div{font-size:12px}
+a{text-decoration:none;color:#333}
+.cu-po{cursor:pointer}
+em,i{font-style:normal}
+.ma-to-10{margin-top:10px}
+.ma-to-20{margin-top:20px}
+.ma-le-6{margin-left:6px}
+.ma-le-10{margin-left:10px}
+.ma-bo-10{margin-bottom:10px}
+.ma-le-30{margin-left:30px}
+.ma-le-100{margin-left:100px}
+.bo-le-hui{border-left:1px solid #e0e0e0}
+.pa-le-10{padding-left:10px}
+.pa-to-10{padding-top:10px}
+.pa-to-3{padding-top:3px}
+.fl{float:left}
+.fr{float:right}
+.co-red{color:#ca141d}
+.wh-sp{white-space:nowrap;overflow:hidden}
+.cl-bo{clear:both}
+.ov-hi{overflow:hidden}
+.po-re{position:relative}
+.po-ab{position:absolute}
+.wi940{width:1200px}
+.wi850{width:850px}
+.wi146{width:146px}
+.wi150{width:150px}
+.wi123{width:123px}
+.wi516{width:516px}
+.wi200{width:200px}
+.wi68{width:68px}
+.wi197{width:197px}
+.wi252{width:252px}
+.wi169{width:169px}
+.wi178{width:178px}
+.wi137{width:137px}
+.wi118{width:118px}
+.wi172{width:172px}
+.wi139{width:139px}
+.dsfzfpte{text-align:center;height:30px;line-height:30px;border-bottom:1px solid #dedede;background-color:#fcfcfc}
+.dsfzf-ee{padding:30px 0 0 25px}
+.dsfzfpte b{font-weight:400}
+.dsfzf-ee ul li{float:left;width:167px;padding-bottom:25px}
+.payment-area label i{display:inline-block;width:20px;height:30px;border:1px solid #ffcd88;border-left:0 none;background-color:#ffd594;color:#4c3f2c;vertical-align:middle;text-align:center;line-height:1.1;padding-top:2px;font-style:normal}
+.payment-area label:hover i{border:1px solid #bf0f0f;border-left:0}
+.payment-area,.payment-area label{display:inline-block;position:relative}
+.payment-area input[type=radio]{margin-right:5px;cursor:default;float:left;margin-top: 19px;}
+.payment-area label{display:inline-block;position:relative}
+.payment-area label img{vertical-align:middle;cursor:pointer;border:1px solid #ededed}
+.payment-area label:hover img{border-color:#bf0f0f}
+.order-payment-action-area{padding-top:30px;text-align:right;padding-bottom: 30px;}
+.order-payment-action-area .voucher-use{font-size:14px;margin-right:20px;color:#888;line-height:20px}
+order-payment-action-area{padding-top:30px;text-align:right;font-family:Tahoma,'\5FAE\8F6F\96C5\9ED1'}
+.button-confirm-payment,.button-go-payment{font-size:22px;width:150px;height:50px;line-height:50px;border-radius: 10px;}
+.button-style-5{color:#fff;background-color:#f3b43c;border:#f3b43c;display:inline-block;text-align:center;cursor:pointer}
+.order-payment-action-area .voucher-use label{color:#333;margin-right:20px}
+.button-style-5:hover{background-color:#f3b43c;border-color:#f3b43c;color:#fff}
+.he50{height:50px}
+.wddd{border-bottom:1px solid #dedede;margin-bottom:20px}
+.ddd-h2 h2{font-size:24px;line-height:1.2;padding:8px 0 0 2px;font-weight:400}
+.Wallet{width:100%;background:#FFF;overflow:hidden;border-bottom:1px solid #dddcdc;margin-top:10px;position:relative}
+.Wallet a{margin-left:10px;height:45px;display:block;width:100%;overflow:hidden;padding-bottom:1px}
+.j_million{background-image:url(../images/w1_03.png);background-repeat:no-repeat;background-position:0 3px}
+.Icon{display:block;float:left;width:35px;height:35px;margin-top:5px;position:absolute}
+.Wallet a dl{width:100%;margin-left:35px;overflow:hidden}
+.dj_mill .b{border-bottom:1px solid #eee}
+.Wallet a dl dt{float:left;font-size:16px;line-height:45px;color:#666}
+.Wallet a dl dd{float:right;background:url(../images/arrow_right.png) no-repeat right center;color:#aaa;background-size:auto 12px;margin-right:60px;padding-right:20px;line-height:45px}
+.million_num{background-color:#000;padding:6px 4px;color:#fff;border-radius:6px;display:block;line-height:20px;margin-top:10px}
+.dj_mill{cursor:pointer}
+.show_million{display:none}
+.ss_distri{width:200px;height:24px;padding:0 4px;border:1px solid #aaa;margin-left:20px}
+.ss_dis_bu{height:26px;width:60px;cursor:pointer}
+li.fr_ss{float:right}
+.mt20{margin-top:20px}
+.layout .fl .logo a img{position:relative;top:-18px}
+#header_cart_list{border-left:1px solid #dedede}
+.order-track .track-list{margin:20px;padding-bottom:18px;padding-left:5px}
+.order-track .track-list li{position:relative;padding:9px 0 0 25px;line-height:18px;border-left:1px solid #d9d9d9;color:#333}
+.order-track .track-list li.first{color:#e4393c;padding-top:0;border-left-color:#fff;font-size:14px;font-weight:600}
+.order-track .track-list li .node-icon{position:absolute;left:-6px;top:50%;width:11px;height:11px;background:url(../images/order-icons.png) -21px -72px no-repeat}
+.order-track .track-list li .time,.order-track .track-list li .txt{position:relative;top:4px;display:inline-block;vertical-align:middle}
+.order-track .track-list li .time{margin-right:20px}
+.order-track .track-list li .txt{max-width:640px}
+.order-track .track-list li.first .node-icon{background-position:0 -72px}
+.tp_message{padding:13px 26px;background:#f7f7f7;margin-bottom:20px}
+.tp_message h3{border-bottom:1px solid #dedede;margin-bottom:6px;padding-bottom:4px;word-wrap:break-word}
+.tp_message .tpcontent{text-indent:2em;word-wrap:break-word}
+.tp_message .checknoti{text-align:right;margin-top:4px}
+.tp_message a{cursor:pointer;color:#e63547;text-decoration:blink}
+.checknoti em{font-size:12px;font-weight:100;font-style:italic;color:#999;margin-left:6px;margin-top:4px}
+.usermoney{overflow:hidden;padding:10px 10px 75px 10px;position:relative}
+.usertop h2{color:#000;margin:0;font-size:27px;font-weight:700;padding-bottom:15px;text-align:center;margin-top: 15px;}
+.usercontent{overflow:hidden;width:100%;float:left;margin-top:125px}
+.userc ul li,.usercontent ul li{float:left;width:100%;text-align:center}
+.usercontent ul li{margin-top: 75px;}
+.balance{color:#000}
+.account{color:#fff;padding-top:30px;padding-bottom:20px}
+.account .accph3{font-size:31px;font-family:'Microsoft YaHei';font-weight:500}
+.topup a{cursor:pointer}
+.topup a:hover{color:#e23435}
+.usercontent .account-balance li:last-child{margin-left:-1px}
+.userc{font-size:18px;color:#333;margin-top:10px;overflow:hidden;border-right:1px solid #dedede;width:500px;float:left;margin:30px 0}
+.userc ul li span.bured{display:block;width:100px;margin:0 auto;border-bottom:2px solid #e48c95}
+.usercontent:after,.usercontent:before,.userdown:after,.userdown:before{content:'';clear:both;display:block}
+.userdown-top ul li{float:left;cursor:pointer;width:88px;text-align:center;border-left:1px solid #dedede;background:#232323;color:#fff;height:44px;line-height:44px;border-radius:5px}
+.userdown-top .alllist{color:#ffde00;font-weight:700}
+.userdown-top{overflow:hidden}
+.userdown-top ul a:hover{color:#e23435}
+.userdown-top ul li:first-child{margin-left:0}
+.userdown-down{width:100%;overflow:hidden}
+.userdown-down ul{overflow:hidden}
+.userdown-down ul li{float:left;width:20%;color:#000;text-align:center}
+/*增加提现记录时需要以下*/
+/*.userdown .posalt{position:absolute;left:464px;top:70px}*/
+/*当没有提现记录时候需要以下*/
+.userdown .posalt{position:absolute;left:508px;top:70px}
+.ttmt{background:#F1F1F1;padding:10px 20px;color:#99999A;margin-top:36px;font-weight:600;font-size:15px}
+.ttmt li{font-size:18px}
+.ttmts{background:#F1F1F1;padding:10px 20px;color:#99999A;margin-top:36px;font-weight:600;font-size:15px}
+.ttmts li{font-size:18px}
+.ttmt-list{padding:10px 20px;color:#99999A;border-bottom:1px solid #f3f3f7;font-size:14px;font-weight:500}
+.ttmt-list li{font-size:16px}
+.ttmt-list ul li:nth-child(3){color:#000}
+.topup span:nth-child(2){padding:0 15px;color:#d0cbcb}
+.topup-money{padding:0}
+.network-topup{margin-top:-1px;border-top:1px solid #f3f3f7;margin-left:0}
+.network-topup ul{overflow:hidden;float:left;margin: 0;}
+.network-topup p{padding-right:10px;margin-top:8px;color:#036eb8;cursor:pointer;float:right}
+.aboutmoney{border: 1px solid #ccc;border-radius: 5px;}
+.aboutmoney .usermoney .network-topup ul li{font-size: 20px;margin: 10px 0px 10px 30px;color:#000;}
+.aboutmoney .usermoney .network-topup .network_p{    font-size: 16px;
+    margin: 10px 30px 10px 0px;
+    color: #000;
+    display: inline-block;
+    float: right;background-color: #fff;border:none;}
+.aboutmoney .usermoney .choicetu p{color:#000;margin: 10px 0px 10px 30px;font-size: 17px;}
+.aboutmoney .usermoney .orde-sjyy .po-re .po-re_p{margin: 30px 0px 30px 20px;}
+.aboutmoney .usermoney .orde-sjyy .po-re ul li{float: left;margin-left: 25px;}
+
+
+.fop-main{overflow:hidden;margin: 25px 0px 15px 25px;}
+.m-tagbox{margin-bottom:-10px;float:left}
+.m-tagbox .tag-item{position:relative;width:92px;padding:0 5px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.m-tagbox .t-check{display:none;position:absolute;right:0;bottom:0;width:16px;height:16px;background-position:-40px 0}
+.m-tagbox .define-label .i-pen{display:inline-block;background-image:url(../images/sprite-operate.png);background-repeat:no-repeat}
+.m-tagbox .tag-define{overflow:hidden}
+.m-tagbox .lastyuan{line-height: 35px;}
+.m-tagbox .tag-define,.m-tagbox .tag-item{float:left;width:102px;height:38px;line-height:38px;border:1px solid #ccc;margin-right:10px;margin-bottom:10px;text-align:center;color:#333;border-radius: 10px;font-size: 15px;}
+.m-tagbox .define-label{display:block;cursor:pointer}
+.m-tagbox .define-label .i-pen{width:13px;height:13px;margin-top:13px;margin-right:5px;vertical-align:top}
+.m-tagbox .define-label em{display:inline-block;height:38px;vertical-align:top}
+.m-tagbox .define-input{display:none;width:92px;height:38px;line-height:38px;padding:0 5px;border:medium none}
+.choicetu{overflow:hidden;padding:10px;margin-top:16px}
+.choicetu p{margin-bottom:10px;font-size:16px;color:#666}
+.m-tagbox .tptig{display:inline-block;background-image:url(../images/sprite-operate.png);background-repeat:no-repeat}
+.fop-main:after,.fop-main:before{content:'';clear:both;display:block}
+.fop-main:after,.fop-main:before{content:'';clear:both;display:block}
+.p-button a{cursor:pointer}
+.address a{cursor:pointer}
+.warrp{width:1200px;margin:15px auto;min-height:1620px;}
+.warrp .mywallets{border: 1px solid #dedede;}
+h3{margin:0;padding:0}
+label{margin:0;padding:0;white-space:nowrap}
+.inuls li{float:left;margin-left:20px}
+.widen{width:89px;line-height:5px;background-color:#232323;border-color:#232323;color:#ffde00;height:35px;font-size:16px}
+.showsp{position:absolute;top:10px;left:290px}
+.litext textarea{resize:none}
+#out{float:right;margin-right:10px}
+.warrp .userc .brpic{width:135px;height:135px;line-height:135px;border-radius:70px;margin:0 180px}
+.warrp .userc .brpic img{width:135px;height:135px;line-height:135px;border-radius:70px;background:#000;display:list-item}
+.warrp .userc li{margin-top:5px;font-size:18px}
+.warrp .userc p{margin:0}
+
+
+
+.tab-title .item{float:left;cursor:pointer;width:100px;text-align:center;border:1px solid #dedede;padding:8px 2px}
+.tab-title .item-cur{border-bottom:2px solid #FFF;color:#e63547;font-weight:700}
+/*7个li时*/
+/*.ttwidth ul li{width:12.5%;color:#000}*/
+.ttwidth ul li{width:12.5%;color:#000}
+.atwidth ul li{width:16.6%;color:#000}
+.money{background:url(../images/money.png) no-repeat;width:41px;height:36px;vertical-align:middle;display:inline-block}
+.balance p{font-size:27.17px;color:#fff;font-family:'Microsoft YaHei';font-weight:700}
+.usertop{position:relative}
+.ttmt ul{margin:0}
+.topup .tuchong{display:inline-block;height:40px;background:#ffde00;border-radius:10px;margin:0 auto;padding: 0 15px;}
+.topup .tuchongs{display:inline-block;width:90px;height:40px;background:#ffde00;border-radius:10px;margin:0 auto}
+.topup .tuchong a{display:block;line-height:40px;color:#000;font-size:18px}
+.topup .tuchongs a{display:block;line-height:40px;color:#000;font-size:18px}
+#pages{padding:10px 0 10px;text-align:center;font:12px '宋体';position:relative}
+#pages a{display:inline-block;padding:0 8px;height:20px;font-size:12px;line-height:19px;background:#fff;border:1px solid #ccc;text-align:center;color:#333}
+#pages a.a1{padding:0 12px;height:22px;line-height:22px;margin-top:0}
+#pages a:hover{background:#232323;color:#ffde00;text-decoration:none;font-size: 12px;}
+#pages span{display:inline-block;padding:0 8px;height:20px;line-height:19px;background:#232323;border:1px solid #232323;color:#fff;text-align:center}
+.page .noPage{display:inline-block;padding:0 12px;height:22px;line-height:22px;border:1px solid #e3e3e3;text-align:center;color:#a4a4a4}
+#pages .rows{position:absolute;top:55px;left:505px;font-size:18px;font-family:'Microsoft YaHei';height:31px;line-height:28px;}

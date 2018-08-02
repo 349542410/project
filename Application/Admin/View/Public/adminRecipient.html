@@ -1,0 +1,22 @@
+          <div class="bs-docs-sidebar hidden-print hidden-xs hidden-sm" role="complementary">
+            <ul class="nav bs-docs-sidenav">
+                <!--  <li><img src="__PUBLIC__/images/1.png"/><b style="font-size:18px">&nbsp;&nbsp;收件人身份证管理</b></li>
+                <li <if condition="(CONTROLLER_NAME eq 'AdminRecipient') && (ACTION_NAME eq 'ntreated_documents')">class="licolor"</if>>
+                	<a href="{:U('AdminRecipient/ntreated_documents')}">　　<img src="__PUBLIC__/images/2.png"/>&nbsp;未处理证件</a>
+                </li>
+                <li <if condition="(CONTROLLER_NAME eq 'AdminRecipient') && (ACTION_NAME eq 'processed')">class="licolor"</if>>
+                	<a href="{:U('AdminRecipient/processed')}">　　<img src="__PUBLIC__/images/2.png"/>&nbsp;已处理证件</a>
+                </li>
+                <li <if condition="(CONTROLLER_NAME eq 'AdminRecipient') && (ACTION_NAME eq 'add_documents')">class="licolor"</if>>
+                	<a href="{:U('AdminRecipient/add_documents')}">　　<img src="__PUBLIC__/images/2.png"/>&nbsp;所有证件 </a>
+                </li>-->
+                <li><img src="__PUBLIC__/images/1.png"/><b style="font-size:18px">&nbsp;&nbsp;{$ModulesName}</b></li>
+				<volist name="three_nav" id="nav"> 
+	                <li <if condition="(CONTROLLER_NAME eq $nav['nav']) && (ACTION_NAME eq $nav['action'])">class="licolor"</if>>
+	                	<a href="{$nav['url']}">　　<img src="__PUBLIC__/images/2.png"/>&nbsp;{$nav['name']}</a>
+	                	
+	                </li>
+                </volist>
+                
+            </ul>
+          </div>

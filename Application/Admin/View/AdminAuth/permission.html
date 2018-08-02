@@ -1,0 +1,526 @@
+<extend name="./base" />
+
+<block name="main">
+
+    <div class="container">
+        <div class="col-md-2">
+			<include file="Public:authNav" />
+        </div>
+        <div class="col-md-10">
+        	<div class="rtop">
+        		<ul class="list-inline">
+ 				 <if condition="ACTION_NAME eq 'permission'">
+ 				 		<li class="blue"><a href="{:U('AdminAuth/index_authNav_role')}">角色列表</a></li>
+ 				 	<else />
+ 				 		<li class="blue"><a href="{:U('AdminAuth/permission')}">角色权限设置</a></li>
+ 				 		
+ 				 	</if>
+ 				 <li style="float:right">您当前所在位置：权限管理&nbsp;/&nbsp;<a href="javascript:void(0);" class="color">角色权限设置</a></li>
+				</ul>
+
+
+				<script type="text/javascript">
+					$(document).ready(function(){
+						
+						$('#collapseTwo').addClass('in');
+						$('#collapse1').addClass('in');
+						$('#collapseOne').removeClass('in');
+						$('#myTab a:first').tab('show');
+						//全选或反选操作
+						$(".moduleName").click(function(){
+							var index=$(this).attr('index');
+							//全选操作
+							if(this.checked){
+								//初始化len为空
+								var len=0;
+								//循环选择权限操作
+								$("input[label='group"+index+"']").each(function(i){
+									len++;					
+									this.checked=true;
+								});
+								$(this).attr('len',len)
+							//反选操作
+							}else{
+								$("input[label='group"+index+"']").removeProp("checked");
+								$(this).attr("len",'0');
+							}
+						
+						});
+			
+						//页面加载时运行时,显示对应角色的权限
+						var ruleID="{$ruleID[0]['rules']}";
+						var arr=ruleID.split(',');
+						//循环判断,有权限就选择
+						$("input[name='rule[]']").each(function(){	
+							//判断是否在数组中		
+							if($.inArray(this.value,arr)>=0){
+								$(this).prop('checked','true');
+								//获取当前label标签的最后一个数字,通过这个数字来获取相应的模块组
+								var label=$(this).attr('label').charAt(5);
+								//权限所在模块组
+								var grp=$('input[index="'+label+'"]');
+								//len属性默认为0,对len循环加1操作
+								var len=parseInt(grp.attr('len'))+1;
+								//改变len的值 
+								grp.attr('len',len);
+								//判断这模块组是否已经选择,如没有选择,则选上
+								//alert('23423');
+								if(!grp.prop('checked')){
+									grp.prop('checked','true');
+								}
+							}
+						});
+			
+						//选择权限时,判断该权限所在的模块组是否选上
+						$("input[name='rule[]']").click(function(){
+							//获取当前label标签的最后一个数字,通过这个数字来获取相应的模块组
+							var label=$(this).attr('label').charAt(5);
+							//权限所在模块组
+							var grp=$('input[index="'+label+'"]');
+							//所在模块组已经选中的权限个数
+							var len=parseInt(grp.attr('len'));
+							if(this.checked){
+								//每选中一次,执行自加操作	
+								len++;
+								grp.attr('len',len);
+								if(!grp.prop('checked')){
+									//判断这模块组是否已经选择,如没有选择,则选上
+									grp.prop('checked','true');
+								}					
+							}else{
+								//每取消一次,执行自减操作
+								len--;
+								grp.attr('len',len);
+								//当被选择权限数为0时,移除模块组选择状态
+								len<=0?grp.removeProp('checked'):'';				
+							}				
+						});
+			
+					});
+				</script>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+								<h4 class="panel-title"> 角 色 权 限 设 置---{$group['name']}</h4>
+						</div>	
+						<form class="form-inline" action="{:U('AdminAuth/authUpdate')}" method="post">
+						<input type="hidden" name="groupID" value='{$group["id"]}' />
+						<!--<div class="panel-body">	
+							<div class="panel-group" id="accordionRule">
+								
+								<volist name="result" id="vo">
+									<div class="panel panel-primary">
+									    <div class="panel-heading">
+									     	<h4 class="panel-title">
+									     	<label class="checkbox-inline">
+									     		<input type='checkbox' class="moduleName" index="{$i}" len="0" />
+									     		<span data-toggle="collapse" data-toggle="collapse" data-parent="#accordionRule" href="#collapse{$i}">{$key}</span></label>
+									      	</h4>
+									    </div>
+									   
+									    <div id="collapse{$i}" class="panel-collapse collapse in">
+										      	<div class="panel-body">
+										         	<foreach name="vo" item="v">
+										         		<label class="checkbox-inline">
+										         			<input type='checkbox' name="rule[]" label="group{$i}" value="{$v['id']}" /> {$v['title']}
+										         		</label>
+										         	</foreach>
+										     	</div>
+									    </div>
+							  		</div>
+							  	</volist>		  	
+							</div>
+						</div>
+				
+						<div class="panel-footer">
+							<div class="form-group">		
+									<button type="submit" class="btn btn-success btn-add">更新</button>
+							</div>
+						</div> -->
+						
+						<style type="text/css">
+						ul{list-style:none;padding:0;}
+						#menu .tree1{padding:14px 14px 14px 39px;color:#6F93FF;font-size:16px;font-family:"黑体";border-bottom:solid 1px #eee;}
+						#menu #tree_root{overflow:auto;}
+						#menu #tree_root li span{display:block;height:35px;line-height:24px;color:#222;cursor:pointer;}
+						#menu #tree_root li span.tree2{padding:6px 6px 6px 20px;}
+						#menu #tree_root li span.tree3{padding:6px 6px 6px 34px;}
+						#menu #tree_root li span.tree4{padding:6px 6px 6px 48px;}
+						#menu #tree_root li span.tree5{padding:6px 6px 6px 62px;}
+						#menu li .hover,#menu li span:hover{background-color:#e9edf6;}
+						#menu ul{overflow:hidden;}
+						#menu ul li b{font-weight:normal;position:relative;padding-left:16px;}
+						#menu ul li b:before{display:block;font-size:0;top:5px;left:0;content:"";width:4px;height:4px; border:solid 1px transparent;transform:rotate(45deg);-o-transform:rotate(45deg);-ms-transform:rotate(45deg);-moz-transform:rotate(45deg);-webkit-transform:rotate(45deg);position:absolute;}
+						#menu ul li .On:before,#menu ul li .On2Off:before{top:3px;border-bottom-color:#999;border-right-color:#999;}
+						#menu ul li .Off:before{top:5px;border-top-color:#999;border-right-color:#999;}
+						#menu ul li .On2Off:before{transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform:rotate(0deg);-moz-transform:rotate(0deg);-webkit-transform:rotate(0deg);}
+						
+						</style>
+						<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+						<script type="text/javascript">
+						$(function(){
+							//目录树折叠按钮 -------------------------------
+							function setTreeStyle(obj){
+								var objStyle = obj.children("b");
+								var objList = obj.siblings("ul");
+								if(objList.length == 1){
+									var style = objStyle.attr("class");
+									objStyle.attr("class","On2Off");
+									setTimeout(
+										function(){
+											if(style == "Off"){
+												objList.parent().siblings("li").children("span").children(".On").each(function(){
+													setTreeStyle($(this).parent());	
+												});
+												var H = objList.innerHeight()
+												objList.css({display:"block",height:"0"});
+												objList.animate({height:H},300,function(){$(this).css({height:"auto"});});
+												objStyle.attr("class","On");
+											}
+											else if(style == "On"){
+												objList.find("li").children("span").children(".On").each(function(){
+													setTreeStyle($(this).parent());	
+												});
+												var H = objList.innerHeight()
+												objList.animate({height:0},300,function(){$(this).css({height:"auto",display:"none"})});
+												objStyle.attr("class","Off");
+											}
+										},
+										42
+									);
+								}
+							}
+							$("#tree_root").find("li").children("span").click(function(){
+								setTreeStyle($(this));
+							});
+							// -----------------------------------------	
+						})
+						</script>
+						<div id="menu" style="height:450px; overflow:auto;">
+						    <ul id="tree_root">
+						    	<volist name="result" id="vo">
+							        <li>
+							            <span class="tree2"><b class="On"><input type="checkbox" <if condition="array_intersect($vo['default'], $ruleid)">checked="checked"</if>   data="{$vo['modules']['id']}" onclick="ruleAll(this)" >{$vo['modules']['ModulesName']}</b></span>
+							            <notempty  name="vo['rule']">
+							            	<ul style="display: block; height: auto;">
+							            		<volist name="vo['rule']" id="rules">
+							            			<li>
+									                   <span class="tree3">
+									                   		<b class="On">
+									                   			<!-- <input type="checkbox" name="rule[]" <if condition="in_array($rules['id'], $ruleid)">checked="checked"</if> value="{$rules['id']}">{$rules['title']}  -->
+									                   			<input type="checkbox" name="rule[]" <if condition="in_array($rules['id'], $ruleid)">checked="checked"</if> value="{$rules['id']}">
+									                   			<a onclick="current(this)">{$rules['title']}</a>
+									                   		</b>
+									                   </span>
+									                </li>    
+							            		</volist>
+							            	</ul>
+							            </notempty >
+								            <ul style="display: block; height: auto;">
+								            	<volist name="vo['subclass']" id="sub">
+								            		
+									                <li>
+									                    <span class="tree3"><b class="On"><input type="checkbox" <if condition="array_intersect($sub['default'], $ruleid)">checked="checked"</if>  data="{$sub['modules']['id']}" onclick="ruleAll(this)" >{$sub['modules']['ModulesName']}</b></span>
+
+
+									                    <ul style="display: block; height: auto;">
+									                      
+									                       
+														<notempty  name="sub['rule']">
+															
+												            	<php>
+												            			foreach($sub['rule'] as $rule){
+												            				echo '<li>';
+												            				echo '<span class="tree3"><b class="On"><input type="checkbox" name="rule[]" ';
+												            				if(in_array($rule['id'], $ruleid)){ 
+												            					echo 'checked="checked"';
+												            				};
+												            				echo 'value="'.$rule['id'].'">';
+												            				//echo $rule['title'];
+												            				echo '<a onclick="current(this)">' . $rule['title'] . '</a>';
+												            				echo '</b></span>';
+												            				echo '</li>';
+												            			}
+												            		
+												            	</php>
+											            </notempty>									                      
+									                      
+									                      
+									                        <php> foreach($sub['subclass'] as $subc){
+									                       			 
+										                        echo '<li>'; 
+										                        echo '<span class="tree4"><b class="On">';
+																echo '<input type="checkbox" ';
+																if(!empty(array_intersect($subc['default'], $ruleid))){
+																			echo 'checked="checked"';
+																}
+																echo 'data="'.$subc['modules']['id'].'" onclick="ruleAll(this)" >';
+										                        echo $subc['modules']['ModulesName'] ;
+										                        echo '</b></span>';
+										                        echo '<ul style="display: block; height: auto;">';
+										                       
+										                        foreach($subc['rule'] as $r){
+										                       		echo '<li><span class="tree5"><b>';
+										                        	echo '<input type="checkbox" name="rule[]" value="'.$r['id'].'"';
+										                        	if(in_array($r['id'], $ruleid)){ 
+												            			echo 'checked="checked"';
+												            		};
+										                        	echo '>'; 
+										                        	echo '<a onclick="current(this)">' . $r['title'] . '</a>';
+										                        	echo '</b></span></li>';
+										                        }
+										                        
+										                        echo '</ul>';
+										                        echo '</li>';
+										                        
+										                   }</php>
+									                       
+									                    </ul>								                    
+									                </li>      
+								        		</volist>
+								            </ul>
+							           
+							        </li>
+						        </volist>
+						    </ul>
+						</div>						
+						
+						<div class="panel-footer">
+							<div class="form-group">		
+									<button type="button" onclick="fromdata(this)" class="btn btn-success btn-add">更新</button>
+							</div>
+						</div>						
+					
+					</form>
+				</div>
+
+
+        	</div>
+        </div>
+		</div>		
+<script type="text/javascript">
+
+	function ruleAll(obj){
+
+		var judge = $(obj).is(":checked");
+		var data = $(obj).attr('data');
+		var className = 'auth_' + data;
+		$(obj).parent().parent().parent().attr('class', className);
+		$("."+className+" input[type='checkbox']").each(function(){
+		    //alert($(this).val());
+			//alert('43656');
+			//var rule = $(this).attr('class');
+			if(judge){
+				//alert('sdfvgdf');
+				//$('.'+rule+'').attr('checked', 'checked');
+				//$('.'+rule+'').checked = true;
+				$(this).prop("checked", 'checked');
+				//$(this).checked = true;
+			}else{
+				//alert('324');
+				//$('.'+rule+'').removeAttr('checked');	
+				//$('.'+rule+'').checked = false;
+				//$(this).attr('checked', ' ');
+				$(this).removeAttr('checked');
+			}
+			
+		});
+		
+		//上一级默认勾选
+		var k = 0;
+		$(obj).parent().parent().parent().parent().find(':input[type="checkbox"]').each(function(){
+			if($(this).is(":checked")){
+				k = k + 1;
+			}
+		});
+		if(k > 0){
+			$(obj).parent().parent().parent().parent().prev().children().children('input').prop("checked", 'checked');
+		}else{
+			$(obj).parent().parent().parent().parent().prev().children().children('input').removeAttr("checked");
+		}
+
+		//上二级（顶级）默认勾选
+		var kk = 0;
+		$(obj).parent().parent().parent().parent().parent().parent().parent().find(':input[type="checkbox"]').each(function(){
+			if($(this).is(":checked")){
+				kk = kk + 1;
+			}
+		});
+		
+		if(kk > 1){
+			$(obj).parent().parent().parent().parent().parent().parent().prev().children().children('input').prop("checked", 'checked');
+		}else{
+			$(obj).parent().parent().parent().parent().parent().parent().prev().children().children('input').removeAttr("checked");
+		}
+		
+
+		 
+	}
+/*	
+	function current(obj){
+		var curr = $(obj).prev(':input[name="rule[]"]:checked').val();
+		if(typeof(curr) == 'undefined'){
+			//$(obj).prev(':input[name="rule[]"]').attr('checked', 'checked');
+			$(obj).prev(':input[name="rule[]"]').prop("checked", 'checked');
+		}else{
+			$(obj).prev(':input[name="rule[]"]').removeAttr("checked");
+			//$(obj).prev(':input[name="rule[]"]').removeAttr('checked');
+		}
+		
+	}
+*/
+
+	function current(obj){
+		var curr = $(obj).prev(':input[name="rule[]"]:checked').val();
+		if(typeof(curr) == 'undefined'){
+			//$(obj).prev(':input[name="rule[]"]').attr('checked', 'checked');
+			$(obj).prev(':input[name="rule[]"]').prop("checked", 'checked');
+			$(obj).parent().parent().parent().parent().prev().children().children('input').prop("checked", 'checked');
+		}else{
+			$(obj).prev(':input[name="rule[]"]').removeAttr("checked");
+			//$(obj).prev(':input[name="rule[]"]').removeAttr('checked');
+		}
+
+		//上一级是否默认选中		
+		var i = 0;
+		$(obj).parent().parent().parent().parent().find(':input[type="checkbox"]').each(function(){
+			if($(this).is(":checked")){
+				i = i + 1;
+			}
+			//alert($(this).val());
+		});
+		
+		if(i > 0){
+			$(obj).parent().parent().parent().parent().prev().children().children('input').prop("checked", 'checked');
+		}else{
+			
+			$(obj).parent().parent().parent().parent().prev().children().children('input').removeAttr("checked");
+		}
+
+		
+		//上二级是否默认选中
+		var j = 0;
+		$(obj).parent().parent().parent().parent().parent().parent().parent().find(':input[type="checkbox"]').each(function(){
+			if($(this).is(":checked")){
+				j = j + 1;
+			}
+			//alert($(this).val());
+		});		
+		
+		if(j > 1){
+			$(obj).parent().parent().parent().parent().parent().parent().prev().children().children('input').prop("checked", 'checked');
+		}else{
+			
+			$(obj).parent().parent().parent().parent().parent().parent().prev().children().children('input').removeAttr("checked");
+		}
+
+		//上三级(顶级)是否默认选中
+		var d = 0;
+		$(obj).parent().parent().parent().parent().parent().parent().parent().parent().parent().find(':input[type="checkbox"]').each(function(){
+			if($(this).is(":checked")){
+				d = d + 1;
+			}
+			//alert($(this).val());
+		});		
+		
+		if(d > 2){
+			$(obj).parent().parent().parent().parent().parent().parent().parent().parent().prev().children().children('input').prop("checked", 'checked');
+		}else{
+			
+			$(obj).parent().parent().parent().parent().parent().parent().parent().parent().prev().children().children('input').removeAttr("checked");
+		}
+
+		
+
+			
+	}
+
+	
+
+	function ityzl_SHOW_LOAD_LAYER(){  
+	    return layer.msg('努力中...', {icon: 16,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: '200px', time:100000}) ;  
+	}  
+	function ityzl_CLOSE_LOAD_LAYER(index){  
+	    layer.close(index);  
+	}  
+	function ityzl_SHOW_TIP_LAYER(str, url = ''){  
+	    layer.msg(''+str+'',{time: 2000,offset: '200px'}); 
+	    if(url){
+	    	window.location = url;
+	    }else{
+	    	window.location.reload(); 
+	    }
+	} 
+	
+function fromdata(obj){
+
+	var str=document.getElementsByName("rule[]");
+	var objarray=str.length;
+	var chestr="";
+	for (i=0;i<objarray;i++)
+	{
+	  if(str[i].checked == true)
+	  {
+	   chestr+=str[i].value+",";
+	  }
+	}
+	//alert(chestr);
+	//var filest = files[0];
+	//var view_to = $(':input[name="view_to[]"]').val();
+	var groupID = $(':input[name="groupID"]').val();
+
+	var formData = new FormData();
+	formData.append("groupID", groupID);
+	formData.append("rule", chestr);
+	
+	
+	var request;
+	if (window.XMLHttpRequest) {
+		request = new XMLHttpRequest();
+	} else {
+	    request = new ActiveXObject('Microsoft.XMLHTTP');
+	}
+	var i;
+	ityzl_SHOW_LOAD_LAYER();
+	request.onreadystatechange = function(){
+		if(request.status == 200 && request.readyState == 4){
+			if(request.responseText){
+				//成功返回
+				var a = JSON.parse( request.responseText );
+				var status = a.status;
+				var str = a.data.strstr;
+				var url = a.data.url;
+				ityzl_CLOSE_LOAD_LAYER(i); 
+                ityzl_SHOW_TIP_LAYER(str, url);
+                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                //var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                parent.layer.msg(str);
+                parent.location.reload();	
+    			parent.layer.close(index);
+    			 
+                //parent.layer.close(str); //再执行关闭 
+                ityzl_SHOW_TIP_LAYER(str, url);
+                //document.getElementById("form2").reset();				
+			}else{
+				ityzl_CLOSE_LOAD_LAYER(i);
+			}
+		}
+	}
+	request.open("post", "{:U('AdminAuth/authUpdate')}");
+	//request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	request.setRequestHeader("X-Requested-With","XMLHttpRequest");
+	request.send(formData);								
+	// 上传代码返回结果之后，将图片插入到编辑器中
+	
+	
+}
+	
+</script>
+
+
+<div class="foot"></div>
+
+</block>
+
+
+</body>
+</html>

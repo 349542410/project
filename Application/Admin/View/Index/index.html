@@ -1,0 +1,208 @@
+<extend name="./base" />
+
+<block name="main">
+
+    <div class="container">
+        <div class="col-md-2">
+			<include file="Index:indexNav" />
+        </div>
+        <div class="col-md-10">
+<!-- =========================时间显示	start =======================-->
+        	<div class="rtop" style="margin:0px; padding:0px;">
+        		<ul class="list-inline">
+        			<volist name='time_zone' id="vo">
+	 					<li style="margin-right:15px">
+							<div align="center" style="font-size:17px; font-weight:bold;">{$vo.name_zone}</div>
+							<div align="center" style="font-size:25px; font-weight:bold;" class="rq_{$key}">{$vo['his']}</div>
+							<div align="center" style="font-size:17px; font-weight:bold;" class="time_{$key}">{$vo['ymd']}</div>
+							<div align="center" style="font-size:17px; font-weight:bold;" class="xq_{$key}">{$vo.xq}</div>
+						</li>
+					</volist>
+ 				</ul>
+        	</div>
+
+
+			<script type="text/javascript">
+				var sjc = {$sjc};
+				onload = setInterval(function(){
+					for(var i in sjc){
+						sjc[i] = sjc[i] + 1000;
+						var gtm = parseInt(sjc[i]);
+						var nd = new Date(gtm);
+						var year = nd.getFullYear();
+						var month = nd.getMonth() + 1;	//0-11
+						var date = nd.getDate();
+						var day = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")[nd.getDay()];
+						var hour = nd.getHours() < 10 ? "0" + nd.getHours() : nd.getHours();
+						var minute = nd.getMinutes() < 10 ? "0" + nd.getMinutes() : nd.getMinutes();
+						var second = nd.getSeconds() < 10 ? "0" + nd.getSeconds() : nd.getSeconds();
+						var currentTime = year + "年" + month + "月" + date + "日 ";
+						var rqs =  hour + ":" + minute + ":" + second;
+						var time_numb = '.time_' + i;
+						var xq =  '.xq_' + i;
+						var rq = '.rq_' + i;
+						$(time_numb).html(currentTime);
+						$(xq).html(day);
+						$(rq).html(rqs);
+					}
+				},1000);
+			</script>
+<!-- ==========================时间显示	end =============================-->
+
+
+<!-- =========================公告显示	start =======================-->
+			<script type="text/javascript">
+				function timer(opj){
+					$(opj).find('ul').animate({
+						marginTop : "-1.5rem"
+						},500,function(){
+						$(this).css({marginTop : "0.3rem"}).find("li:first").appendTo(this);
+					})
+				}
+				$(function(){
+					var num = $('.notice_active').find('li').length;
+					if(num > 1){
+					   var time=setInterval('timer(".notice_active")',3500);
+						/*$('.gg_more a').mousemove(function(){
+							clearInterval(time);
+						}).mouseout(function(){
+							time = setInterval('timer(".notice_active")',3500);
+						}); */
+					}
+
+					$(".news_ck").click(function(){
+						location.href = $(".notice_active .notice_active_ch").children(":input").val();
+					})
+				});
+
+				function addto(obj){
+				    layer.open({
+				        type: 2,
+				        title: '通告添加',
+				        offset:['25%', '25%'],
+				        maxmin: true,
+				        shadeClose: true, //点击遮罩关闭层
+				        area : ['900px' , '520px'],
+				        content: "{:U('AdminAnnouncement/add')}"
+				      });
+
+				}
+
+
+			</script>
+
+			<style type="text/css">
+			/*border-bottom: 1px solid #F0F0F0;*/
+				.huadong {width: 100%;height:4rem;padding: 0.5rem 0 0.3rem 0; /*border-bottom: 1px solid #F0F0F0; */position:relative;font: 12px/1.5 "Hiragino Sans GB","Microsoft YaHei",simsun;margin:0 auto;}
+				.huadong .huabox { width: 80%; line-height: 4rem; }
+				.huadong .hdimg {float:left;line-height:3.5rem;}
+				.huadong .hdimg img { width: 100%; vertical-align:middle;}
+				.huadong h5 {font-size:2rem;float:left; line-height: 0.2rem; margin: 0.8rem 0 0 0; }
+				.huadong .gg_more { float: left;}
+				.huadong .gg_more a { font-size: 0.8rem; text-decoration:none;}
+
+				.huadong .notice_active {
+						float: left;
+						width: 90%;
+						height: 4rem;
+						padding: 0;
+						overflow: hidden;
+						position: relative;
+				}
+				.huadong .notice_active li{list-style-type:none;line-height: 2.4rem; overflow: hidden;}
+				/*.huadong .notice_active li.notice_active_ch {}*/
+				.huadong .notice_active li.notice_active_ch span {color:#656972;font-size:2rem;display: block;overflow: hidden; width:60%;float: left;
+				overflow: hidden;margin:0 0 2rem 0;}
+				.huadong .gg_more .news_ck {
+						float: left;
+						margin: 0 1rem 0 1rem;
+						color: #888;
+						width: 5rem;
+						height: 2rem;
+						line-height: 2rem;
+						display: block;
+						border: 1px solid #656972;
+						text-align: center;
+						border-radius: 0.7rem;
+						font-size: 0.8rem;
+						margin-top: 1rem;
+					}
+				.huadong .gg_more .news_more {
+
+				}
+				/*.huadong .notice_active li.notice_active_ch a {text-align:right;float:right;color:#888;font-size:0.8rem;font-style:normal; display:block; width: 15%; line-height: 2.4rem;}
+				.huadong .notice_active li.notice_active_ch div {text-align:right;float:right;color:#888;font-size:0.8rem;font-style:normal; width: 15%; }*/
+
+				.huadong .notice_active li.notice_active_ch div {color:#656972;font-size:2rem;display: block;overflow: hidden; width:15%;float: left;
+				overflow: hidden;margin:0 0 2rem 0;}
+				.huadong .notice_active li.notice_active_ch a {color:#656972;font-size:2rem;display: block;overflow: hidden; width:15%;float: left;
+				overflow: hidden;margin:0 0 2rem 0;}
+
+			</style>
+			<div class="huadong">
+				<div class="huabox">
+				<div class="hdimg"><img src="__PUBLIC__/images/lingdang.png"></div>
+				<h5>【公告】</h5>
+					<div class="notice_active">
+						<ul>
+							<volist name="announcement" id="vo">
+								<li class="notice_active_ch">
+									<span>{$vo['bulletin_title']}</span>
+									<div class="a1">{$vo['times']}</div>
+									<a class="bb"  href="{:U('Index/announ_info', array('id' => $vo['id']))}"   data-toggle="modal" data-target="#myModal">查看详情</a>
+								</li>
+							</volist>
+
+						</ul>
+
+					</div>
+				</div>
+			</div>
+
+<!-- =========================公告显示	end =======================-->
+
+
+<!-- =========================个人资料	start =====================-->
+			<div class="col-sm-12">
+					<div class="form-group col-sm-12">
+						个人信息：
+					</div>
+					<div class="form-group col-sm-6">
+						<label for="username" class="col-sm-2 control-label">用户名:</label>
+						<div class="col-sm-5">
+							{$user.name}
+						</div>
+						<label class="col-sm-2 control-label"></label>
+					</div>
+					<div class="form-group col-sm-6">
+						<label for="username" class="col-sm-2 control-label">姓名:</label>
+						<div class="col-sm-5">
+							{$user.tname}
+						</div>
+						<label class="col-sm-2 control-label"></label>
+					</div>
+
+					<div class="form-group col-sm-6">
+						<label for="username" class="col-sm-2 control-label">邮箱:</label>
+						<div class="col-sm-5">
+							{$user.email}
+						</div>
+						<label class="col-sm-2 control-label"></label>
+					</div>
+					<div class="form-group col-sm-6">
+						<label for="username" class="col-sm-2 control-label">电话:</label>
+						<div class="col-sm-5">
+							{$user.phone}
+						</div>
+						<label class="col-sm-2 control-label"></label>
+					</div>
+
+
+			</div>
+
+<!-- =========================个人资料	end =====================-->
+
+
+        </div>
+	</div>
+</block>

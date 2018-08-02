@@ -1,0 +1,17 @@
+@media print {
+	body{
+		position: relative;
+	}
+	.noprint {    
+		display: none    
+	}
+	.printshow{
+		display: block;
+	}
+	.printshow ul{
+		position: absolute;
+		list-style: none;
+		top:-200px;
+		left: -200px;
+	}
+}

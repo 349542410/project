@@ -1,0 +1,330 @@
+<extend name="Public:base_register" />
+<!-- 完善个人注册信息html -->
+<html>
+<!-- head -->
+<block name="css">
+<script type="text/javascript">
+  var select_cr = "{:L('Cr_Select')}"; 
+</script>
+<script type="text/javascript" src="__JS__/feg_relevance.js"></script>
+<script type="text/javascript">
+    $(function () {
+
+        $("ul.c-forms").validationEngine({ validationEventTriggers: "keyup" });
+        $('input#MainContent_btnNextStep').click(function () {
+            if ($('ul.c-forms').validationEngine({ returnIsValid: true })) {
+                if ($('#MainContent_ddIdType').val() == "") {
+                    alert(CertIDType_CheckSelect);
+                    return false;
+                }
+                if ($('ResidentContry').val() == "") {
+                    alert(CertResidentContry_CheckSelect);
+                    return false;
+                }
+                var sPhone = $('#MainContent_txtCnPhone').val();
+                var sTel = $('#MainContent_txtFixedTelephone').val();
+                var sProvince = $('#MainContent_ddProvince option:selected').text();
+                var sCity = $('#MainContent_ddCity').val();
+                var cPhone = $('#MainContent_txtContactsMobilePhone').val();
+                var cTel = $('#MainContent_txtContactsFixedPhone').val();
+                if (sPhone == "" && sTel == "") {
+                    alert(CertStep1_CheckPhoneAndFixedTel2);
+                    return false;
+                }
+                if (cPhone == "" && cTel == "") {
+                    alert(CertStep1_CheckPhoneAndFixedTel);
+                    return false;
+                }
+                if (sProvince == "Alaska" || sProvince == "District of Columbia") {
+
+                } else {
+                    if (sCity == "") {
+                        alert(CertSelectCity);
+                        return false;
+                    }
+                }
+                return true;
+            } else {
+                return false;
+            }
+        });
+        $('#ResidentContry').change(function () {
+            var result = "";
+            var residentCountryID = $('#ResidentContry option:selected').val();
+            switch (residentCountryID) {
+                case '2':
+                    result = "+86";
+                    break;
+                case '1':
+                    result = "+1";
+                    break;
+            }
+            $('#txtMobileAreaCode').val(result);
+            $('#txtFixedAreaCode').val(result);
+            $('#MainContent_mAreaCodeHidden').val(result);
+            $('#MainContent_fAreaCodeHidden').val(result);
+        });
+        $('#btnGo').click(function () {
+            $('#MainContent_divGo').dialog("close");
+        });
+    });
+    function OpenGoWin() {
+        $('#MainContent_divGo').dialog({
+            autoOpen: true,
+            width: 550,
+            modal: true,
+            close: function () {
+
+            }
+        });
+    }
+</script>
+</block>
+<!-- head end -->
+<body>
+<block name="banner">
+    <div class="banners">
+            <div class="left">
+                <div class="ads">
+                    <p class="now">{:L('Per_r_re')}</p>
+                    <p class="navleft">{:L('Welcome_re')}</p>
+                </div>
+            </div>
+            <div class="right">
+                <img src="__IMG__/brief_01.jpg" width="100%" height="155">
+            </div>
+    </div>
+</block>
+<block name="content">
+<form method="post" action="{:U('CertStep1ForPerson')}" id="form1">
+
+<div class="empty-container recert_vz">
+
+    <!-- 顶部菜单 -->
+
+    <div class="empty-content">
+        <div class="empty-area">
+            
+     <div id="MainContent_errorInfo" style="font-size:medium;color:red;"></div>
+    <div class="reg-container">
+        
+  <ul class="c-loginprocess">
+    <li id="MainContent_RegisterProcess1_step1" class="passed">
+         <p class="p1">1</p>
+        <span>{:L('Completed_re')}</span>
+    </li>
+    <li id="MainContent_RegisterProcess1_step2" class="passed">
+         <p class="p1">2</p>
+        <span>{:L('Email_re')}</span>
+    </li>
+    <li id="MainContent_RegisterProcess1_step3" class="passed">
+        <p class="p1">3</p>
+        <span id="MainContent_RegisterProcess1_cType">{:L('Complete_re')}</span>
+    </li>
+    <li id="MainContent_RegisterProcess1_step4">
+        <p class="p1">4</p>
+        <span>{:L('Upload_re')}</span>
+    </li>
+    <li id="MainContent_RegisterProcess1_step5">
+        <p class="p1">5</p>
+        <span>{:L('Sign_re')}</span>
+    </li>
+    <li class="last">
+        <p class="p1">6</p>
+        <span>{:L('Wait_f_re')}</span>
+    </li>
+      <div style="clear: both;"></div>
+</ul>
+         <div class="bg-white ly-pd-30 registermain" style="padding: 50px 0px 50px 0;">
+           <h2 id="MainContent_tMsg1" class="fc-yel" style="display:block; padding:0 15px;">{:L('Cr_You_have')}</h2>
+           <h2 id="MainContent_tMsg2" class="fc-yel" style="display:none; padding:0 15px;"></h2>
+           <div class="fc-999 ly-pd-tb-5" style="padding:0 15px; line-height:30px;">{:L('Cr_If_you')}</div>
+            <ul class="c-forms">
+              <li class="ly-mg-tb-20 c-hr-title">
+                  <b><span></span>{:L('Cr_Sender_in')}</b>
+                 <input name="mAreaCodeHidden" type="hidden" id="MainContent_mAreaCodeHidden" />
+                 <input name="fAreaCodeHidden" type="hidden" id="MainContent_fAreaCodeHidden" />
+              </li>
+              <li class="ly-mg-tb-20">
+                <div class="c-forms-label">{:L('Cr_name')}<span class="fc-red">*</span></div>
+                 <input name="UserName" type="text" value="{$FirstName} {$LastName}" maxlength="100" id="UserName" class="c-input-text mt_text validate[required]" />
+             </li>
+             <li class="ly-mg-tb-20">
+                <div class="c-forms-label">
+                    {:L('Cr_Country_A')} : 
+                    <!-- 美国 -->
+                   
+                </div>
+                 <switch name="Think.session.reg_info.countryId">
+                            <case value="1">{:L('USA_VZ')}</case>
+                            <case value="4">{:L('Germany_VZ')}</case>
+                            <case value="7">{:L('rance_VZ')}</case>
+                            <case value="5">{:L('Italy_VZ')}</case>
+                            <case value="3">{:L('UK_VZ')}</case>
+                            <case value="6">{:L('Japan_VZ')}</case>
+                            <default />      
+                    </switch>
+             </li>
+             <li class="ly-mg-tb-20">
+                <div class="ly-row">
+                    <div class="ly-col-m3">
+                        <div class="c-forms-label">{:L('Cr_Province_City')}<span class="fc-red">*</span></div>
+                        <select name="province" id="MainContent_ddProvince" class="c-md-select validate[required]">
+      	                 <option selected="selected" value="">{:L('Cr_Select')}</option>
+                        </select>
+                    </div>
+                    <div class="ly-col-m3">
+                        <div class="c-forms-label" style="width:100px;">{:L('Cr_City')}<span class="fc-red">*</span></div>
+                        <select name="city" id="MainContent_ddCity" class="c-input-text mt_text validate[required]">
+                          <option selected="selected" value="">{:L('Cr_Select')}</option>
+                        </select>
+                    </div>
+                </div>
+             </li>
+
+             
+            <li class="ly-mg-tb-20">
+                 <div class="ly-row">
+                  <div class="ly-col-m3">
+                   <div class="c-forms-label">
+                  {:L('Cr_Identification')}<span class="fc-red">*</span></div>
+                  <select name="IdType" id="IdType" class="c-md-select validate[required]">
+                  	<option value="">{:L('Cr_Select_id')}</option>
+                  	<option value="驾照">{:L('Cr_Driver_License')}</option>
+                  	<option value="护照">{:L('Cr_passport')}</option>
+
+                  </select>
+                  </div>
+
+                  <div class="ly-col-m3">
+                  <div class="c-forms-label"  style="width:20px;">&nbsp;</div>
+                   <input name="IdNumber" style="width: 330px;" type="text" maxlength="100" id="IdNumber" class="c-input-text mt_text validate[required]" placeholder="{:L('Cr_Id_number')}"/>
+                 </div>
+               </div>
+            </li>
+           
+           <li class="ly-mg-tb-20">
+               <div class="c-forms-label">{:L('Cr_Address_mail')}<span class="fc-red">*</span></div>
+               <input name="address" type="text" maxlength="200" id="address" class="c-input-text mt_text validate[required]" style="width:620px;" />
+            </li>
+           <li class="ly-mg-tb-20">
+               <div class="c-forms-label">{:L('Cr_Postal_mail')}<span class="fc-red">*</span></div>
+               <input name="postCode" type="text" maxlength="20" id="postCode" class="c-input-text mt_text validate[required,custom[noSpecialCaracters]]" />
+            </li>
+            <li class="ly-mg-tb-20" style=" margin-bottom: 0;">
+               <div class="c-forms-label">{:L('Cr_Mobile')}</div>
+                <!-- <input name="PhoneAreaCode" type="text" value="+1" readonly="readonly" id="PhoneAreaCode" class="c-input-text" style="width:25px;" /> -->
+                <input name="Phone" type="text" id="Phone" class="c-input-text mt_text validate[custom[onlyNumber]]" style="width:250px;" />
+                 <div class="c-forms-label" style="width:100px;">{:L('Cr_Phone')}</div>
+                <!-- <input name="FixedPhoneAreaCode" type="text" value="+1" readonly="readonly" id="FixedPhoneAreaCode" class="c-input-text" style="width:25px;" /> -->
+               <input name="FixedTelephone" type="text" id="FixedTelephone" class="c-input-text mt_text validate[length[0,30]]" style="width:260px;" />
+            </li>
+           <li class="ly-mg-tb-20" style="margin:0;color:#808080">
+               <div class="c-forms-label"></div>
+               ({:L('Cr_Fill_number')})
+           </li>
+          <li class="ly-mg-tb-20 c-hr-title">
+             <b><span></span>{:L('Cr_Contact_in')}</b>
+           </li>
+          <li class="ly-mg-tb-20">
+              <div class="c-forms-label">{:L('Cr_Country')}<span class="fc-red">*</span></div>
+                  <select name="ResidentContry" id="ResidentContry" class="c-md-select validate[required]">
+                  	<option value="">{:L('Cr_Select')}</option>
+                  	<option value="中国">{:L('Cr_china')}</option>
+                  	<option value="美国">{:L('USA_VZ')}</option>
+
+                  </select>
+          </li>
+          <li class="ly-mg-tb-20">
+               <div class="c-forms-label">{:L('Cr_name')}<span class="fc-red">*</span></div>
+               <input name="ContactsUserName" type="text" maxlength="200" id="ContactsUserName" class="c-input-text mt_text validate[required]" />
+          </li>
+          <li class="ly-mg-tb-20">
+               <div class="c-forms-label">{:L('Cr_Address')}</div>
+               <input name="ContactsAddress" type="text" maxlength="200" id="ContactsAddress" class="c-input-text" style="width:620px;" />
+          </li>
+         <li class="ly-mg-tb-20">
+               <div class="c-forms-label">{:L('Cr_Postal_code')}</div>
+               <input name="ContactsPostCode" type="text" maxlength="20" id="ContactsPostCode" class="c-input-text mt_text validate[custom[noSpecialCaracters]]" />
+          </li>
+          <li class="ly-mg-tb-20" style=" margin-bottom: 0;">
+               <div class="c-forms-label">{:L('Cr_Mobile')}</div>
+               <!-- <input name="ContactsMobileAreaCode" type="text" readonly="readonly" id="ContactsMobileAreaCode" class="c-input-text" style="width:25px;" /> -->
+               <input name="ContactsMobilePhone" type="text" maxlength="40" id="ContactsMobilePhone" class="c-input-text mt_text validate[custom[onlyNumber]]" style="width:250px;" />
+               <div class="c-forms-label" style="width:100px;" >{:L('Cr_Phone')}</div>
+               <!-- <input name="ContactsFixedAreaCode" type="text" readonly="readonly" id="ContactsFixedAreaCode" class="c-input-text" style="width:25px;" /> -->
+               <input name="ContactsFixedPhone" type="text" maxlength="40" id="ContactsFixedPhone" class="c-input-text mt_text validate[custom[onlyNumber]]" style="width:260px;" />
+          </li>
+         <li class="ly-mg-tb-20" style="margin:0;color:#808080">
+              <div class="c-forms-label"></div> ({:L("Cr_Fill_number")})
+         </li>
+         <li class="ly-mg-tb-20">
+               <div class="c-forms-label">{:L('Cr_QQ_Wechat')}</div>
+               <input name="ContactsQQ" type="text" maxlength="50" id="ContactsQQ" class="c-input-text" />
+         </li>
+          <li class="ly-mg-tb-20" style="text-align:center;">
+                <input type="hidden" name="country" value="美国" />
+                <input type="submit" value="{:L('Next_re')}" id="MainContent_btnNextStep" class="c-btn-lg-next" />
+                &nbsp;<span id="msgbox"></span>
+          </li>
+      </ul>
+    </div>
+    </div>
+   <div id="MainContent_divGo" class="c-alert-md" style="display:none;" title="{:L('Cr_You')}">
+    <div class="bd clearfix">
+        <div class="ly-fl cont-info">
+            <h4 class="fc-yel" style="width:500px;">{:L('Cr_To_b')}</h4>
+            <p class="fc-dim"></p>
+        </div>
+      </div>
+     <div class="bt ft-c" style="padding-top:10px;">
+      <span class="ly-ib ly-vm">
+           <input type="submit" name="ctl00$MainContent$btnGo" value="{:L('Cr_next')}" id="btnGo" class="c-btn-lg-next" />
+           <i class="c-btn-lg-next-after"></i>
+        </span>
+    </div>
+   </div>
+
+        </div>
+    </div>
+
+    <!-- footer -->
+
+</div>
+<script src="__JS__/jquery.form.js"></script>
+<style>
+#msgbox{font-weight:bold;}
+</style>
+<script language="JavaScript">
+// 发送邮件成功后的页面跳转动画
+jQuery(document).ready(function($){
+    $('#form1').ajaxForm({
+        beforeSend:function(){
+          $("#msgbox").html('&nbsp;<img style="width:20px;height:20px;" src="__PUBLIC__/images/msg_loading_d.gif"/>');
+        },
+        success: complete,  //成功则执行complete函数
+        dataType: 'json',
+    });
+});
+function complete(data){
+    if (data.status==1){
+        $('#msgbox').html('<span style="font-size:15px;padding-left:10px;color:green;">'+data.info+'</span>').fadeIn(300).delay(1000).fadeOut(300,function(){
+            window.location.href="{:U(CONTROLLER_NAME.'/CertUploadForPerson')}";
+        });
+      
+    }else{
+        $('#msgbox').html('<span style="font-size:15px;padding-left:10px;color:red;">'+data.info+'</span>').fadeIn(300).delay(1000).fadeOut(300,function(){
+            // $('#myverify').click();                //模拟用户点击刷新验证码
+        });
+    }
+}
+</script>   
+<script type="text/javascript">
+
+OpenGoWin();
+</script>
+</form>         
+</block>
+
+</body>
+</html>

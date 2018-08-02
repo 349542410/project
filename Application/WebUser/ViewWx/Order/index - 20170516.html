@@ -1,0 +1,265 @@
+<!-- 在线下单 -->
+<extend name="Member/base" />
+
+
+<block name="main">
+<script type="text/javascript" src="__MEMBER__/js/city/jquery.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/area.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/location.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/select2.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/select2_locale_zh-CN.js"></script>
+<script src="__MEMBER__/js/cityselected.js"></script>
+<link href="__MEMBER__/css/select2.css" rel="stylesheet"/>
+<!-- <link href="__MEMBER__/css/one.css" rel="stylesheet">
+<script src="__MEMBER__/js/add.js"></script> -->
+<!-- <script type="text/javascript" src="__MEMBER__/js/city/city.js"></script>
+<script type="text/javascript" src="__MEMBER__/js/city/edit.js"></script>-->
+<style>
+	h3{margin:0;padding:0;}
+	#content{padding-bottom: 20px !important;}
+	label{margin: 0 ;padding: 0;    white-space: nowrap;}
+	.ordtop{width: 1000px;height: 420px;border:1px solid #000;margin: 20px auto;}
+	.ordtop .ordsender{float: left;width:500px;margin:20px 0px;height: 380px;border-right: 1px solid #000;padding: 0px 50px;}
+	.ordtop .ordsender h4,.ordtop .ordrec h4{font-weight: bold;}
+	.ordtop .ordsender ul,.ordtop .ordrec ul{margin-top: 30px;}
+	.ordtop .ordsender li{border:1px solid #000;border-radius:9px;padding-left:40px;height: 42px;line-height: 40px;margin-top: 20px;width: 360px;}
+	.ordtop .ordsender input,.ordtop .ordrec input{border:none;outline: none;margin-left: 5px;}
+	.ordtop .ordrec{float: left;width:498px;margin:20px 0px;padding: 0px 50px;}
+	.ordtop .ordrec li{border:1px solid #000;border-radius:9px;padding-left:40px;height: 42px;line-height: 40px;margin-top: 20px;width: 400px;}
+
+	.ordhead{margin:0px auto;width: 1000px;height: 50px;background: #232323;color:#fff;text-align:center;}
+	.ordhead h3{line-height: 50px;}
+	.ordbody{margin:25px auto;width: 1000px;}
+	.form-signin table{margin:0 25%;}
+	.form-signin .tdleft{text-align: right;}
+	.oblast{padding-bottom: 0;}
+	.copy_r{border:none !important;}
+	#mimenu{color: grey;font-size: 17px;white-space: nowrap}
+	.clchang{width:113px;margin:2px; height:30px;padding:2px;}
+	.clzhong{width:83px;margin:2px; height:30px;padding:2px;}
+	.clduan{height:30px;padding:2px;}
+	.forspan{color:#4f4f4f;font-size:14px;}
+</style>
+	<div class="form form_index" >
+    <div class="form-signin" style="width:100%;min-height:500px;margin:0 auto;padding:0;">
+	    <form action="{:U('Order/step_two')}" method="post" class="form-inline" id="tempForm" name="add">
+		    <div class="ordtop">
+		    	<!-- **************************************************** -->
+	    		<!-- 寄件人信息 -->
+		    	<div class="ordsender">
+		    		<h4>{:L('SenderInfo')}</h4>
+		    		<ul>
+		    			<li><label>{:L('FullName')}：</label><input type="text" value="" name="PostName" required oninvalid="setCustomValidity('请输入寄件人！');" oninput="setCustomValidity('');" ></li>
+		    			<li><label>{:L('Address')}：</label><input type="text" value="" name="PostAddress" required oninvalid="setCustomValidity('请输入寄件人地址！');" oninput="setCustomValidity('');"></li>
+		    			<li><label>{:L('Phone')}：</label><input type="phone" value="" name="PostPhone" required oninvalid="setCustomValidity('请输入寄件人电话！');" oninput="setCustomValidity('');"></li>
+		    			<li><label>{:L('ZipCode')}：</label><input type="text" value="" name="PostCode" required oninvalid="setCustomValidity('请输入寄件人邮编！');" oninput="setCustomValidity('');"></li>
+		    		</ul>
+		    	</div>
+		    	<!-- **************************************************** -->
+	    		<!-- 收件人信息 -->
+		    	<div class="ordrec">
+		    		<h4>{:L('RecInfo')}</h4>
+		    		<ul>
+		    			<li><label>{:L('FullName')}：</label><input type="text" value="" name="RecName" required oninvalid="setCustomValidity('请输入收件人！');" oninput="setCustomValidity('');"></li>
+		    			<li>
+		    				<label>{:L('Address')}：</label>
+		    				<select id="loc_province" style="width:90px;" required="required">
+						    </select>
+						    <select id="loc_city" style="width:80px; margin-left: 5px" required="required">
+						    </select>
+						    <select id="loc_town" style="width:90px;margin-left: 5px" required="required">
+						    </select>
+						    <input id="province" name="Province" value="" style="display:none" />
+						    <input id="city" name="City" value="" style="display:none" />
+						    <input id="town" name="Town" value="" style="display:none" />
+		    			</li>
+		    			<li><label>{:L('DetaileAddress')}：</label><input type="text" value="" name="RecAddress" required oninvalid="setCustomValidity('请输入详细地址！');" oninput="setCustomValidity('');"></li>
+		    			<li><label>{:L('Phone')}：</label><input type="text" value="" name="RecPhone" required oninvalid="setCustomValidity('请输入收件人电话！');" oninput="setCustomValidity('');"></li>
+		    			<li><label>{:L('ZipCode')}：</label><input type="text" value="" name="RecCode" required oninvalid="setCustomValidity('请输入收件人邮编！');" oninput="setCustomValidity('');"></li>
+		    		</ul>
+		    	</div>
+		    	<div class="clear"></div>
+		    </div>
+<!-- **************************************************** -->
+	    	<!-- 选择线路 -->
+	    	<div class="ordhead"><h3>{:L('SelectLine')}</h3></div>
+	    	<div class="ordbody">
+		    	<table class="tab1" border="0" cellpadding="0" cellspacing="0">
+				    <tr>
+						<td class="tdleft"><label>{:L('TranLine')}：</label></td>
+						<td style="width: 90px;">
+						<label>
+		                <select name="TransferLine" id="TransferLine" class="form-control" required>
+							<option value="">{:L('PleaseSelectLine')}</option>
+							<volist name="tranline" id="vo">
+								<option value="{$vo['id']}" ><php>$l = L('MKLINES');echo $l[$vo['lngname']];</php></option>
+							</volist>
+		<!-- 					<option value="1" <if condition="($info['TranKd']) eq '1'">selected</if>><php>$l = L('MKLINES');echo $l[1];</php></option>
+							<option value="2" <if condition="($info['TranKd']) eq '2'">selected</if>><php>$l = L('MKLINES');echo $l[2];</php></option> -->
+		                </select>
+						</label>
+						</td>
+						<td><p id="mimenu"></p></td>
+						<ul style="display:none;">
+							<volist name="tranline" id="vo">
+								<li class="m{$vo['id']}"><php>$l = L('MKRemarks');echo $l[$vo['lngremark']];</php></li>
+							</volist>
+						</ul>
+		            </tr>
+					<script>
+						$(document).ready(function(){
+							$('#TransferLine').change(function(){
+								// alert($(this).children('option:selected').val());
+								var p = $(this).children('option:selected').val();//这就是selected的值
+
+								if(p != ''){
+									// alert(p);
+									var h = $(".m"+p).html();
+									$("#mimenu").html('说明：'+h);
+								}else{
+									$("#mimenu").html('');
+								}
+							})
+						})
+					</script>
+				</table>
+	    	</div>
+<!-- **************************************************** -->
+			<!-- 货品声明 -->
+			<div class="ordhead"><h3>{:L('GoodsList')}</h3></div>
+	    	<div class="ordbody oblast">
+					<table class="table_now" style="margin:10px auto; width:905px; height:110px;" id="table">
+					<input type="hidden" id="num" value="5" autocomplete="off">
+						<tr>
+							<td width="10%" style="font-weight: bold;" class="copy_r"></td>
+							<td width="10%" style="font-weight: bold;">{:L('BrandName')}</td>
+							<td width="10%" style="font-weight: bold;">{:L('ProductName')}</td>
+							<td width="10%" style="font-weight: bold;">{:L('ProCate')}</td>
+							<td width="20%" style="font-weight: bold;">{:L('Customs')}</td>
+							<td width="10%" style="font-weight: bold;">{:L('Amount')}</td>
+							<td width="10%" style="font-weight: bold;">{:L('UnitPrice')}</td>
+							<td width="10%" style="font-weight: bold;">{:L('Currency')}</td>
+							<td width="10%" style="font-weight: bold;">{:L('Remarks')}</td>
+						</tr>
+						<!-- 配置控制行数 gan -->
+						<for start="1" end="$Think.config.OROW"> 
+						<tr>
+							<td class="copy_r"><if condition="$i eq 1"><a onclick="copy_row(this)" href="javascript:void(0)">[+]</a></if></td>
+							<td width="10%;"><input type="text" name="brand_{$i}" class="clchang" <eq name="i" value="1">required oninvalid="setCustomValidity('请输入品牌！');" oninput="setCustomValidity('');"</eq>></td>
+							<td width="10%;"><input type="text" name="product_{$i}" class="clchang" <eq name="i" value="1">required oninvalid="setCustomValidity('请输入货品名称！');" oninput="setCustomValidity('');"</eq>></td>
+							
+							<td width="10%;"><input type="text" name="catname_{$i}" class="clchang" <eq name="i" value="1">required oninvalid="setCustomValidity('请输入货品类别！');" oninput="setCustomValidity('');"</eq>></td>
+
+							<td width="20%;">---</td>
+							<td width="10%;"><input type="text" name="amount_{$i}" class="clzhong" <eq name="i" value="1">required oninvalid="setCustomValidity('请输入数量！');" oninput="setCustomValidity('');"</eq>></td>
+
+							<td width="10%;"><input type="text" name="price_{$i}" class="clzhong" <eq name="i" value="1">required oninvalid="setCustomValidity('请输入单价！');" oninput="setCustomValidity('');"</eq>></td>
+							<!-- 币种 -->
+							<td width="10%;" class="clzhong">
+								<select name="coin_{$i}" id="" class="clduan" <eq name="i" value="1">required oninvalid="setCustomValidity('请输入货币类型！');" oninput="setCustomValidity('');"</eq>>
+									<option value=""></option>
+									<option value="CNY" selected="selected">￥</option>
+									<option value="USD">$</option>
+								</select>
+							</td>
+							<td width="10%;" ><input type="text" name="remark_{$i}" class="clchang"></td>
+						</tr>
+						</for>
+					</table>
+					<span class="forspan">{:L('Notice')}</span>
+            </tr>
+            
+<!-- **************************************************** -->
+			<!-- 按钮部分 -->
+			<tr>
+				<table style="width: 1000px;float: right;margin: 0 auto;">
+					<tr>
+						<td id="hide_boxs">
+							<input type="hidden" value="{$user_id}" name="uid">
+						</td>
+						<td style="text-align: right;">
+							<span id="loading" style="bottom:180px;left:650px !important;"></span>
+							<button type="button" class="btn" id="BtnSave">{:L('BtnSave')}</button>
+							<!-- <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button> -->
+							<span id="messagebox" class="msgbox" style="bottom:180px;left:650px !important"></span>					
+						</td>
+					</tr>
+				</table>
+			</tr>
+	    	</table>
+	    	</div>
+<!-- END -->
+	    	<div style="clear:both;"></div>
+		</form>
+    </div>
+   	</div>
+
+<script>
+// 20170314 修改弹出框，使用layer gan
+    $('#BtnSave').click(function(){
+	    $.ajax({
+	        cache: false,
+	        type: "post",
+	        url:"{:U('Order/checkForm')}",
+	        data:$('#tempForm').serialize(),// 你的formid
+	        async: false,
+	        beforeSend:function(){
+	            $("#loading").html('<img style="width:28px;height:28px;" src="__MEMBER__/images/msg_loading_d.gif"/>');
+	        },
+	        error: function(request) {
+	            layer.alert("Connection error");
+	        },
+	        success: function(data) {
+	            if(data.state == 'no'){
+					layer.open({
+						type: 0,
+						offset: '300px',
+						shadeClose: true,
+						title: "{:L('LAY_SystemMessage')}",
+						content : data.msg,
+						icon : 5,
+					});
+	                  // jError(data.msg,{
+	                  //   clickOverlay : true,
+	                  //   autoHide : false,
+	                  //   LongTrip : 100,
+	                  //   VerticalPosition : 'top',
+	                  //   HorizontalPosition : 'center'
+	                  // });
+	                  $("#loading").html('');
+	            }else{
+	                var box_part='<input type="hidden" value="'+data.uucode+'" name="uucode"><input type="hidden" value="'+data.lid+'" name="lid">';
+	                $("#hide_boxs").append(box_part);
+	                $('#BtnSave').attr('type','submit');
+	            }
+	        }
+	    });
+    });
+	// 添加删除行 20170316 gan
+	function copy_row(obj)
+	{
+		var num=$("#num").val();
+		num++;
+		//console.log(num);
+		if(num>=10){
+			layer.open({
+				title:"{:L('LAY_SystemMessage')}",
+				offset: '300px',
+				icon : 0,
+				content: "{:L('LAY_AddRow')}",
+			});
+			$('.copy_r').find('a').remove();
+		}
+		var str='<tr><td class="copy_r"><if condition="$i eq 5"><a onclick="copy_row(this)" href="javascript:void(0)">[+]</a></if></td><td width="10%;"><input type="text" class="clchang" name="brand_'+num+'"<eq name="i" value="1">required oninvalid="setCustomValidity('请输入品牌！');" oninput="setCustomValidity('');"</eq>></td><td width="10%;"><input type="text" class="clchang" name="product_'+num+'"<eq name="i" value="1">required oninvalid="setCustomValidity('请输入货品名称！');" oninput="setCustomValidity('');"</eq>></td><td width="10%;"><input type="text" class="clchang" name="catname_'+num+'"<eq name="i" value="1">requiredoninvalid="setCustomValidity('请输入货品类别！');" oninput="setCustomValidity('');"</eq>></td><td width="20%;">---</td><td width="10%;"><input type="text" class="clzhong" name="amount_'+num+'"<eq name="i" value="1">required oninvalid="setCustomValidity('请输入数量！');" oninput="setCustomValidity('');"</eq>></td><td width="10%;"><input type="text" class="clzhong" name="price_'+num+'"<eq name="i" value="1">required oninvalid="setCustomValidity('请输入单价！');" oninput="setCustomValidity('');"</eq>></td><td width="10%;"><select class="clduan" name="coin_'+num+'" id=""<eq name="i" value="1">required oninvalid="setCustomValidity('请输入货币类型！');" oninput="setCustomValidity('');"</eq>><option value=""></option><option value="CNY" selected="selected">￥</option><option value="USD">$</option></select></td><td width="10%;" ><input type="text" class="clchang" name="remark_'+num+'"></td></tr>';
+		//console.log(str);
+		$("#table").append(str);
+		$("#num").val(num);
+	}
+</script>
+<!-- END -->
+	<div class="foot"></div>
+
+</block>
+
+</body>
+</html>

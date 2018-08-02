@@ -1,0 +1,66 @@
+/*寄件人信息管理样式*/
+.table-hover .hiddenfs{
+    position: relative;
+    margin: 0 auto;
+    z-index: 2;
+}
+.table-hover .txt{
+    cursor: pointer;
+}
+.table-hover .prompts-01 {
+    position: absolute;
+    width: 122px;
+    border: 1px solid #ddd;
+    background: #fff;
+    box-shadow: 0 0 2px 2px #eee;
+    border-radius: 1px;
+}
+.table-hover .prompts-02 {
+    position: absolute;
+    z-index: 1;
+    min-width: 230px;
+    right: -103px;
+    top: -9px;
+    padding: 15px 20px;
+    color: #666;
+    line-height: 22px;
+    display: none;
+}
+.table-hover .prompts-02 .pc {
+    color: #666;
+    text-align: left;
+    background: #fff;
+}
+.table-hover .prompts-02 .pc p,strong{
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+.prompts-01 .p-arrows {
+    position: absolute;
+    background: url(../image/arrow-gray.png) no-repeat;
+}
+.prompts-01 .p-arrow-lefts {
+    left: -8px;
+    top: 24px;
+    width: 8px;
+    height: 16px;
+}
+.mt {
+    width: 1710px;
+    margin: 0 auto;
+}
+.mt .add-btn {
+    font-size: 15px;
+    border: none;
+    background-color: #232323;
+    color: #ffde00;
+    border-radius: 5px;
+    padding: 0 20px;
+    height: 30px;
+    outline: none;
+    display: inline-block;
+    text-align: center;
+}
+.ordheads{margin:0 auto;max-width:1710px;height:50px;background:#232323;color:#fff;text-align:center;margin-top:50px;margin-bottom: 20px;}
+.ordheads h3{line-height:50px;font-size:24px}

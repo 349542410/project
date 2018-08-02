@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <style type="text/css">
+      body, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td{ margin:0; padding:0;}
+      ol, ul{ list-style:none;}
+      table{ border-collapse:collapse; border-spacing:0;}
+      body {
+        color: #000;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        background-color: #fff;
+
+      }
+      .container{margin:0 auto;}
+      .container h3{color: #000;}
+      .floorh{margin:0px 20px 20px 20px;font-size: 20px;}
+      .floor1{max-height: 290px;height: 500px;overflow-y: auto;}
+      .floor1 table thead th{padding-top: 0 !important;background: #eee;}
+      .floor1 table tbody tr{border-bottom: 1px solid #eee;}
+      .floor1 table tbody td{text-align: center;}
+      .floor2{border: 1px solid #cccccc;width: 98%;background: #f6f6f6;margin:20px 5px;overflow-y:auto;max-height: 150px;height: auto;}
+      .floor2 ul{margin:10px 10px;font-weight: bold;font-size: 15px;}
+      .floor2 li{margin:5px;font-weight: 500;}
+      .floor2 h4{font-weight: bold;color: #000;font-size: 20px;}
+      .floor3{margin-left: 20px;}
+      .floor3 h3{margin:;font-size: 20px;}
+      .floor3 table thead th,.floor3 table tbody th{text-align: left !important;padding-top: 10px;font-weight: 500;}
+      .floor3 table{float: left;font-size: 15px;}
+      .clear{clear: both;}
+      .t_weight{background: #f6f6f6;width: 100%;height: 50px;margin-top: 10px;}
+      .t_weight h4{padding: 0;margin: 0;line-height: 50px;text-align: right;font-weight: bold;margin-right: 20px;}
+    </style>
+    <!-- <script type="text/javascript" src="__MEMBER__/js/city/jquery.js"></script> -->
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+    <![endif]-->
+     </head>
+  <body>
+    <div class="container" >
+      <!-- 标题 -->
+      <div class="floorh">
+        <h3>{:L('Goods_Declaration')}</h3>
+      </div>
+        <div class="floor1">
+          <table width="100%" cellpadding="10" cellspacing="10" border="0">
+            <thead>
+              <tr style="height:47px;line-height:47px;border-top:0.3em solid #ccc">
+                <th>{:L('OrderNumber')}</th>
+                <th class="cls_name">{:L('ProductName')}</th>
+                <th>{:L('Amount')}</th>
+                <th>{:L('UnitPrice')}</th>
+                <th>{:L('Currency')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <volist name="pro_list" id="pro" empty="L('NoInfo')">
+              <tr style="height:47px;line-height:47px;">
+                <td>{$key+1}</td>
+                <!-- 货品名称 -->
+                <td class="cls_name" ><ddt title="{$pro.detail}">{$pro.detail}</ddt></td>
+                <!-- 数量 -->
+                <td>{$pro.number}</td>
+                <!-- 单价 -->
+                <td>{$pro.price}</td>
+                <!-- 货币 -->
+                <td>{$pro['coin'] == '1'?"￥":"$"}</td>
+              </tr>
+              </volist>
+            </tbody>
+          </table>
+        </div>
+          <div class="t_weight">
+            <!-- 重量 -->
+            <h4>{:L('Weight')}：{$info.weight}KG</h4>
+          </div>
+        <!-- 状态 我的订单 -->
+        <if condition="$type eq 'index'">
+        <div class="floor2">
+          <ul>
+            <!-- 中转线路 -->
+            <li>{:L('TranLine')}：
+              <if condition="$info['TranKd'] eq 1">
+                {:L('HongKong')}
+              <elseif condition="$info['TranKd'] eq 2" />
+                {:L('TianJin')}
+              </if>
+            </li>
+            <!-- 物流信息 -->
+            <li>{:L('LogisticsInfo')}：</li>
+            <!-- 创建时间 -->
+            <li>
+                2015-11-10 09:15:28&nbsp;&nbsp;{:L('Createtime')}
+            </li>
+            <!-- 您已付款成功 -->
+            <li>
+                2015-11-10 09:15:28&nbsp;&nbsp;{:L('Payment_Success')}
+            </li>
+          </ul>
+        </div>
+        </if>
+        <!-- 状态 运输中 -->
+        <if condition="$type eq 'transport'">
+        <div class="floor2">
+          <ul>
+            <!-- 物流信息 -->
+            <li>{:L('LogisticsInfo')}：</li>
+            <!-- 创建时间 -->
+            <li>
+                2015-11-10 09:15:28&nbsp;&nbsp;{:L('Createtime')}
+            </li>
+            <!-- 您已付款成功 -->
+            <li>
+                2015-11-10 09:15:28&nbsp;&nbsp;{:L('Payment_Success')}
+            </li>
+            <!-- 货品出仓 -->
+            <li>
+                2015-11-10 09:15:28&nbsp;&nbsp;{:L('Goods_Warehouse')}
+            </li>
+          </ul>
+        </div>
+        </if>
+        <div class="floor3">
+          <!-- 订单信息 -->
+          <h3>{:L('Order_Information')}</h3>
+          <table width="50%" cellpadding="10" cellspacing="10" border="0">
+            <thead>
+              <!-- 收件人信息 -->
+              <tr>
+                <th>{:L('RecInfo')}</th>
+              </tr>
+            </thead>
+            <tbody>
+                <!-- 收件人 -->
+                <tr>
+                  <th>{:L('AddressRec')}：{$info.receiver}</th>
+                </tr>
+                <!-- 收件人地址 -->
+                <tr>
+                  <th>{:L('RecAddress')}：{$info.reAddr}</th>
+                </tr>
+                <!-- 收件人电话 -->
+                <tr>
+                  <th>{:L('AddressRecPhone')}：{$info.reTel}</th>
+                </tr>
+            </tbody>
+          </table>
+          <table width="50%" cellpadding="10" cellspacing="10" border="0">
+            <thead>
+              <!-- 寄件人信息 -->
+              <tr>
+                <th>{:L('SenderInfo')}</th>
+              </tr>
+            </thead>
+            <tbody>
+                <!-- 寄件人 -->
+                <tr>
+                  <th>{:L('Sender')}：{$info.sender}</th>
+                </tr>
+                <!-- 寄件人电话 -->
+                <tr>
+                  <th>{:L('SenderPhone')}：{$info.sendTel}</th>
+                </tr>
+            </tbody>
+          </table>
+          <div class="clear"></div>
+        </div>
+      </div>
+    </div> 
+
+  </body>
+    
+</html>

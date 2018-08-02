@@ -1,0 +1,116 @@
+<script type="text/javascript">
+  /* 点击隐藏显示功能 */
+  function shop_zu(d){
+    $(d).css('display','none');
+    $(".shop_zu").css('display','block');
+  }
+
+  /* 当用户选择自定义输入的时候的jq */
+  function ccc(d){
+    var val_s = $(d).val();
+    if(val_s == '2000'){
+      $(d).next().css('display','inline-block');
+    }else{
+      $(d).next().css('display','none');
+    }
+  }
+
+  /* 勾选"完成此单"时弹出警告 */
+  $("#finished").change(function(){
+    var finished = $('#finished:checked').val();
+    if(finished == 'on'){
+      if(!confirm('勾选“完成此单”：该单将会结束，不能再添加物流信息，确定吗？')){
+        $('#finished:checked').removeAttr('checked');
+        return false;
+      }
+    }
+  });
+
+  function toPost(id){
+      var status_select = $("#status_select  option:selected").val();
+      var status_custom = $("input[name='status_custom']").val();
+      var finished      = $('#finished:checked').val();
+
+      $.ajax({
+        url:'{:U('Logarithm/toPost')}',
+        type:'post',
+        dataType:'json',
+        cache:false,
+        data:{
+          'id':id,
+          'status_select':status_select,
+          'status_custom':status_custom,
+          'finished':finished,
+        },
+        beforeSend:function(){
+          $("#mess").html('<img style="width:18px;height:18px;" src="__PUBLIC__/images/msg_loading_d.gif"/>');
+          if(confirm('确定要执行该操作吗?')){
+            $("#opt").attr('disabled','disabled');
+
+            if(status_select == '' && status_custom == ''){
+              alert('请选择原因！');
+              $("#mess").html('');
+              $("#opt").removeAttr('disabled');
+              return false;
+            }
+          }else{
+            $("#mess").html('');
+            return false;
+          }
+        },
+        success:function (result){
+          if(result.status == '1'){
+            // $("#opt").html('<img style="width:18px;height:18px;" src="__PUBLIC__/images/success.png"/>&nbsp;<font style="color:green;">'+result.msg+'</font>');
+            $("#mess").html('<img style="width:18px;height:18px;" src="__PUBLIC__/images/success.png"/>&nbsp;<font style="color:green;">'+result.msg+'</font>').fadeIn(300).delay(1500).fadeOut(300,function(){
+              $('#beClosed').click();                //模拟用户点击关闭
+              window.location=window.location;       //刷新页面
+            });
+          }else{
+            $("#mess").html('<img style="width:18px;height:18px;" src="__PUBLIC__/images/nopass.png"/>&nbsp;<font style="color:red;">'+result.msg+'</font>');
+            // $("#opt").removeAttr('disabled');
+          }
+
+        },
+        complete: function () {
+          $("#opt").removeAttr("disabled");
+        },
+        //请求失败的时候执行此提示
+        error:function(){
+          $("#mess").html('<img style="width:18px;height:18px;" src="__PUBLIC__/images/error.png"/>&nbsp;<font style="color:red;">请求失败</font>');
+          // $("#opt").removeAttr('disabled');
+        }
+      })
+
+  }
+
+  function del_it(id){
+    layer.confirm('敬告，您此次操作会被记录，确定要操作吗？', {offset: '300px',
+      btn: ['确定','取消'] //按钮
+    }, function(){
+
+      $.ajax({
+        url:'{:U('PostManagement/del_its_msg')}',
+        type:'post',
+        dataType:'json',
+        cache:false,
+        data:{
+          'id':id,
+        },
+        success:function (result){
+          if(result.state == 'yes'){
+            
+            // layer.msg(result.msg, {icon: 1,time: 2000},function(){window.location=window.location});
+            layer.msg(result.msg, {offset: '300px',icon: 1,time: 1500},function(){$(".tr_"+id).fadeOut();});
+
+          }else{
+            layer.msg(result.msg, {offset: '300px',icon: 2,time: 1500});
+          }
+
+        },
+      })
+
+    });
+
+
+  }
+</script>

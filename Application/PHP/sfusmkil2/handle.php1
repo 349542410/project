@@ -1,0 +1,50 @@
+<?php
+/*
+	版本号：V2.0
+	创建人：Jie
+	创建日期：2016-10-10
+	修改日期：2016-10-11
+	用途：给后台Admin主动获取顺丰物流信息并保存
+ */
+	header('Content-type:text/html;charset=UTF-8');	//设置输出格式
+	include_once('h_config.php');//配置信息
+	include_once('r_function.php');//获取xml并转数组
+
+	$res = array('do'=>'yes','title'=>'测试操作成功','no'=>$_POST['no']);
+	echo json_encode($res);//用json形式返回便于 请求方 能够“获取”到返回结果实体形态
+	exit;
+	if(!isset($_POST['no'])){
+		die('no');
+	}
+
+	$no = trim($_POST['no']);
+
+	$debug = (isset($_POST['debug'])) ? trim($_POST['debug']) : 0;
+
+	$res = getArr($no, $debug);//$debug=1 调试编码，不同数值可用于检查不同位置的数据输出
+	echo json_encode($res);//用json形式返回便于 请求方 能够“获取”到返回结果实体形态
+
+/*	include_once('r_config.php');//数据库连接
+	include_once('r_function.php');//获取xml并转数组
+
+	if(!isset($_GET['id'])){
+		die('no');
+	}
+
+	$id = trim($_GET['id']);
+
+	$TranKd = 2;//需要注销的
+
+	$s_sql = "SELECT id,STNO FROM mk_tran_list WHERE trankd = '$TranKd' AND id = $id";
+
+	$one = $pdo->query($s_sql);
+
+	if($one->rowCount() > 0){
+		$one_list = $one->fetch(PDO::FETCH_ASSOC);
+
+		// echo  $one_list['STNO'];die;
+		$res = getArr($one_list['STNO'], 0);//传入STNO顺丰单号
+
+		echo json_encode($res);//用json形式返回便于 请求方 能够“获取”到返回结果实体形态
+
+	}*/

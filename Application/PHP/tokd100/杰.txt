@@ -1,0 +1,77 @@
+杰：
+test3.megao.hk/tokd100/ 里
+
+使用 纯php，使用UTF8码
+
+api.php
+$mkcom 	= 'MKIL';
+$id 	= 'y4nK9CdnOgAOil1E';
+
+
+将会get到以下内容
+id=[]&com=[]&nu=[]&show=[0|1|2|3]&muti=[0|1]&order=[desc|asc]
+
+id='16位的一个字符串'
+com = '$mkcom',使用个变量在最上方，方便日后修改
+
+id必须=$id;
+com必须=$mkcom
+否则返回：物流单暂无结果（格式看XML,JSON）
+
+nu为MKNO
+
+功能：搜索 il_logs.MKNO=$nu 的记录
+
+
+
+show	String	是	返回类型： 
+1：返回xml对象，
+其它列出json字符串，
+
+muti	String	是	返回信息数量： 
+0:只返回最新一行信息。
+其它:列出多行完整的信息， 
+
+order	String	是	排序： 
+asc：按时间由旧到新排列。 
+其它按时间由新到旧排列， 
+
+===============
+返回格式：
+===============
+XML格式:
+<xml>
+<message>ok</message>
+<nu>1200722815552</nu>
+<com>$mkcom</com>
+<status>1(看说明)</status>
+<data>
+<time>2013-03-03 19:24:48</time>
+<context>江苏泗阳县公司:进行揽件扫描</context>
+</data>
+<data>
+<time>2013-03-03 19:25:10</time>
+<context>江苏泗阳县公司:进行发出扫描，将发往：江苏淮安中转站</context>
+</data>
+<state>1(看说明)</state>
+</xml>
+----
+JSON格式：
+{"message":"ok","status":"1","state":"3","data":
+[
+ {"time":"2012-07-05 21:18:53","context":"离开 [福建_厦门支公司] 发往 [北京运转中心_航空]"},
+ {"time":"2012-07-05 20:07:27","context":"已取件，到达 [福建_厦门支公司]"}
+]}
+
+----------------
+status
+0：物流单暂无结果， 
+1：查询成功， 
+2：接口出现异常，
+
+----------------
+state 
+看IL_State
+12 ->1
+<1000 ->0
+>1000 时 -> -1000

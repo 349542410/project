@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <style type="text/css">
+      body {
+
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+
+      }
+      .container{margin:0 auto;}
+      .form-signin {
+     
+        margin-top:60px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+.form-signin table td{height:47px;line-height:47px;}
+.form-signin table th{height:27px;padding-top:16px !important;}
+.left th{text-align:right !important;}
+.left th,.left td,.right th, .right td{border-bottom:1px solid #ccc;}
+.right td{padding-top:5px !important;padding-bottom:3px !important;}
+.container tr td{vertical-align: middle !important;}
+    </style>
+    <link href="__PUBLIC__/css/one.css" rel="stylesheet"> 
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+    <![endif]-->
+     </head>
+  <body>
+      
+    <div class="container" >
+      <div class="form-signin" style="background:#F7F7F9 !important;width:800px;min-height:600px;">
+      <div class="left" style="width:326px;height:600px;float:left;white-space:nowrap;overflow:auto;border-right:3px solid #000">
+        <table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px;padding:0px;font-size:15 !important;">
+
+<!--                 <tr>
+                    <th>美快单号：</th>
+                    <td>{$info.MKNO}</td>
+                </tr> -->
+                <tr>
+                  <th>运单号：</th>
+                  <td>{$info.LogisticsNo}</td>
+                </tr>
+                <php>$sta_list = array('20','30');</php>
+                <tr>
+                    <th>最后申报状态：</th>
+                    <td>
+                      <if condition="in_array($info['Status'],$sta_list)">
+                        <font color="red">{$state_arr[$info['Status']]}</font>
+                      <else />
+                        {$state_arr[$info['Status']]}
+                      </if>
+                    </td>
+                </tr>
+                <tr>
+                  <th>最后操作时间：</th>
+                  <td>{$info.CreateTime}</td>
+                </tr>
+                <tr>
+                    <th>物流公司名称：</th>
+                    <td>{$info.LogisticsName}</td>
+                </tr>
+                 <tr>
+                    <th width="45%">系统录入时间：</th>
+                    <td>{$info.sys_time}</td>
+                </tr>  
+                <tr>
+                    <td colspan="2" rowspan="2">
+                    <strong>描述：</strong><br>
+                      {$info['Result']}
+                    </td>
+                </tr>
+        </table>
+      </div>
+      <div id="right" style="width:472px;float:left;min-height:600px;max-height:600px;white-space:nowrap;overflow:auto">
+        <table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px;padding:0px;font-size:13px !important">
+        <tr>
+            <th width="20%">操作时间</th>
+            <th width="60%">处理信息</th>
+            <th width="20%">数据录入时间</th>
+        </tr>
+        <volist name="list" id="vo" mod="2">
+        <tr <eq name="mod" value="0"> style="background-color:#ddd;"</eq>>
+            <td align="center">{$vo.CreateTime}</td>
+            <td align="center">{$vo.content}</td>
+            <td align="center">
+              {$vo.sys_time}
+<!--               <if condition="$vo.status eq '100'">
+                  <img src="__PUBLIC__/images/right.png" alt="" style="padding-top:10px;">
+              <else /> -->
+                  <!-- <img src="__PUBLIC__/images/right.png" alt="" style="padding-top:5px;"> -->
+              <!-- </if> -->
+            </td>
+        </tr>
+        </volist>
+
+        </table>
+      </div>
+      </div>
+      <div class="form-group" style="background:#F7F7F9 !important;">
+    <div class="col-sm-offset-2 col-sm-10 " style=" margin:0; width:100%; padding:20px 0;">
+
+      <div class="right" style=" width:98%; display: inline-block; text-align: right;">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button>
+      </div>
+    </div>
+    </div>
+    </div> 
+
+  </body>
+
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <style type="text/css">
+      body {
+
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+
+      }
+      .container{margin:0 auto;}
+      .form-signin {
+     
+        margin-top:60px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+.form-signin table td{height:47px;line-height:47px;}
+.form-signin table th{height:27px;padding-top:16px !important;}
+.left th{text-align:right !important;}
+.left th,.left td,.right th, .right td{border-bottom:1px solid #ccc;}
+.right td{padding-top:5px !important;padding-bottom:3px !important;}
+.container tr td{vertical-align: middle !important;}
+
+    </style>
+    <link href="__PUBLIC__/css/one.css" rel="stylesheet"> 
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+    <![endif]-->
+     </head>
+  <body>
+      
+    <div class="container" >
+      <div class="form-signin" style="background:#F7F7F9 !important;width:840px;max-height:613px;">
+      <div class="left" style="width:380px;min-height:610px;float:left;white-space:nowrap;overflow:auto;border-right:3px solid #000">
+        <table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px;padding:0px;font-size:15 !important;">
+                <tr>
+                  <th>CID：</th>
+                  <td>{$info.cid}</td>
+                </tr>
+                <tr>
+                  <th>商品SKU：</th>
+                  <td>{$info.sku}</td>
+                </tr>
+                <tr>
+                  <th>商品名称：</th>
+                  <td>{$info.goods_name}</td>
+                </tr>
+                <tr>
+                    <th>商品说明：</th>
+                    <td style="width:180px;">{$info.goods_spec}</td>
+                </tr>
+                <tr>
+                  <th>主单位代码：</th>
+                  <td>{$info.declare_unit}</td>
+                </tr>
+                <tr>
+                    <th>法定单位代码：</th>
+                    <td>{$info.legal_unit}</td>
+                </tr>
+                 <tr>
+                    <th>法定计量单位折算：</th>
+                    <td>{$info.conv_legal_unit_num}</td>
+                </tr>  
+                 <tr>
+                    <th>海关编码：</th>
+                    <td>{$info.hs_code}</td>
+                </tr>
+                <tr>
+                    <th>入区计量单位：</th>
+                    <td>{$info.in_area_unit}</td>
+                </tr>
+                <tr>
+                    <th>入区计量单位折算：</th>
+                    <td>{$info.conv_in_area_unit_num}</td>
+                </tr>
+                <tr>
+                    <th>试点：</th>
+                    <td>
+                      <if condition="$info['is_experiment_goods'] eq 1">
+                        <font color="green">是</font>
+                      <else />
+                        <font color="red">否</font>
+                      </if>
+                    </td>
+                </tr>
+                <tr>
+                    <th>状态：</th>
+                    <td>{$Customs_Code[$info[status]]}</td>
+                </tr>
+                <tr>
+                    <th>说明：</th>
+                    <td>{$info.stautstr}</td>
+                </tr>
+        </table>
+      </div>
+      <div id="right" style="width:455px;float:left;min-height:610px;max-height:610px;white-space:nowrap;overflow:auto">
+        <table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px;padding:0px;font-size:13px !important">
+        <tr>
+            <th width="20%">状态</th>
+            <th width="20%">说明</th>
+            <th width="60%">备注信息</th>
+        </tr>
+        <volist name="list" id="vo" mod="2">
+        <tr <eq name="mod" value="0"> style="background-color:#ddd;"</eq>>
+            <td align="center">
+              {$Customs_Code[$vo[status]]}
+            </td>
+            <td align="center">{$vo.statusstr}</td>
+            <td align="center">{$vo.remarks}</td>
+        </tr>
+        </volist>
+<script type="text/javascript">
+  // 2015-08-24  暂时注释
+  // $(function(){
+  //   var ts= $("#right img");
+  //   ts[0].setAttribute('src',"__PUBLIC__/images/clock.png");
+  // })
+</script>
+        </table>
+      </div>
+      </div>
+      <div class="form-group" style="background:#F7F7F9 !important;">
+    <div class="col-sm-offset-2 col-sm-10 " style=" margin:0; width:100%; padding:20px 0;">
+      {/*$sim 用来区别只在批号对数的时候使用以下功能 20160315 Jie; 该单的操作时间距离当前时间已经大于12天才能进行操作*/}
+      <if condition="$info['IL_state'] neq '1003'">
+      <div class="left" style=" width:70%; display: inline-block; float:left;">
+
+      </div>
+      <else />
+      <div class="left" style=" width:70%; display: inline-block; float:left;">
+        &nbsp;
+      </div>
+      </if>
+      <div class="right" style=" width:95%; display: inline-block; text-align: right;">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button>
+      </div>
+    </div>
+    </div>
+    </div> 
+
+  </body>
+
+</html>

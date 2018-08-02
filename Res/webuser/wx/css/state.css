@@ -1,0 +1,85 @@
+@charset "utf-8";
+.loginsignup {
+    text-align: center;
+    padding: 1.13333rem 0;
+    background-color: #000;
+}   
+.loginsignup img {
+    width: 9.82133rem;
+    height: 1.42933rem;
+    border-radius: 0.2rem;
+}
+.content{
+    width: 100%;
+    text-align: center;
+    margin: 5rem auto;
+}   
+.content .iconsucess{
+    width: 6rem;
+    height: 6rem;
+    background: url(../images/icon-TICK.png)no-repeat;
+    display: inline-block;
+    background-size: 6rem;
+}
+.content .iconfail{
+    width: 6rem;
+    height: 6rem;
+    background: url(../images/icon-WARNING.png)no-repeat;
+    display: inline-block;
+    background-size: 6rem;
+}
+.content .iconconfirm{
+    width: 6rem;
+    height: 6rem;
+    background: url(../images/icon-pc.png)no-repeat;
+    display: inline-block;
+    background-size: 6rem;
+}
+.content p{
+    margin-top: 0.7rem; 
+    font-size: 0.7rem;
+}   
+.colorred{
+    color:#dd2234;
+}
+.content span{
+    font-size: 0.6rem;
+    width: 10rem;
+    display: block;
+    margin: 0 auto;
+}
+.content input{
+    width: 13.01333rem;
+    height: 1.87733rem;
+    color: #b3b3b3;
+    background-color: #fff;
+    font-size: .59733rem;
+    border: none;
+}
+.content .martb{
+    margin: 2rem 0;
+    color:#333333;
+}
+.colorgreen{
+    color:#23c334;
+}
+.martop30{
+    margin-top: 3rem ;
+}
+.content .yellbtn{
+    width: 13.01333rem;
+    height: 1.87733rem;
+    color: #fff;
+    background-color: #f4d620;
+    font-size: .59733rem;
+    border: none; 
+    -moz-border-radius: .128rem;
+    -webkit-border-radius: .128rem;
+    border-radius: .128rem;
+}
+.martop10{
+    margin-top: 1rem;
+}
+.martop60{
+    margin-top: 6rem;
+}

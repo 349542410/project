@@ -1,0 +1,97 @@
+<!-- 公共部分 数据展示 St2Ems,SfLogistics,Logistics-->
+<style>
+	dt{padding-top: 5px;text-align: center;}
+	.container h3{font-size:26px;}
+	.btn{width:58px;height:30px;background-color: #eee;}
+	.container .active a{color:black;}
+	.container .active{background-color: #cccddd !important;}
+	.container table a{}
+	.searchbox{width:88%;margin:0 auto;}
+</style>
+
+<form action="">
+<div class="container" style="">
+	<volist name="list" id="vo">
+		<div style="min-width:300px;margin:0 auto;min-height:230px;border:1px dotted black;float:left;margin-left:30px;margin-bottom:30px;padding-left:15px;padding-right:15px;">
+			<div style="padding-top:5px;">
+				<!-- <a href="{:U('Logarithm/export',array('id'=>$vo['id']))}" data-toggle="modal" data-target="#myModal"> -->
+					<h3 style="text-align: center;" title="中转批号"><strong>{$vo['no']}</strong></h3>
+				<!-- </a> -->
+				<dt title="保存航空号时间">{$vo['airdatetime']}</dt>
+				<dt title="线路名称">{$vo['name']}</dt>
+				<dt><if condition="$vo['ldate'] neq 0 || strlen($vo['ldate']) gt 1">{$vo['ldate']|date="Y-m-d H:i:s",###}</if></dt>
+				<dt style="font-weight:400;font-size:17px;"><span class="twn{$vo.id}" style="font-size:15px;">{$vo['twn']}</span> / <span class="all{$vo.id}" style="font-size:15px;"><a target="_blank" href="{:U('Logarithm/showList',array('stype'=>'all','noid'=>$vo['id'],'tcid'=>$vo['tcid']))}">{$vo['all']}</a></span></dt>
+				<!-- 大于10的才显示刷新按钮 -->
+				<!-- <if condition="$vo.status gt 10"> -->
+					<dt>
+						<button type="button" class="btn btn-default{$vo['id']}" onclick="toflash('{$vo.id}','{$vo.tcid}');">刷新</button>
+						<span class="loading{$vo['id']}"></span>
+					</dt>
+				<!-- </if> -->
+				
+			</div>
+		</div>	
+	</volist>
+</div>
+<script>
+	function toflash(id,tcid){
+		$.ajax({
+			url:'{:U('Logarithm/toflash')}',
+			type:'post',
+			dataType:'json',
+			data:{
+				'id':id,
+				'tcid':tcid,
+			},
+			beforeSend:function(){
+				$(".btn.btn-default"+id).html('<img style="width:18px;height:18px;" src="__PUBLIC__/images/msg_loading_d.gif"/>');
+				// $(".loading"+id).html('&nbsp;<img style="width:20px;height:20px;" src="__PUBLIC__/images/msg_loading_d.gif"/>');
+			},
+			success:function (result){
+		        if(result.auth_prompt == 'yes'){
+		          alert(result.msg);exit;
+		        }
+				// $(".loading"+id).html('&nbsp;<img style="width:20px;height:20px;" src="__PUBLIC__/images/success.png"/>');
+				$(".btn.btn-default"+id).attr('disabled','disabled');
+				$(".twn"+id).html(result.twn);	//IL=20数量
+				// $(".all"+id).html(result.total);	//总数
+				var t = result.timeout;	//倒数时间
+				showTime(id,t,result.twn);	//倒计时
+			}
+		})
+	}
+
+function showTime(id,t,twn){
+    $(".btn.btn-default"+id).html(t);
+    t--;
+    //当=0的时候，终止自动刷新
+    if(twn == 0){
+        $(".btn.btn-default"+id).removeAttr('disabled');
+        $(".btn.btn-default"+id).html("刷新");
+        return false;
+    }
+    if(t < 0){
+    	$(".btn.btn-default"+id).html("刷新");
+    	$(".btn.btn-default"+id).removeAttr('disabled');
+    	// $(".btn.btn-default"+id).click();	//模拟点击，以便继续自动刷新
+    	return false;
+    }
+    //每秒执行一次,showTime()
+    setTimeout("showTime("+id+","+t+")",1000);
+}
+
+// 20160113 另一个刷新类型
+// function showTime(id,t){
+//     $(".btn.btn-default"+id).html(t);
+//     t--;
+//     if(t < 0){
+//         $(".btn.btn-default"+id).removeAttr('disabled');
+//         $(".btn.btn-default"+id).html("刷新");
+//         return false;
+//     }
+//     //每秒执行一次,showTime()
+//     setTimeout("showTime("+id+","+t+")",1000);
+// }
+</script>
+
+</form>

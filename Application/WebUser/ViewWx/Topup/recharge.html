@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>微信扫码支付</title>
+<style>
+    body{ background:#f5f5f5;}
+    .wx_img{ margin-top:30px;}
+    .wx_img img{ border:1px solid #ddd;}
+</style>   
+</head>
+<body>
+    <div align="center" >
+        <h1 style="color:red;">请扫描下方二维码进行支付</h1>
+        <img src="__MEMBER__/images/WePayLogo.png" width="180px;" style="display:block; margin:0px auto; margin-top:100px;">
+        <div class="wx_img">{$verify_result}</div>
+        <input type="hidden" value="{$order_no}" id="order_no"/>
+    </div>
+    <style>
+        button{
+            background-color: #7fbf4d;
+            background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7fbf4d), color-stop(100%, #63a62f));
+            background-image: -webkit-linear-gradient(top, #7fbf4d, #63a62f);
+            background-image: -moz-linear-gradient(top, #7fbf4d, #63a62f);
+            background-image: -ms-linear-gradient(top, #7fbf4d, #63a62f);
+            background-image: -o-linear-gradient(top, #7fbf4d, #63a62f);
+            background-image: linear-gradient(top, #7fbf4d, #63a62f);
+            border: 1px solid #63a62f;
+            border-bottom: 1px solid #5b992b;
+            border-radius: 3px;
+            -webkit-box-shadow: inset 0 1px 0 0 #96ca6d;
+            box-shadow: inset 0 1px 0 0 #96ca6d;
+            color: #fff;
+            font: bold 11px/1 "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+            padding: 7px 0 8px 0;
+            text-align: center;
+            text-shadow: 0 -1px 0 #4c9021;
+            width: 150px;
+        }
+    </style>
+</body>
+<script src="__MEMBER__/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+    changeOrderStatues();//检测订单是否支付成功
+    function changeOrderStatues() {
+        var order_no = $("#order_no").val();
+        // alert(order_no);
+        $.post("{:U('Topup/check_order')}", {order_no: order_no}, function(data) {
+            if (data.state == '200') {
+                //订单返回值=200表示支付成功
+                alert("付款成功");
+                location.href = data.url; //支付成功后跳转到订单详情页
+            }
+        },"json")
+        setTimeout("changeOrderStatues()", 3000);
+    }
+</script>
+</html>

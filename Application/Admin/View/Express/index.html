@@ -1,0 +1,279 @@
+<extend name="./base" />
+
+<block name="main">
+
+<script type="text/javascript" src="__PUBLIC__/js/datetime/DateTimePicker.js"></script>
+<link href="__PUBLIC__/js/datetime/DateTimePicker.css" rel="stylesheet">
+<script type="text/javascript">
+	$(document).ready(function()
+			{
+				$("#dtBox").DateTimePicker({
+
+					minuteInterval: 5
+
+				});
+			});
+</script>
+<div id="dtBox"></div>
+
+<div class="container" >
+        <div class="col-md-2">
+        	<include file="Public:authNav" />
+        </div>
+        <div class="col-md-10">
+        	<div class="rtop">
+<!--         		<ul class="list-inline">
+ 				 <li class="blue"><a href="javascript:void;">申通号列表</a></li>
+
+				</ul> -->
+	<table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px">
+		<tr>
+			<td style="border-top:none"><span style="text-align:left;float:left;margin-top:12px;">
+<!-- 					
+						<a href="{:U('St2Ems/index')}" target="_blank" style="display: inline-block;"><button type="button" class="btn btn-default" >申通物流转EMS</button></a>&nbsp;&nbsp;
+ -->
+
+					<a href="{:U('Express/CreateView')}" data-toggle="modal" data-target="#myModal"><button type="button" class="btn btn-primary" >新增申通号</button></a>
+					&nbsp;&nbsp;
+					<button type="button" class="btn btn-primary" onclick="st_import();">导入申通号</button>
+					&nbsp;&nbsp;
+					<!-- <button type="button" class="btn btn-primary" style="background-color:grey;color:#ccc;" disabled>导出csv</button> -->
+
+						<if condition="$als gt 0">
+							<a href="javascript:void(0)" onclick="sendMsg()" data-target="#myModal"><button type="button" class="btn btn-primary" >导出csv({$als}条)</button></a> <span id="loading"></span>
+							<!-- <a href="{:U('Express/CreateCSV')}"  data-target="#myModal"><button type="button" class="btn btn-primary" >导出csv({$als}条)</button></a> -->
+						<else />
+							<button type="button" class="btn btn-primary" style="background-color:grey;color:#ccc;" disabled>导出csv</button>
+						</if>
+					
+					&nbsp;&nbsp;
+
+					<a target="_blank" href="{:U('Express/dir_size')}" data-target="#myModal"><button type="button" class="btn btn-primary" >查看导出历史文件</button></a>
+
+					&nbsp;&nbsp;
+
+						<a href="javascript:void(0)" onclick="toKD100()" data-target="#myModal"><button type="button" class="btn btn-primary" >发送到快递100</button></a>
+
+					<if condition="$warn lt $warn_num">
+					
+						<font style="color:red;font-weight:bold;"><img src="__PUBLIC__/images/warning.png" alt="" height="30" width="30">电子单仅余下 <span style="font-size:20px;"><php>echo number_format($warn);</php></span> 张，请及时补充</font>
+
+					<else />
+
+						<font style="font-weight:bold;"><img src="__PUBLIC__/images/lighting.png" alt="" height="30" width="30">电子单剩余 <php>echo number_format($warn);</php> 张</font>
+
+					</if>
+				</span>
+				<h4 style="text-align:right">
+					您当前所在位置：申通物流&nbsp;/&nbsp;<a href="javascript:void(0);" class="color">申通号管理</a>
+				</h4>
+			</td>
+
+<script>
+	//导出CSV
+	function sendMsg(){
+		$.ajax({
+			url:"{:U('Express/CreateCSV')}",
+			type:'post',
+			dataType:'json',
+			data:{
+				'kid':'1',
+			},
+			success:function (tips){
+				alert(tips['msg']);
+				window.location=window.location;       //刷新页面
+			},
+			beforeSend:function(){
+				$("#loading").html('<img style="width:20px;height:20px;" src="__PUBLIC__/images/msg_loading_d.gif"/>加载中...');
+			}
+		})
+	}
+
+	//发送到快递100
+	function toKD100(){
+		$.ajax({
+			url:"{:U('Express/toKD')}",
+			type:'post',
+			dataType:'json',
+			data:{
+				'kid':'2',
+			},
+			success:function (tips){
+				alert(tips['msg']);
+				window.location=window.location;       //刷新页面
+			}
+		})
+	}
+
+	function st_import(){
+		layer.open({
+		  type: 2,
+		  title:'导入申通号',
+		  offset: '30%',
+		  // btn: ['关闭'],
+		  area: ['800px', '350px'], //宽高
+		  content: "{:U('Express/importView')}"
+		});
+	}
+</script>
+		</tr>
+		<tr>
+			<td>
+				<form action="{:U('index')}" method="get" class="form-inline">
+						<!-- 中文搜索时必须的 -->
+						<input type="hidden" name="m" value="{$Think.MODULE_NAME}" />
+						<input type="hidden" name="c" value="{$Think.CONTROLLER_NAME}" />
+						<input type="hidden" name="a" value="{$Think.ACTION_NAME}" />
+						<!-- End -->	
+				<label>筛选：<input type="search" name="keyword" class="form-control" value="{$keyword}" style="width:200" /></label>
+				<label>
+				<select name="searchtype" class="form-control">
+					<option value="STNO" <eq name="searchtype" value="STNO">selected</eq>>申通号</option>
+					<option value="MKNO" <eq name="searchtype" value="MKNO">selected</eq>>美快单号</option>
+				</select>
+				</label>
+				<label>
+				&nbsp;&nbsp;使用时间：<input type="text" class="form-control one" data-field="datetime" size="25" id="createStarttime" value="<eq name="starttime" value=""><else />{$starttime|date='Y-m-d H:i:s',###}</eq>" style="width:200" > -- <input type="text" class="form-control two" data-field="datetime" size="25" id="createEndtime" value="<eq name="endtime" value=""><else />{$endtime|date='Y-m-d H:i:s',###}</eq>" style="width:200" >
+				</label>
+				<input type="hidden" id="starttime" name="starttime">
+				<input type="hidden" id="endtime" name="endtime">
+				<label>
+					<select name="status" class="form-control">
+						<option value="">状态</option>
+						<option value="0" <if condition="$status eq '0'">selected</if>>未使用</option>
+						<option value="10" <eq name="status" value="10">selected</eq>>使用中</option>
+						<option value="20" <eq name="status" value="20">selected</eq>>已使用</option>
+					</select>
+				</label>
+				<label>
+				&nbsp;&nbsp;行数：
+				<select name="ePage" id="" class="form-control" >
+					<option value="10" <eq name="ePage" value="10">selected</eq>>10</option>
+					<option value="20" <eq name="ePage" value="20">selected</eq>>20</option>
+					<option value="30" <eq name="ePage" value="30">selected</eq>>30</option>
+					<option value="50" <eq name="ePage" value="50">selected</eq>>50</option>
+					<option value="100" <eq name="ePage" value="100">selected</eq>>100</option>
+				</select>
+				</label>
+				<label>
+						<button type="submit" class="btn btn-primary btn-lg" onclick="ccc()" >查询</button>
+				</label>
+				</form>
+			</td>
+	
+		</tr>
+	</table>
+</div>	
+
+
+<script type="text/javascript">
+function ccc(){
+	var startTime=document.getElementById("createStarttime").value;
+	if(startTime != ''){
+		var startback = transdate(startTime);
+		document.getElementById("starttime").value=startback;
+	}
+
+	var endTime=document.getElementById("createEndtime").value;
+	if(endTime != ''){
+		var endback = transdate(endTime);
+		document.getElementById("endtime").value=endback;
+	}
+}
+function transdate(startTime){
+	var date=new Date();
+	date.setFullYear(startTime.substring(0,4));
+	date.setMonth(startTime.substring(5,7)-1);
+	date.setDate(startTime.substring(8,10));
+	date.setHours(startTime.substring(11,13));
+	date.setMinutes(startTime.substring(14,16));
+	date.setSeconds(startTime.substring(17,19));
+	return Date.parse(date)/1000;
+}
+function transdate(endTime){
+	var date=new Date();
+	date.setFullYear(endTime.substring(0,4));
+	date.setMonth(endTime.substring(5,7)-1);
+	date.setDate(endTime.substring(8,10));
+	date.setHours(endTime.substring(11,13));
+	date.setMinutes(endTime.substring(14,16));
+	date.setSeconds(endTime.substring(17,19));
+	return Date.parse(date)/1000;
+}
+
+</script>
+
+<form action="">
+<div class="container" style="width:100% !important;">
+	<table border="0" class="table table-hover">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>申通号</th>
+				<th>美快单号</th>
+				<th>使用时间</th>
+				<th>最后一条物流信息</th>
+				<th>状态</th>
+				<!-- <th>查看</th> -->
+			</tr>
+		</thead>
+		<tbody style="font-size:15px;">
+			<volist name="list" id="vo" mod="2">
+			<tr  <eq name="mod" value="1"> style="background-color:#ddd;"</eq>>
+				<td class="td1">
+					{$vo.id}
+				</td>
+				<td class="td1">
+					{$vo.STNO}
+				</td>
+				<td class="td1">
+					<a href="{:U('PostManagement/info',array('MKNO'=>$vo['MKNO']))}" data-toggle="modal" data-target="#myModal">
+					{$vo.MKNO}
+					</a>
+				</td>
+				<td class="td1">
+					<if condition="$vo['usetime'] == null">
+						<!-- 空 -->
+					<else />
+						{$vo.usetime|date='Y-m-d H:i:s',###}
+					</if>
+				</td>
+				<td class="td1">
+					{$vo.content}
+				</td>
+				<td class="td1">
+					<if condition="$vo['status'] eq '10'">
+						<font color="blue">使用中</font>
+					<elseif condition="$vo['status'] eq '0'"/>
+						<font color="green">未使用</font>
+					<elseif condition="$vo['status'] eq '20'"/>
+						<font color="red">已使用</font>
+					</if>
+				</td>
+				<td class="td1">
+					<!-- <a href="{:U('Express/info',array(id=>$vo['id']))}" data-toggle="modal" data-target="#myModal">查看</a> -->
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+</div>
+</form>
+<div id="pages" class="page">{$page}</div>
+			<div class="foot"></div>
+					<center>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+   aria-labelledby="myModalLabel" aria-hidden="true"  >
+   <div class="modal-dialog">
+      <div class="modal-content">
+    
+         <div class="modal-body">
+            ...
+         </div>
+   
+      </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+</div>
+</center>
+
+</block>

@@ -1,0 +1,192 @@
+<extend name="Public:base_register" />
+<!-- 选择注册类型html -->
+<html>
+
+<!-- head -->
+<block name="css">
+    <link rel="stylesheet" type="text/css" href="__CSS__/enroll.css">  
+    <script type="text/javascript" src="__JS__/register.js"></script> 
+    <!-- 企业注册所需提交的信息  根据选择不同的国家而不同 -->
+    <script type="text/javascript">
+        $(function () {
+            var countryId = document.getElementById('countryId').value;
+            switch (countryId) {
+                case '1':
+                    $('#c1').show();
+                    break;
+                case '3':
+                    $('#c3').show();
+                    break;
+                case '4':
+                    $('#c4').show();
+                    break;
+                case '5':
+                    $('#c5').show();
+                    break;
+                case '6':
+                    $('#c6').show();
+                    break;
+                case '7':
+                    $('#c7').show();
+                    break;
+            }
+        })
+    </script> 
+    <!-- End -->
+</block>
+<!-- head end -->
+<body>
+<block name="banner">
+    <div class="banners">
+            <div class="left">
+                <div class="ads">
+                    <p class="now">选择注册类型</p>
+                    <p class="navleft">为给您提供更好的服务，请进行美</p>
+                    <p class="navleft">快账号注册及信息完善！</p>
+                </div>
+            </div>
+            <div class="right">
+                <img src="__IMG__/brief_01.jpg" width="100%" height="155">
+            </div>
+    </div>
+</block>
+<block name="content">
+<form method="post" id="form1" name="form1">
+
+<input type="hidden" name="countryId" value="{$countryId}" id="countryId"> 
+
+<div class="empty-container">
+
+    <!-- 顶部菜单 -->
+
+    <div class="empty-content">
+        <div class="empty-area">
+
+    <div class="registertype clearfix">
+        <div class="regmod ly-fl ly-mg-r-10">
+            <div id="MainContent_dvPersonImg" class="personimg"></div>
+            <div class="ly-fl right">
+                <div class="c-hr-title">
+                    <b>您是</b>
+                </div>
+                <div class="fc-999 ly-mg-tb-10 ht80">
+                    长期居住在
+                    <span id="MainContent_labCountry">
+                        <switch name="countryId">
+                            <case value="1">美国</case>
+                            <case value="4">德国</case>
+                            <case value="7">法国</case>
+                            <case value="5">澳大利亚</case>
+                            <case value="3">英国</case>
+                            <case value="6">日本</case>
+                            <default />      
+                        </switch>
+                    </span>
+                    的居民，留学生......
+                    <br />
+                    从事代购海淘等C2C跨境电商的业务
+                </div>
+                <div class="c-hr-title ly-mg-t-30">
+                    <b>您只需提供以下信息</b>
+                </div>
+                <div class="fc-999 ly-mg-tb-10 ht110">
+                    ■ 个人身份ID、驾照或护照中的一种扫描件<br />
+                    ■ 水、电、煤气或信用卡账单的一种扫描件
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class="ft-c">
+                    <span class="ly-ib">
+                        <input type="button" name="ctl00$MainContent$btnPerson" value="个人注册及信息完善" id="MainContent_btnPerson" class="c-btn-lg-next" onclick="person();" style="width: auto; padding: 0 20px;"/>
+                        <i class="c-btn-lg-next-after"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="regmod ly-fl">
+            <div id="MainContent_dvCompanyImg" class="companyimg"></div>
+            <div class="ly-fl right">
+                <div class="c-hr-title">
+                    <b>您是</b>
+                </div>
+                <div class="fc-999 ly-mg-tb-10 ht80">
+                    注册于
+                     <span id="MainContent_labCountry2">
+                        <switch name="countryId">
+                            <case value="1">美国</case>
+                            <case value="4">德国</case>
+                            <case value="7">法国</case>
+                            <case value="5">澳大利亚</case>
+                            <case value="3">英国</case>
+                            <case value="6">日本</case>
+                            <default />
+                        </switch>
+                     </span>
+                    的企业
+                    <br />
+                    从事跨境电商B2C业务
+                </div>
+                <div class="c-hr-title ly-mg-t-30">
+                    <b>您只需提供以下信息</b>
+                </div>
+                <div class="fc-999 ly-mg-tb-10 ht110">
+                    <div id="c1" style="display:none;">
+                        <span>■ <span id="MainContent_labBL">营业执照扫描件及编号(Business License)</span><br /></span>
+                        <span>■ <span id="MainContent_labVAT">税号（EIN No.）</span><br /></span>
+                    </div>
+                    <div id="c4" style="display:none;">
+                        <span>■ <span id="MainContent_labCS">营业执照扫描件及编号（Handelsregisterauszug）</span><br /></span>
+                        <span>■ <span id="MainContent_labCS">海关编码（EORI-Nummer）</span><br /></span>
+                        <span>■ <span id="MainContent_labCS">增值税号（Ust-ID-Nummer）</span><br /></span>
+                    </div>
+                    <div id="c7" style="display:none;">
+                        <span>■ <span id="MainContent_labCS">营业执照扫描件及编号（KBIS)</span><br /></span>
+                        <span>■ <span id="MainContent_labCS">海关编码（N° EORI）</span><br /></span>
+                        <span>■ <span id="MainContent_labCS">增值税号（N° TVA）</span><br /></span>
+                    </div>
+                    <div id="c5" style="display:none;">
+                        <span>■ <span id="MainContent_labBL">营业执照扫描件及编号（ABN No.）</span><br /></span>
+                    </div>
+                    <div id="c3" style="display:none;">
+                        <span>■ <span id="MainContent_labVAT">营业执照扫描件及编号（Companies House Registration）</span><br /></span>
+                        <span>■ <span id="MainContent_labVAT">海关编码（EORI No.）</span><br /></span>
+                        <span>■ <span id="MainContent_labVAT">增值税号（VAT No.）</span><br /></span>
+                    </div>
+                    <div id="c6" style="display:none;">
+                        <span>■ <span id="MainContent_labVAT">营业执照扫描件及编号（会社謄本）</span><br /></span>
+                        <span>■ <span id="MainContent_labVAT">出口号（输出者标准code）</span><br /></span>
+                    </div>   
+                    <span>■ 水、电、煤气账单中的一种扫描件</span>
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class="ft-c">
+                    <span class="ly-ib">
+                        <input type="button" name="ctl00$MainContent$btnCompany" value="企业注册及信息完善" id="MainContent_btnCompany" class="c-btn-lg-next" onclick="company();"  style="width: auto; padding: 0 20px;"/>
+                        <i class="c-btn-lg-next-after"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </div>
+
+    <!-- footer -->
+
+</div>
+</form> 
+<script>
+function person(){ 
+    document.form1.action="{:U('RegisterType',array('type'=>'person','countryId'=>$countryId))}"; //个人注册
+    document.form1.submit();
+}
+function company(){
+    document.form1.action="{:U('RegisterType',array('type'=>'company','countryId'=>$countryId))}"; //公司注册
+    document.form1.submit();
+}
+</script>        
+</block>
+</body>
+</html>

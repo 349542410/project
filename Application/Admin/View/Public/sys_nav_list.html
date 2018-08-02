@@ -1,0 +1,5 @@
+          <li <if condition="(CONTROLLER_NAME eq 'Manager') OR (CONTROLLER_NAME eq 'Role')">class="active"</if>><a href="{:U('Manager/index')}">员工列表</a></li>
+
+          <li <if condition="(CONTROLLER_NAME eq 'Operator')">class="active"</if>><a href="{:U('Operator/index')}">物流节点</a></li>
+
+          <li <if condition="(CONTROLLER_NAME eq 'Ecompany') || (CONTROLLER_NAME eq 'Transit')">class="active"</if>><a href="{:U('Ecompany/index')}">物流管理</a></li>

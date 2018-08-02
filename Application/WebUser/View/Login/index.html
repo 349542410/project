@@ -1,0 +1,115 @@
+<extend name="Public:base" />
+<block name="title">{:L('Lr_title')}</block>
+<block name="css">
+    <link rel="stylesheet" type="text/css" href="__CSS__/login.css">
+    
+    <script src="__JS__/login.js"></script>
+</block>
+<block name="content">
+        <div class="content logo_vzcc">
+            <div class="cd_bj"></div>
+            <div class="cd_cont">
+                <div class="title_vzs">
+                    <p>{:L('Lr_P_LOGIN_REGI')}</p>
+                </div>
+                <div class="cont_vzs">
+                    <div class="left_vz" id="click_vz">
+                        <p class="p1" cid="1"><span class=""><label></label>{:L('Lr_PERS_REGISTER')}</span><span class="s1"><label></label>{:L('Lr_COMPANY_REGISTER')}</span></p>
+                        <div class="re_1 re_ss">
+                            <div class="le_dd"><img src="__IMG__/{:L('lng')}/geren_pic.png"></div>
+                            <div class="min_h_vz">
+                            <div class="ri_dd">
+                                <p class="p_title">{:L('Lr_You_are')}</p>
+                                <p class="p_text">{:L('Lr_American_citiz')}</p>
+                                <p class="p_title" style="margin-top: 20px;">{:L('Lr_You_just_ha')}</p>
+                                <p class="p_text">{:L('Lr_One_of_the_f')}</p>
+                                
+                            </div>
+                            <div style="clear: both;"></div>
+                            </div>
+                            <p class="te_cent"><a href="{:U('Register/RegisterType', array('type' => 'person' ,'countryId' => 1)) }"><span>{:L('Lr_SUBMT2')}</span></a></p>
+                        </div>
+                        <div class="re_2 re_ss" style="display:none">
+                            <div class="le_dd"><img src="__IMG__/{:L('lng')}/qiye_pic.png"></div>
+                            <div class="min_h_vz">
+                            <div class="ri_dd">
+                                <p class="p_title">{:L('Lr_You_are')}</p>
+                                <p class="p_text">{:L('Lr_Company_regi')}</p>
+                                <p class="p_title" style="margin-top: 20px;">{:L('Lr_You_just_ha')}</p>
+                                <p class="p_text">{:L('Lr_Copies_of')}</p>
+                                
+                            </div>
+                            </div>
+                            <p class="te_cent"><a href="{:U('Register/RegisterType',array('type' => 'company' ,'countryId' => 1))}"><span>{:L('Lr_SUBMT1')}</span></a></p>
+                        </div>
+                    </div>
+                    <div class="right_vz">
+                        <p class="p1"><span class=""><label></label>{:L('Lr_LOGIN')}</span></p>
+                        <form action="{:U('Login/login_in')}" method="post" id="loginForm">                        
+                            <div class="tible_vz">
+                                <p class="bj_vz p1"></p>
+                                <p class="bj_vz p2"></p>
+                                <p class="bj_vz p3"></p>
+                                <p class="bj_vz2 p1"><input class="tts" type="text" name="name" placeholder="{:L('Lr_USERNAME_EMAIL')}"/></p>
+                                <p class="bj_vz2 p2"><input class="tts" type="password" name="pwd" placeholder="{:L('Lr_PASSWORD')}"/></p>
+                                <p class="ver bj_vz2 p3"><input  type="text" name="verify" placeholder="{:L('Lr_VERTI_CODE')}" /><img width="70" id="verify" height="30" alt="{:L('Lr_VERTI_CODE')}" src="{:U('Login/verify_c',array())}" title="{:L('Rd_Click_refresh')}" onclick="this.src='__URL__/verify_c/'+Math.round(new Date().getTime()/1000)"></p>
+
+                                <p class="lasts">
+                                    
+                                    <a class="forget" href="{:U('ResetPwd/index')}">{:L('Lr_FORGET_PASSWORD')}</a>
+                                </p>
+                                   <!--   <input class="che" type="checkbox" value="1" />记住我  -->
+                                <p class="lasts2"><span id="errormsg" class="messagebox"></span></p>
+                               
+                            </div>
+                             <p  class="te_cent"><input class="btns"  type="submit" value="{:L('Lr_LOGIN')}" /></p>
+                        </form> 
+                    </div>
+                </div>
+                <!-- <div class="dologin">
+                <form action="{:U('Login/login_in')}" method="post" id="loginForm">
+                    <div class="title">
+                        <label class="now">登录</label>
+                        <label><a href="{:U('Register/index')}" style="font-size:18px;color:#aaa;">注册</a></label>
+                    </div>
+
+                    <p><input class="tts" type="text" name="name" placeholder="输入用户名"/></p>
+                    <p><input class="tts" type="password" name="pwd" placeholder="输入密码"/></p>
+                    <p class="ver"><input  type="text" name="verify" placeholder="输入验证码" /><img width="15%" id="verify" height="100" alt="验证码" src="{:U('Login/verify_c',array())}" title="点击刷新" onclick="this.src='__URL__/verify_c/'+Math.round(new Date().getTime()/1000)"></p>
+
+                    <p class="lasts">
+                        <span id="errormsg" class="messagebox"></span>
+                        <a class="forget" href="{:U('ResetPwd/index')}">忘记密码</a>
+                    </p>
+                         <input class="che" type="checkbox" value="1" />记住我 -->
+
+                    <!-- <p ><input class="btns"  type="submit" value="登录" /></p>
+                </form> 
+
+                </div> -->
+            </div>
+        </div>
+<script>
+$(function(){
+    $("#click_vz .p1 span").click(function(){
+        var cls = $(this).attr('class');
+        var cid= $("#click_vz .p1").attr('cid');
+        if(cls == 's1'){
+            if(cid == 1){
+                $("#click_vz .re_1").css('display','none');
+                $("#click_vz .re_2").css('display','block');
+                $("#click_vz .p1").attr('cid','2');            
+            }else{
+                $("#click_vz .re_1").css('display','block');
+                $("#click_vz .re_2").css('display','none');
+                $("#click_vz .p1").attr('cid','1');  
+            }
+
+            $(this).attr('class','');
+            $(this).siblings('span').attr('class','s1'); 
+        }
+           
+    })
+})
+</script> 
+</block>

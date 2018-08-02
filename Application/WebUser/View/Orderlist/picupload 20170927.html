@@ -1,0 +1,54 @@
+<div class="ordhead"><h3>{:L('Cer_Upload')}</h3></div>
+<div class="ordbody" <if condition="(L('lng') eq 'zh-cn')"> style="height: 300px;"</if><if condition="(L('lng') eq 'en-us')"> style="height: 380px;"</if>>
+    <div class="obtit">
+        <p style="color:#000;font-size: 20px;font-weight: bold;">{:L('Cer_Explain')}</p>
+    </div>
+    <div class="obcont">
+        <p>{:L('Cer_Pho_Back')}</p>
+        <img src='<if condition="($html_name eq 'edit')">{:session('mkuser.front_id_img')}<else/>__MEMBER__/images/pho_front.png</if>' id="fileimage1" style="width: 230px;height: 120px;margin-left: 15px;">
+        <input type="file" name="file_one" id="file" accept="image/jpeg,image/jpg,image/png" atd="1" onclick="fileOnchange(this)" />
+        <label>{:L('Cer_Btn')}</label>
+    </div>
+    <div class="obconts">
+        <p>{:L('Cer_Pho_Front')}</p>
+        <img src='<if condition="($html_name eq 'edit')">{:session('mkuser.back_id_img')}<else/>__MEMBER__/images/pho_back.png</if>' id="fileimage2" style="width: 230px;height: 120px;margin-left: 15px;">
+        <input type="file" name="file_two" id="files" accept="image/jpeg,image/jpg,image/png" atd="2" onclick="fileOnchange(this)" />
+        <label>{:L('Cer_Btn')}</label>
+    </div>
+    <script type="text/javascript">
+        // 文件上传赋值到对应图片位置
+        function fileOnchange(pid){
+            var atd = pid.getAttribute("atd");
+            // alert(atd);
+            var input = pid;
+
+            var res = document.getElementById("fileimage"+atd);       
+            if(typeof FileReader==='undefined'){
+                res.innerHTML = "抱歉，你的浏览器不支持 FileReader"; 
+                input.setAttribute('disabled','disabled'); 
+            }else{
+                input.addEventListener('change',readFile,false);
+            }
+
+            //图片文件读取
+            function readFile(){ 
+                var file = this.files[0];
+                // console.log(file);
+                if(!/image\/\w+/.test(file.type)){ 
+                    layer.open({
+                      type: 0, 
+                      title: false,
+                      content: "{:L('Up_Documents')}"
+                    });
+                    return false; 
+                } 
+                var reader = new FileReader(); 
+                reader.readAsDataURL(file); 
+                reader.onload = function(e){ 
+                    res.src = this.result;  //赋值到src
+                    // console.log(res);
+                } 
+            }
+        }
+    </script>
+</div>

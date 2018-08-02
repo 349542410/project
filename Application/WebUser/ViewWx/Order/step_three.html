@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>{:L('UpTitle')}</title>
+	<!-- 在线下单 第三步 打印随机码 -->
+	<link rel="stylesheet" type="text/css" href="__APPWX__/css/all.css">
+</head>
+<body style="background: #000 !important">
+	<div class="up_bg">
+		<img src="__APPWX__/image/step_threebg1.jpg">
+	</div>
+	<!-- 内容 -->
+<div class="form form_two ftstep_t" >
+    <nav class="navbar" role="navigation">
+        <img src="__IMG__/{:L('lng')}/login.png" />
+    </nav>
+    <div class="opbg"></div>
+    <div class="form-signin" id="tempForm">
+    	<ul class="fs_ul">
+    		<li><h1>{:L('PrintRandomCode')}</h1></li>
+    		<li><p>{:L('Sender')}：{$res['sender']}</p></li>
+    		<li><p>{:L('AddressRec')}：{$res['receiver']}</p></li>
+    		<li><p>{:L('RandomCode')}：{$res['random_code']}</p></li>
+    		<li><img src="{:U('Order/barcode',array('text'=>$res['random_code']))}" width="300" height="80" style=""></li>
+    	</ul>
+        <div class="backmember noprint">
+<!--             <input type=button name='button_export' title='打印' onclick=preview(1) value=打印> -->
+            <a href="javascript:(history.go(-1))">{:L('BackMember')}</a>
+        </div>  
+		<div class="stimgs">
+            <img src="{:U('Order/qrcode',array('url'=>$res['random_code']))}" class="ew-code"/>     
+        </div>	
+		<div style="clear:both;"></div>
+    </div>
+</div>
+</body>
+</html>

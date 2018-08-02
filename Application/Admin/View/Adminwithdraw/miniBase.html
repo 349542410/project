@@ -1,0 +1,70 @@
+<form action="">
+
+	<div class="container" style="margin-bottom:0;margin-top:0;">
+				<table border="0" cellpadding="0" cellspacing="0" class="table table-hover" style="border-bottom:none !important">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>会员名称</th>
+							<th>申请金额</th>
+							<th>申请时间</th>
+							<th>账号余额</th>
+							<th>冻结金额</th>
+							<th>状态</th>
+							<th>操作</th>
+							
+						</tr>
+					</thead>
+					<tbody style="font-size:15px;">
+						<volist name="list" id="vo">
+							<tr>
+								<td align="center"  class="td1">
+										{$vo.id}
+								</td>
+								<td align="center" class="td1">
+										{$vo.username}
+								</td>
+								<td align="center" class="td1">
+										{$vo.request_amount}
+								</td>
+								<td align="center" class="td1">
+										{$vo.create_time}
+								</td>
+								<td align="center" class="td1">
+										{$vo.useramount}
+								</td>
+								<td align="center"  class="td1">
+										{$vo.freeze_amount}
+								</td>
+								<td align="center"  class="td1">
+										{$vo.status_name}
+								</td>
+
+								<td align="center" class="td3">
+										<a href="{:U('Adminwithdraw/withdraw_info',array('id' => $vo['id']))}" class="" >查看</a>
+								</td>
+							</tr>
+						</volist>
+					</tbody>
+
+				</table>
+	</div>
+</form>
+<include file="Logarithm/outside_file"/>
+
+<script type="text/javascript">
+function uploadIdImg(url){
+	//iframe层-父子操作
+	layer.open({
+	  type: 2,
+	  title: '上传证件照',
+	  area: ['900px', '650px'],
+	  fixed: true, //不固定
+	  // maxmin: true,
+	  shade: [0.3],
+	  content: [url, 'no'],
+	  btn: ['关闭'],
+	  offset: '100px',
+	});
+}
+</script>

@@ -1,0 +1,99 @@
+<!-- 搜索栏 -->
+<script type="text/javascript" src="__PUBLIC__/js/datetime/DateTimePicker.js"></script>
+<link href="__PUBLIC__/js/datetime/DateTimePicker.css" rel="stylesheet">
+<script type="text/javascript">
+	$(document).ready(function()
+			{
+				$("#dtBox").DateTimePicker({
+
+					minuteInterval: 5
+
+				});
+			});
+</script>
+<div id="dtBox"></div><label>
+				搜索:&nbsp;
+				<input type="search" name="keyword" value="{$keyword}" class="form-control" style="width:160" />
+				</label>
+				<label>
+				
+				<select name="searchtype" class="form-control">
+					<option value="" selected>查询类别</option>
+					<option value="no" <eq name="searchtype" value="no">selected</eq>>中转批号</option>
+					<if condition="(ACTION_NAME eq index) || (ACTION_NAME eq tran_track)"><option value="airno" <eq name="searchtype" value="airno">selected</eq>>航空单号</option></if>
+
+				</select>
+				</label>
+				<if condition="in_array(CONTROLLER_NAME,array('Logarithm','MKBc3'))">
+					<label>&nbsp;隶属线路
+						<select name="tcid" class="form-control">
+						<option value="">全部</option>
+						<volist name="center_list" id="vt">
+							<option value="{$vt[id]}" <if condition="I('tcid') eq $vt['id']">selected</if>>{$vt['name']}</option>
+						</volist>
+					</select>
+					</label>
+				</if>
+				<label>&nbsp;
+				<if condition="(ACTION_NAME eq index) || (ACTION_NAME eq tran_track)">
+					中转批号创建时间：
+				<else/>
+					保存航空单号时间：
+				</if>
+				<input type="text" class="form-control one" data-field="datetime" size="25" id="createStarttime" value="<eq name="starttime" value=""><else />{$starttime|date='Y-m-d H:i:s',###}</eq>" style="width:166" > -- <input type="text" class="form-control two" data-field="datetime" size="25" id="createEndtime" value="<eq name="endtime" value=""><else />{$endtime|date='Y-m-d H:i:s',###}</eq>" style="width:166" >
+				</label>
+				<input type="hidden" id="starttime" name="starttime">
+				<input type="hidden" id="endtime" name="endtime">
+
+<!-- 				<label>
+				&nbsp;&nbsp;行数：
+				<select name="ePage" id="" class="form-control" >
+					<option value="10" <eq name="ePage" value="10">selected</eq>>10</option>
+					<option value="20" <eq name="ePage" value="20">selected</eq>>20</option>
+					<option value="30" <eq name="ePage" value="30">selected</eq>>30</option>
+					<option value="50" <eq name="ePage" value="50">selected</eq>>50</option>
+					<option value="100" <eq name="ePage" value="100">selected</eq>>100</option>
+				</select>
+				</label> -->
+				<label>
+
+					<button type="submit" class="btn btn-primary " style="background-color:#3071a9;" onclick="ccc()">查询</button>
+				</label>
+			
+<script type="text/javascript">
+function ccc(){
+	var startTime=document.getElementById("createStarttime").value;
+	if(startTime != ''){
+		var startback = transdate(startTime);
+		document.getElementById("starttime").value=startback;
+	}
+
+	var endTime=document.getElementById("createEndtime").value;
+	if(endTime != ''){
+		var endback = transdate(endTime);
+		document.getElementById("endtime").value=endback;
+	}
+
+}
+function transdate(startTime){
+	var date=new Date();
+	date.setFullYear(startTime.substring(0,4));
+	date.setMonth(startTime.substring(5,7)-1);
+	date.setDate(startTime.substring(8,10));
+	date.setHours(startTime.substring(11,13));
+	date.setMinutes(startTime.substring(14,16));
+	date.setSeconds(startTime.substring(17,19));
+	return Date.parse(date)/1000;
+}
+function transdate(endTime){
+	var date=new Date();
+	date.setFullYear(endTime.substring(0,4));
+	date.setMonth(endTime.substring(5,7)-1);
+	date.setDate(endTime.substring(8,10));
+	date.setHours(endTime.substring(11,13));
+	date.setMinutes(endTime.substring(14,16));
+	date.setSeconds(endTime.substring(17,19));
+	return Date.parse(date)/1000;
+}
+
+</script>

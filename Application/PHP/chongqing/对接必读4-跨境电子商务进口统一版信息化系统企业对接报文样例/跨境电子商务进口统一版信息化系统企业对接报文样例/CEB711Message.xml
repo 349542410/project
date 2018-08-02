@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ceb:CEB711Message guid="TRF4DGGB-9940-415B-B666-C09BOO7F40B2" version="1.0"  xmlns:ceb="http://www.chinaport.gov.cn/ceb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ceb:Delivery>
+		<ceb:DeliveryHead>
+			<ceb:guid>5923DGGB-9940-415B-B666-C09BOO7F40B2</ceb:guid>
+			<ceb:appType>1</ceb:appType>
+			<ceb:appTime>20160310163311</ceb:appTime>
+			<ceb:appStatus>2</ceb:appStatus>
+			<ceb:customsCode>3700</ceb:customsCode>
+			<ceb:copNo>NBBH20160308005</ceb:copNo>
+			<ceb:preNo>B20160308000000005</ceb:preNo>
+			<ceb:rkdNo>010220160308000005</ceb:rkdNo>
+			<ceb:operatorCode>1101110326</ceb:operatorCode>
+			<ceb:operatorName>监管人</ceb:operatorName>
+			<ceb:ieFlag>I</ceb:ieFlag>
+			<ceb:trafMode>1</ceb:trafMode>
+			<ceb:trafNo>0</ceb:trafNo>
+			<ceb:voyageNo>BJ20160308</ceb:voyageNo>
+			<ceb:billNo>B00024204001</ceb:billNo>
+			<ceb:logisticsCode>1105910159</ceb:logisticsCode>
+			<ceb:logisticsName>测试物流企业</ceb:logisticsName>
+			<ceb:unloadLocation></ceb:unloadLocation>
+			<ceb:note></ceb:note>
+		</ceb:DeliveryHead>
+		<ceb:DeliveryList>
+			<ceb:gnum>1</ceb:gnum>
+			<ceb:logisticsNo>L201603081138001</ceb:logisticsNo>
+			<ceb:note></ceb:note>
+		</ceb:DeliveryList>
+	</ceb:Delivery>
+	<ceb:BaseTransfer>
+		<ceb:copCode>1101180326</ceb:copCode>
+		<ceb:copName>物流企业</ceb:copName>
+		<ceb:dxpMode>DXP</ceb:dxpMode>
+		<ceb:dxpId>DXPLGS0000000001</ceb:dxpId>
+		<ceb:note></ceb:note>
+	</ceb:BaseTransfer>
+</ceb:CEB711Message>

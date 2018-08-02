@@ -1,0 +1,6 @@
+此文件夹为宁波顺丰公司商品报备API
+conf.php
+function.php
+search.php 抓取已报备记录状态的文件
+需定时执行。
+2016-08-30

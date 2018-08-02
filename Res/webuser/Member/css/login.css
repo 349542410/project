@@ -1,0 +1,56 @@
+@charset "utf-8";
+/* content 样式*/
+.content{ width: 100%; min-width: 1004px;  margin-top: 135px; position: relative;}
+.content .dologin{ position: absolute; width: 278px; height: 323px; background: #fff; left: 50%; margin-left: -139px; top: 8%;}
+.content .dologin .title{padding: 21px; font-size: 18px; }
+.content .dologin .title label{ display: block; border-bottom: 1px solid #cdcdcd; color: #828282; float: left; width: 175px; height: 40px; line-height: 40px;  text-align: center;}
+.content .dologin .title label.now{width: 60px; border-bottom: 1px solid #c58f40; color: #c58f40; }
+.content .dologin .title label a{font-size:18px;color:#aaa;}
+.content .dologin p{ width: 233px; margin: 10px 22px 0; height: 40px; line-height: 40px; float: left;color: #8e8e8e;}
+.content .dologin p.now{height: 25px;}
+.content .dologin p.lasts{ margin-top: 0;}
+.content .dologin  input.tts{ width: 233px; height: 30px;  border:1px solid #cdcdcd; font-size: 14px; color: #8e8e8e; padding: 5px; }
+.content .dologin .ver input{height: 30px;  border:1px solid #cdcdcd; font-size: 14px; color: #8e8e8e; padding: 5px; width: 100px; display: block; float: left;}
+.content .dologin .ver img{ width: 100px; height: 30px; float: right;  cursor: pointer;}
+.content .dologin p .che{vertical-align: -3px; width: 14px; height: 14px; cursor: pointer; }
+.content .dologin p a.forget{ float: right; margin-right: 5px;color: #8e8e8e;}
+.content .dologin p a.forget:hover{color:#c58f40; }
+.content .dologin p .btns{width: 233px; height: 40px; border:none; background: #c58f40; color: #fff; font-size: 17px; cursor: pointer; border-radius: 2px;}
+.content .dologin p .btns:hover{ background: #b2813a;}
+.logo_vzcc{ height: 656px; padding-top: 135px;  background: url(../image/reset.jpg) no-repeat #000; background-position: center bottom ; margin: 0; position: relative;}
+.logo_vzcc .cd_bj{ width: 990px;position: absolute; left: 50%; margin-left: -495px; background: #000; opacity: 0.55;  height: 656px;}
+.logo_vzcc .cd_cont{width: 990px;position: absolute; left: 50%; margin-left: -495px; height: 656px; color: #fff;}
+.logo_vzcc .cd_cont .title_vzs{ margin: 15px 18px; height: 40px; line-height: 40px; font-size: 16px; font-weight: bold; border-bottom: 2px solid #c0c0c0;}
+.logo_vzcc .cd_cont .cont_vzs .left_vz,.logo_vzcc .cd_cont .cont_vzs .right_vz{width: 456px; height: 510px; border:1px solid #9f9f9f; border-radius: 5px; float: left; margin: 15px 18px; }
+.logo_vzcc .cd_cont .cont_vzs .left_vz .p1 span,.logo_vzcc .cd_cont .cont_vzs .right_vz .p1 span{ height: 45px; line-height: 45px; width: 228px;border-radius: 5px; display: inline-block; font-size: 14px;  color: #dadbdb; font-weight: bold;}
+.logo_vzcc .cd_cont .cont_vzs .left_vz .p1 span label,.logo_vzcc .cd_cont .cont_vzs .right_vz .p1 span label{ display: inline-block; width: 4px; height: 14px; background: #f9b100; margin: 0 8px 0 11px; vertical-align: -1px;}
+.logo_vzcc .cd_cont .cont_vzs .left_vz .p1 span.s1,.logo_vzcc .cd_cont .cont_vzs .right_vz .p1 span.s1{background: url(../image/bor_ul_bj.jpg) repeat-x;}
+.logo_vzcc .cd_cont .cont_vzs .left_vz .p1 span.s1:hover{cursor: pointer;}
+.logo_vzcc .cd_cont .cont_vzs .left_vz .re_ss{ margin: 40px 0 0  0;}
+.logo_vzcc .cd_cont .cont_vzs .left_vz .re_ss .min_h_vz{ min-height: 330px;}
+.logo_vzcc .cd_cont .cont_vzs .left_vz .re_ss .le_dd{ width: 77px; height: 105px; float: left;}
+.logo_vzcc .cd_cont .cont_vzs .left_vz .re_ss .ri_dd{width: 374px; float: right; padding-left: 5px;}
+.logo_vzcc .cd_cont .cont_vzs .left_vz .re_ss .ri_dd .p_title{/*height: 30px;*/ line-height: 30px; border-bottom: 1px solid #9a9a9a; margin-right:15px; color: #dfc112; font-weight: bold; font-size: 16px; }
+.logo_vzcc .cd_cont .cont_vzs .left_vz .re_ss .ri_dd .p_text{line-height: 25px; font-size: 14px; padding-top: 10px; color: #c2c1bd;}
+.logo_vzcc .cd_cont .cont_vzs .left_vz .re_ss .ri_dd .p_text label.s1{ width: 10px; height: 10px; display: inline-block; border-radius: 5px; background: #c0c0c0;margin-right: 10px;}
+.logo_vzcc .cd_cont .cont_vzs .left_vz .re_ss .ri_dd .p_text label{/* width: 10px; *//* height: 10px; *//* display: inline-block; *//* border-radius: 5px; *//* margin-right: 10px; */}
+.logo_vzcc .cd_cont .cont_vzs .te_cent{ text-align: center;}
+.logo_vzcc .cd_cont .cont_vzs .te_cent span,.logo_vzcc .cd_cont .cont_vzs .te_cent input{ height: 50px; line-height: 50px;color: #fff; background: #dfc112; border-radius: 5px; padding: 0 20px; font-size: 18px; font-weight: bold; display: inline-block; border-width: 0; min-width: 130px;}
+.logo_vzcc .cd_cont .cont_vzs .right_vz .tible_vz{ width: 300; margin: 0 auto; margin-top: 70px; position: relative; min-height: 300px; }
+.logo_vzcc .cd_cont .cont_vzs .right_vz .tible_vz .bj_vz{ position: absolute; background: #000; border-radius: 5px; height: 45px; display: inline-block; width:100%; opacity: 0.5; z-index: 10000;}
+.logo_vzcc .cd_cont .cont_vzs .right_vz .tible_vz .bj_vz2{ position: absolute; border-radius: 5px; height: 45px; display: inline-block; width:100%; z-index: 10001}
+.logo_vzcc .cd_cont .cont_vzs .right_vz .tible_vz .p1{left: 0; top:0;}
+.logo_vzcc .cd_cont .cont_vzs .right_vz .tible_vz .p2{left: 0; top:65px;}
+.logo_vzcc .cd_cont .cont_vzs .right_vz .tible_vz .p3{left: 0; top:130px;}
+.logo_vzcc .cd_cont .cont_vzs .right_vz .tible_vz .tts{ width: 266px; background: none; border-width: 0px; height: 30px; margin: 7px 15px; line-height: 30px; color: #fff; font-size: 14px; }
+.logo_vzcc .cd_cont .cont_vzs .right_vz .tible_vz .p3 input{ width: 170px;  background: none; border-width: 0px; height: 30px; margin: 7px 15px; line-height: 30px; color: #fff; font-size: 14px; display: inline-block; float: left; }
+.logo_vzcc .cd_cont .cont_vzs .right_vz .tible_vz .p3 img{    margin: 2.5px 0px;}
+.logo_vzcc .cd_cont .cont_vzs .right_vz .tible_vz .lasts{ position: absolute; top: 190px; text-align: right; color: #fff; width: 100%; height: 30px; line-height: 30px;}
+.logo_vzcc .cd_cont .cont_vzs .right_vz .tible_vz .lasts2{ position: absolute; top: 220px; text-align: left; color: #fff; width: 100%; height: 30px; line-height: 30px;}
+.logo_vzcc .cd_cont .cont_vzs .right_vz .tible_vz .lasts span{float: left;}
+.logo_vzcc .cd_cont .cont_vzs .right_vz .tible_vz .lasts a{color: #fff; font-size: 14px;}
+#msgbox{
+	position: absolute;
+    right: 145px;
+    bottom: 115px;
+}

@@ -1,0 +1,16 @@
+首先执行地址导入 	[省份城市邮编对应.xls]
+
+
+然后依次访问以下下面的地址，必须要看到成功才可以
+http://member.mk.cc/Order/addr_cache?line_id=1
+http://member.mk.cc/Order/addr_cache?line_id=15
+http://member.mk.cc/Order/addr_cache?line_id=11
+http://member.mk.cc/Order/addr_cache?line_id=12
+http://member.mk.cc/Order/addr_cache?line_id=13
+http://member.mk.cc/Order/addr_cache?line_id=14
+http://member.mk.cc/Order/addr_cache?line_id=18
+
+
+
+
+http://member.mk.cc/Order/set_category_cache

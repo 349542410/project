@@ -1,0 +1,54 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title><block name="title"></block>-{:L('km_name')}</title>
+		<meta name="Keywords" content="美快  美快国际 美快物流 国际物流 美国 香港 中国 中国香港" />
+		<meta name="format-detection" content="telephone=no"/>
+		<link href="__ICONS__/favicon.ico" rel="bookmark" type="image/x-icon" /> 
+		<link href="__ICONS__/favicon.ico" rel="icon" type="image/x-icon" /> 
+		<link href="__ICONS__/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+		<link rel="apple-touch-icon" href="__ICONS__/icons57.png"/>
+		<link rel="apple-touch-icon" href="__ICONS__/icons64.png" />
+		<link rel="apple-touch-icon" sizes="72x72" href="__ICONS__/icons72.png" />
+		<link rel="apple-touch-icon" sizes="114x114" href="__ICONS__/icons114.png" />
+		<link rel="stylesheet" type="text/css" href="__JS__/layer-v2.4/skin/layer.css">	
+		<link rel="stylesheet" type="text/css" href="__CSS__/abstract.css">	
+		<link rel="stylesheet" type="text/css" href="__CSS__/jquery-ui.css">	
+		<script type="text/javascript" src="__JS__/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="__JS__/layer-v2.4/layer.js"></script>
+
+		<script type="text/javascript" src="__JS__/jquery-ui.js"></script>
+		{/*jquery及其它js已放在最底部*/}
+		<block name="css"></block>
+	</head>
+	
+	
+	
+	<if condition="CONTROLLER_NAME neq 'ResetPwd'"><script type="text/javascript" src="__JS__/mislider.js"></script></if>
+	
+	<script type="text/javascript" src="__JS__/{:L('lng')}/home-yuyanvar.js"></script>
+	<script type="text/javascript" src="__JS__/home-javascript.js?t=20180731"></script>
+	<body>		
+	<?php
+		$names=CONTROLLER_NAME;		
+ 	?>
+ 	<block name="header"><include file="Public:header"/></block>
+ 	<block name="mk_service"><include file="Public:mk_service"/></block>
+ 	<if condition=" $names eq 'Index'">
+ 		<block name="banner"><include file="Public:home_banner_vz"/></block>
+ 		
+ 	<elseif condition=" ($names eq 'Solution')"/>
+ 		<block name="banner_vz"><include file="Public:banner_vz"/></block>	
+ 	<elseif condition=" ($names eq 'Login') OR ($names eq 'Register')OR ($names eq 'Function') OR ($names eq 'Present') OR ($names eq 'Announcement')"/>
+
+ 	<else/>
+ 		<block name="banner"><include file="Public:banner"/></block>	
+ 	</if>		
+	<block name="content"><include file="Public:content"/></block>
+	<block name="footer"><include file="Public:footer"/></block>	
+	<!-- 弹出框模块 -->
+	<block name="alert_custom"><include file="Public:alert_custom"/></block>
+	</body>
+
+</html>

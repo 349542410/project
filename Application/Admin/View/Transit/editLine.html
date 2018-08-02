@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <style type="text/css">
+      body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+
+      }
+
+      .container{margin:0 auto;}
+      .form-signin {
+        max-width: 900px;
+        margin-top:60px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+    .form-signin table th{height:36px;font-size:16px;line-height:36px;background:#F7F7F9;}
+    .form-signin table td{height:36px;line-height:36px;font-size:14px;text-indent:2em;background:#F7F7F9;}
+    .form-signin table td a{text-decoration:none;color:#000;}
+    .form-signin table td a:hover{color:blue;}
+    .form-signin .form-control{width:400px !important;}
+    </style>
+    <link href="__PUBLIC__/css/one.css" rel="stylesheet">  
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+    <![endif]-->
+     </head>
+  <body>
+
+    <div class="container" >
+      <div class="form-signin" style="padding-top:40px;background:#F7F7F9 !important;margin-bottom:40px">
+
+      <form action="{:U('Transit/editLine')}" method="post" class="form-inline" id="tempForm">
+          <table border="0" cellpadding="0" cellspacing="0" class="table" style="margin-bottom:0px;padding:0px">
+        <tr>
+            <td style="text-align:right" width="300"><h3>修改中转线路</h3></td>
+            <td width="700"></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>线路名称：</label></th>
+            <td><input type="text" name="name" value="{$info['name']}" class="form-control" required/><font color="red">*必填</font></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>前缀：</label></th>
+            <td><input type="text" name="prename" value="{$info['prename']}" class="form-control" placeholder="长度不超过3个字符" /></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>中转中心：</label></th>
+            <td><input type="text" name="toname" value="{$info['toname']}" class="form-control"/></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>所属航空公司：</label></th>
+            <td>
+                <select name="airid" id="" class="form-control" style="width:100px !important;">
+                  <volist name="elist" id="e">
+                    <option value="{$e['id']}" <eq name="info.airid" value="$e['id']">selected</eq> >{$e['company_name']}</option>
+                  </volist>
+                </select><font color="red">*选择</font>
+            </td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>导出文件省却相同字段：</label></th>
+            <td >
+              <label class="radio-inline">
+                <input type="radio" name="csv_type" id="" value="1" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['csv_type']" value="1">checked="checked"</eq> >是 
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="csv_type" id="" value="2" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['csv_type']" value="2">checked="checked"</eq> >否
+              </label>
+            </td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>转发快递：</label></th>
+            <td><input type="text" name="transit" value="{$info['transit']}" class="form-control" required="required" /><font color="red">*必填</font></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>邮箱：</label></th>
+            <td><input type="text" name="email" value="{$info['email']}" class="form-control" required="required" /><font color="red">*必填</font></td>
+        </tr>
+
+        <!-- 以下需要超级管理员才能填写 -->
+        <if condition="in_array(session('admin.auth_group_id'),C('ADMINISTRATOR'))">
+        <tr>
+            <th width="" style="padding-left:12px"><label>多语言关键字：</label></th>
+            <td><input type="text" name="lngname" value="{$info['lngname']}" class="form-control" />&nbsp;*仅开发人员填写</td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>选择框多语言备注：</label></th>
+            <td><input type="text" name="lngremark" value="{$info['lngremark']}" class="form-control" />&nbsp;*仅开发人员填写</td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>打印名称：</label></th>
+            <td><input type="text" name="print_name" value="{$info['print_name']}" class="form-control" /></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>线路编号：</label></th>
+            <td><input type="text" name="line_code" value="{$info['line_code']}" class="form-control" /></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>飞机起飞机场名称：</label></th>
+            <td><input type="text" name="air_takeoff" value="{$info['air_takeoff']}" class="form-control" /></td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>飞机着陆机场名称：</label></th>
+            <td><input type="text" name="air_landing" value="{$info['air_landing']}" class="form-control" /></td>
+        </tr>
+        </if>
+        <!-- 以下需要超级管理员才能填写 -->
+        
+        <tr>
+            <th width="" style="padding-left:12px"><label>允许重复件数量：</label></th>
+            <td><input type="text" name="repeatsnum" value="{$info['repeatsnum']}" class="form-control" placeholder="设置线路允许重复件的数量限制" />&nbsp;*设置 “0” 为不限</td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>线路最高限额(¥)：</label></th>
+            <td><input type="text" name="maxamount" value="{$info['maxamount']}" class="form-control" placeholder="设置线路的订单最高限额" />&nbsp;*设置 “0” 为不限</td>
+        </tr>
+        <tr>
+          <th width="" style="padding-left:12px"><label>单件商品最高限额(¥)：</label></th>
+          <td><input type="text" name="single_piece_limit" value="{$info['single_piece_limit']}" class="form-control" placeholder="设置线路的订单最高限额" />&nbsp;*设置 “0” 为不验证</td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>税金起征额(¥)：</label></th>
+            <td><input type="text" name="taxthreshold" value="{$info['taxthreshold']}" class="form-control" placeholder="未超过起征额则税金为0，若超过，则按实际税金收取" />&nbsp;*设置线路的免税金额</td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>BC报关管理：</label></th>
+            <td >
+              <label class="radio-inline">
+                <input type="radio" name="bc_state" id="" value="1" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['bc_state']" value="1">checked="checked"</eq> >是 
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="bc_state" id="" value="0" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['bc_state']" value="0">checked="checked"</eq> >否
+              </label>
+            </td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>CC报关管理：</label></th>
+            <td >
+              <label class="radio-inline">
+                <input type="radio" name="cc_state" id="" value="1" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['cc_state']" value="1">checked="checked"</eq> >是 
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="cc_state" id="" value="0" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['cc_state']" value="0">checked="checked"</eq> >否
+              </label>
+            </td>
+        </tr>
+<!--         <tr>
+            <th width="" style="padding-left:12px"><label>需上传身份证明：</label></th>
+            <td >
+              <label class="radio-inline">
+                <input type="radio" name="cid" id="" value="1" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['cid']" value="1">checked="checked"</eq> >是 
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="cid" id="" value="0" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['cid']" value="0">checked="checked"</eq> >否
+              </label>
+            </td>
+        </tr> -->
+        <tr>
+            <th width="" style="padding-left:12px"><label>会员可选：</label></th>
+            <td >
+              <label class="radio-inline">
+                <input type="radio" name="optional" id="" value="1" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['optional']" value="1">checked="checked"</eq> >是 
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="optional" id="" value="0" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['optional']" value="0">checked="checked"</eq> >否
+              </label>
+            </td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>是否激活：</label></th>
+            <td >
+              <label class="radio-inline">
+                <input type="radio" name="status" id="" value="1" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['status']" value="1">checked="checked"</eq> >是 
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="status" id="" value="0" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['status']" value="0">checked="checked"</eq> >否
+              </label>
+            </td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>税金形式：</label></th>
+            <td >
+              <label class="radio-inline">
+                <input type="radio" name="tax_kind" id="" value="0" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['tax_kind']" value="0">checked="checked"</eq> >固定值 
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="tax_kind" id="" value="1" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['tax_kind']" value="1">checked="checked"</eq> >百分比
+              </label>
+            </td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>身份证号是否必填：</label></th>
+            <td >
+              <label class="radio-inline">
+                <input type="radio" name="input_idno" id="" value="1" onclick="idcard_no(this)" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['input_idno']" value="1">checked="checked"</eq> >是
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="input_idno" id="" value="0" onclick="idcard(this)" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['input_idno']" value="0">checked="checked"</eq> >否
+              </label>
+            </td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>会员需上传身份证：</label></th>
+            <td >
+              <label class="radio-inline">
+                <input type="radio" name="member_sfpic_state" id="sfpic1" value="1" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['member_sfpic_state']" value="1">checked="checked"</eq> >是
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="member_sfpic_state" id="sfpic2" value="0" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['member_sfpic_state']" value="0">checked="checked"</eq> >否
+              </label>
+            </td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>需要购物小票：</label></th>
+            <td >
+              <label class="radio-inline">
+                <input type="radio" name="shop_state" id="" value="1" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['shop_state']" value="1">checked="checked"</eq> >是
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="shop_state" id="" value="0" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['shop_state']" value="0">checked="checked"</eq> >否
+              </label>
+            </td>
+        </tr>
+        <tr>
+            <th width="" style="padding-left:12px"><label>是否允许导入订单：</label></th>
+            <td >
+              <label class="radio-inline">
+                <input type="radio" name="allow_import_order" id="" value="1" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['allow_import_order']" value="1">checked="checked"</eq> >是
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="allow_import_order" id="" value="0" style="vertical-align:middle; margin-bottom:1px;" <eq name="info['allow_import_order']" value="0">checked="checked"</eq> >否
+              </label>
+            </td>
+        </tr>
+        <tr>
+           <th width="" style="padding-left:12px"><label>不限额地区：</label></th>
+           <td><textarea name="no_limit_region" placeholder="每一行只能填写一个省市区地址，省市区地址要用英文逗号隔;（如：广东省,广州市,番禺区）" id="" cols="30" rows="10">{$info['no_limit_region']}</textarea></td>
+        </tr>
+        <tr>
+          <th width="" style="padding-left:12px"><label>备注：</label></th>
+          <td><textarea name="remark" id="" cols="30" rows="10">{$info['remark']}</textarea></td>
+        </tr>
+        <tr>
+              <th  colspan="3" style="text-align:left !important;padding-left:196px">
+                <input type="hidden" name="id" value="{$info['id']}">
+                <button type="submit" class="btn btn-primary" id="BtnSave">提交</button>
+                <input type="hidden"  value="{:C('US_TO_RMB_RATE')}">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="beClosed">关闭</button>
+                <span id="messagebox" class="msgbox" style="right:300px;!important"></span>
+              </th>
+            </tr>
+          
+          </table>
+      </form>
+
+      </div>
+    </div> 
+ 
+  </body>
+  <script type="text/javascript">
+      function idcard(obj){
+          var gouxuan=$(obj).is(':checked');
+          if(gouxuan){
+              $('#sfpic1').removeAttr('checked');
+              $('#sfpic1').attr('disabled', 'disabled');
+              $('#sfpic2').attr('checked', 'checked');
+
+          }
+
+          //alert(gouxuan);
+      }
+      function idcard_no(obj){
+          var gouxuan=$(obj).is(':checked');
+          if(gouxuan) {
+              $('#sfpic1').removeAttr('disabled');
+          }
+      }
+
+
+  </script>
+<script src="__PUBLIC__/js/my.js"></script>
+</html>

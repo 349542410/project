@@ -1,0 +1,9 @@
+handle.php   新的
+setone.php   新的
+rount.php    修改
+r_function.php  修改
+getXML.php     新的
+h_config.php   新的
+r_config.php   修改
+function222.php   旧版的，服务器上请用function.php
+ex_config.php   没变

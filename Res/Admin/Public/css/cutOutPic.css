@@ -1,0 +1,39 @@
+.cut-pic-wrap {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.cut-pic-content {
+  width: 80%;
+  height: 80%;
+  position: relative;
+  background: #fff;
+  margin: 10% auto;
+  display: flex;
+}
+
+.cut-pic-main {
+  margin: 20px 0 0 20px;
+  flex: 1;
+}
+
+.cut-pic-img {
+  width: 500px;
+  margin-top: 20px;
+}
+
+.cut-pic-aside {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.cut-pic-aside button {
+  width: 100px;
+  display: block;
+  margin-bottom: 20px;
+}

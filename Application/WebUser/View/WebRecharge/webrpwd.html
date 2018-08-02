@@ -1,0 +1,40 @@
+<!-- 在线下单 -->
+<extend name="Member/base" />
+
+
+<block name="main">
+<link rel="stylesheet" type="text/css" href="__MEMBER__/css/repwd.css">    
+
+<script src="__JS__/jquery.form.js"></script>
+<meta charset="utf-8">
+    <div class="content reset_vz">
+        <div class="dologin">
+        <div id="sendmail_form">        
+            <div class="set_vz_bj"></div>
+            <div class="ser_cont_vz">
+            <form action="{:U('ResetPwd/forgetPwd')}" method="post" id="myform">    
+                <p class="title">修改密码</p>
+                <p class="p1"><smap></smap></p>           
+                <p class="p1"><smap></smap></p>           
+                <p class="p1"><smap></smap></p>         
+                <p class="p1"><smap></smap></p>    
+                <p class="p2 pp"><smap><label></label><input class="tts" type="" name="" placeholder="原密码"/></smap></p>
+                <p class="p3 pp"><smap><label></label><input class="tts" type="" name="" placeholder="新密码"/></smap></p>
+                <p class="ver p4 pp"><smap><label></label><input class="tts" type="" name="" placeholder="确认密码"/></smap></p>                
+                <p class="p5 pp"><smap><label></label><input  type="text" name="verify" placeholder="{:L('Rd_Verif_code')}" /><img width="13%" id="verify" height="60" alt="{:L('Rd_Verif_code')}" src="{:U('ResetPwd/verify_c',array())}" title="{:L('Rd_Click_refresh')}" onclick="this.src='__URL__/verify_c/'+Math.round(new Date().getTime()/1000)"></smap></p>
+                <p class="tishi_p" style=""><span id="result" style=" line-height:24px;   letter-spacing: 0; vertical-align: middle; font-size:12px; vertical-align: middle;"></span></p>
+                <p class="btns_vz"><input class="btns" type="submit" value="提交" /></p>
+            </form> 
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+
+    <div class="foot"></div>
+
+</block>
+
+</body>
+</html>
